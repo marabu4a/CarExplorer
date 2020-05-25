@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tl="http://schemas.android.com/tools">
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="match_parent"
+        android:id="@+id/switch_layout_home">
+    </androidx.viewpager.widget.ViewPager>
+
+    <com.dueeeke.tablayout.SegmentTabLayout
+        android:layout_width="match_parent"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/tabHome"
+
+        android:layout_marginBottom="35dp"
+        tl:tl_indicator_anim_enable="true"
+        tl:tl_indicator_bounce_enable="true"
+        tl:tl_tab_space_equal="true"
+        app:tl_bar_stroke_color="@color/white"
+        app:tl_bar_color="@color/white"
+        android:elevation="14dp"
+        app:tl_textSize="20dp"
+        android:background="@drawable/corners"
+        app:tl_indicator_bounce_enable="false"
+        app:tl_indicator_color="@color/violet"
+        app:tl_textBold="BOTH"
+        app:tl_textUnselectedColor="@color/lightGray"
+        app:tl_tab_space_equal="true"
+        app:theme = "@style/widget"
+        app:tl_indicator_anim_enable="true"
+        android:layout_gravity="bottom"
+        android:layout_height="36dp">
+
+    </com.dueeeke.tablayout.SegmentTabLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

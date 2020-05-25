@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">CarExplorer</string>
+    <string name="carExplorer">car-explorer</string>
+    <string name="categories">Категории</string>
+    <string name="news">Новости</string>
+    <string name="articles">Статьи</string>
+    <string name="favorites">Избранное</string>
+    <string name="sources">Источники</string>
+    <string name="alert_connection_error">Ошибка подключения к серверу,проверьте подключение к интернету</string>
+    <string name="succesfull">Статья добавлена в Избранное</string>
+    <string name="deleted">Статья удалена из Избранного</string>
+    <string name="errorLoading">Ошибка при получении данных.Повторите позже</string>
+    <string name="deleteCachedFromFavorites">Статья успешно удалена из базы данных</string>
+    <string name="errorLoadingFromDb">Ошибка получения данных из базы данных</string>
+    <string name="simpleError">"Ошибка "</string>
+    <string name="errorDeleteFromDb">Ошибка при удалении из базы данных</string>
+    <string name="errorSavingToDb">Ошибка при добавлении в базу данных</string>
+    <string name="errorLoadingCategories">Ошибка загрузки категорий</string>
+    <string name="errorLoadingSources">Ошибка загрузки источников</string>
+    <string name="errorLoadingNews">Ошибка при загрузке новостей</string>
+    <string name="delete">Удалить</string>
+</resources>

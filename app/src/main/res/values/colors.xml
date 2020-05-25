@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="lightGray">#CCCCCC</color>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="red">#EF9A9A</color>
+    <color name="black">#000000</color>
+    <color name="blue">#0000FF</color>
+    <color name ="violet">#5654CB</color>
+    <color name = "lightblue">#1E90FF</color>
+    <color name = "testblue">#6495ED</color>
+    <color name="progressBarTint">@color/white</color>
+    <color name="toolbarTextPrimary">@color/black</color>
+    <color name="toolbarTextSecondary">@color/black</color>
+</resources>

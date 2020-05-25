@@ -1,0 +1,129 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+            kotlinOptions { jvmTarget = "1.8" }
+        }
+    defaultConfig {
+        applicationId "com.example.carexplorer"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+ext {
+    kotlinCoroutinesVersion = '1.3.0-M1'
+    okHttpVersion = '3.8.1'
+    gsonVersion = '2.8.6'
+    lifecycle = '2.2.0'
+    permissionUtilsVersion = "1.0.9"
+    retrofitVersion = '2.7.1'
+    daggerVersion = '2.25.4'
+    roomVersion = '2.2.3'
+    latestFastAdapterRelease = '5.0.0'
+}
+
+dependencies {
+
+    implementation 'com.github.andrefrsousa:SuperBottomSheet:1.5.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation "com.google.dagger:dagger:${daggerVersion}"
+    implementation "com.google.dagger:dagger-android:${daggerVersion}"
+    implementation "com.google.dagger:dagger-android-support:${daggerVersion}"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    kapt "com.google.dagger:dagger-compiler:${daggerVersion}"
+    kapt "com.google.dagger:dagger-android-processor:${daggerVersion}"
+    kapt 'com.google.dagger:dagger-android-support:2.25.4'
+
+    implementation 'com.github.dueeeke:dk-tablayout:1.0.2'
+    implementation 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    implementation 'com.github.magneticflux:kotlin-simplexml-rss:1.1.2', {
+        exclude group: 'org.threeten', module: 'threetenbp'
+    }
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+
+    implementation "com.arthurivanets.bottomsheet:bottomsheets-core:1.2.0"
+    //implementation "org.kodein.di:kodein-di-generic-jvm:6.5.3"
+    //implementation "org.kodein.di:kodein-di-framework-android-x:6.5.3"
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
+
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+
+    implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation "com.github.kayvannj:PermissionUtils:$permissionUtilsVersion"
+
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+
+    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
+
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+
+    implementation "com.mikepenz:fastadapter:${latestFastAdapterRelease}"
+    implementation "com.mikepenz:fastadapter-extensions-expandable:${latestFastAdapterRelease}"
+    implementation "com.mikepenz:fastadapter-extensions-binding:${latestFastAdapterRelease}" // diff util helpers
+    implementation "com.mikepenz:fastadapter-extensions-diff:${latestFastAdapterRelease}" // diff util helpers
+    implementation "com.mikepenz:fastadapter-extensions-drag:${latestFastAdapterRelease}" // drag support
+    implementation "com.mikepenz:fastadapter-extensions-paged:${latestFastAdapterRelease}" // paging support
+    implementation "com.mikepenz:fastadapter-extensions-scroll:${latestFastAdapterRelease}" // scroll helpers
+    implementation "com.mikepenz:fastadapter-extensions-swipe:${latestFastAdapterRelease}" // swipe support
+    implementation "com.mikepenz:fastadapter-extensions-ui:${latestFastAdapterRelease}" // pre-defined ui components
+    implementation "com.mikepenz:fastadapter-extensions-utils:${latestFastAdapterRelease}" // needs the `expandable`, `drag` and `scroll` extension.
+
+    implementation 'com.prof.rssparser:rssparser:3.0.0'
+
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.10.3"
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+
+    implementation 'com.github.muhrifqii.ParseRSS:parserss:0.2.1'
+    implementation 'com.github.muhrifqii.ParseRSS:retrofit:0.2.1'
+
+    implementation 'tech.schoolhelper:moxy-x:1.7.0'
+    implementation 'tech.schoolhelper:moxy-x-androidx:1.7.0'
+    kapt 'tech.schoolhelper:moxy-x-compiler:1.7.0'
+    
+
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}

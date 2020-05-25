@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <include android:id="@+id/toolbarWebPage"
+            layout="@layout/toolbar"/>
+
+
+
+        <WebView
+            android:layout_below="@id/toolbarWebPage"
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </WebView>
+
+        <com.github.rahatarmanahmed.cpv.CircularProgressView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/cpvWeb"
+            android:layout_width="@dimen/loaded_size"
+            android:layout_height="@dimen/loaded_size"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:cpv_indeterminate="true"
+            app:cpv_animAutostart="true"
+            app:cpv_color="@color/colorPrimaryDark" />
+
+</RelativeLayout>

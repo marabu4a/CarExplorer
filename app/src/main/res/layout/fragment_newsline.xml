@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include
+        layout="@layout/toolbar">
+    </include>
+<!--    <com.google.android.material.tabs.TabLayout-->
+
+<!--        android:id="@+id/tabNewsline"-->
+<!--        android:layout_width="match_parent"-->
+<!--        app:tabTextColor="@color/black"-->
+<!--        app:tabTextAppearance="@style/MineCustomTabText"-->
+<!--        android:layout_height="wrap_content">-->
+
+        <com.dueeeke.tablayout.SlidingTabLayout
+
+            android:id="@+id/tabNewsline"
+            app:tl_indicator_color="@color/black"
+            app:tl_textSize="20sp"
+            app:tl_textSelectSize="20sp"
+            app:tl_tab_space_equal="true"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:theme="@style/tabStyle"
+            app:tl_indicator_gravity="TOP"
+            app:tl_textSelectColor="@color/black"
+            app:tl_textUnselectedColor="@color/black"
+            app:tl_underline_color="@color/lightGray"
+            app:tl_underline_gravity="TOP"
+            app:tl_underline_height="1dp" />
+
+<!--    </com.google.android.material.tabs.TabLayout>-->
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_height="wrap_content">
+
+    </androidx.viewpager.widget.ViewPager>
+
+</LinearLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rlCategories">
+        <include
+            android:id="@+id/toolbarCategories"
+            layout="@layout/toolbar">
+        </include>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@id/toolbarCategories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recyclerView"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+        <com.github.rahatarmanahmed.cpv.CircularProgressView
+            android:id="@+id/cpvCategories"
+
+            android:layout_width="@dimen/loaded_size"
+            android:layout_height="@dimen/loaded_size"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            app:cpv_animAutostart="true"
+            app:cpv_color="@color/colorPrimaryDark"
+            app:cpv_indeterminate="true" />
+
+
+</RelativeLayout>

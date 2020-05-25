@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/clEntry"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+        <View
+            app:layout_constraintTop_toTopOf="parent
+"                   android:id="@+id/anchor"
+            android:layout_width="match_parent"
+            android:layout_height="1dp">
+
+        </View>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/rlPreviewArticle"
+            android:layout_height="wrap_content">
+            <com.github.rahatarmanahmed.cpv.CircularProgressView
+                android:id="@+id/cpvListArticles"
+                android:layout_width="@dimen/loaded_size"
+                android:layout_height="@dimen/loaded_size"
+                android:layout_centerInParent="true"
+                android:visibility="visible"
+                app:cpv_indeterminate="true"
+                app:cpv_animAutostart="true"
+                app:cpv_color="@color/violet" />
+            <ImageView android:layout_width="match_parent"
+                android:id="@+id/ivImageArticle"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:scaleType="centerCrop"
+                android:foreground="@drawable/gradient"
+                android:layout_height="160dp"
+                />
+
+            <ToggleButton
+                android:id="@+id/button_favorite_entry"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignBottom="@id/tvNameArticle"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/button_favorite_black"
+                android:checked="false"
+                android:text=""
+                android:textOff=""
+                android:textOn=""/>
+            <TextView
+                android:textColor="@color/black"
+
+                android:id="@+id/tvNameArticle"
+                android:layout_width="190dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/futura_pt_heavy"
+                android:textSize="19sp"
+                android:layout_below="@id/ivImageArticle"
+
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</androidx.cardview.widget.CardView>
