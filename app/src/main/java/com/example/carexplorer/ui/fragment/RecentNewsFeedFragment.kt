@@ -2,49 +2,47 @@ package com.example.carexplorer.ui.fragment
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
-import com.example.carexplorer.di.App
 import com.example.carexplorer.helpers.NewsViewModel
+import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.presenter.RecentNewsFeedPresenter
+import com.example.carexplorer.presenter.RecentNewsFeedPresenterFactory
 import com.example.carexplorer.ui.adapter.FragmentLifecycle
 import com.example.carexplorer.ui.adapter.NewsAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseListFragment
 import com.example.carexplorer.view.RecentFeedView
 import com.google.android.material.snackbar.Snackbar
+import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_recent_feed.*
 import kotlinx.android.synthetic.main.item_news.view.*
 import kotlinx.android.synthetic.main.nothing_search.*
+import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
+
+@FragmentWithArgs
 class RecentNewsFeedFragment : BaseListFragment(),RecentFeedView,FragmentLifecycle {
     override val viewAdapter: BaseAdapter<*> = NewsAdapter()
     private val displayList : MutableList<CachedArticle> = mutableListOf()
-    override val showToolbar: Boolean = true
     private val listRecentArticles = mutableListOf<CachedArticle>()
-    override var titleToolbar = "Новости"
-    override val layoutId: Int = R.layout.fragment_recent_feed
-    @Inject
-    @InjectPresenter
-    lateinit var presenter : RecentNewsFeedPresenter
-
-    @ProvidePresenter
-    fun provide() = presenter
+    override val layoutRes: Int = R.layout.fragment_recent_feed
 
     companion object {
         val tag = "recentFeedFragment"
     }
 
-    init {
-        App.appComponent.inject(this)
+
+    @Inject
+    lateinit var presenterFactory: RecentNewsFeedPresenterFactory
+
+    private val presenter: RecentNewsFeedPresenter by moxyPresenter {
+        presenterFactory.create()
     }
 
     override fun onCreateView(
@@ -113,7 +111,7 @@ class RecentNewsFeedFragment : BaseListFragment(),RecentFeedView,FragmentLifecyc
                         displayList.clear()
                         displayList.addAll(listRecentArticles)
                         viewAdapter.refreshData(displayList)
-                    }
+                    }   
                     return true
                 }
 
@@ -126,7 +124,7 @@ class RecentNewsFeedFragment : BaseListFragment(),RecentFeedView,FragmentLifecyc
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.favorites -> {
-                navigator.showFavorites(requireActivity())
+                router.navigateTo(Screens.Favorites())
             }
         }
         return super.onOptionsItemSelected(item)
@@ -168,14 +166,12 @@ class RecentNewsFeedFragment : BaseListFragment(),RecentFeedView,FragmentLifecyc
                     R.id.button_favorite_news -> {
                         if (v.button_favorite_news.isChecked) {
                             presenter.saveArticle(it)
-                            Log.e("Activity", "Сохранил!")
                         } else {
                             presenter.removeArticle(it)
-                            Log.e("Activity", "Удалилdd!")
                         }
                     }
                     else -> {
-                        navigator.showWebPage(requireActivity(), it.url,it.title)
+                        router.navigateTo(Screens.WebPage(it.title,it.url!!))
                     }
                 }
             }
@@ -188,11 +184,9 @@ class RecentNewsFeedFragment : BaseListFragment(),RecentFeedView,FragmentLifecyc
     }
 
     override fun onPauseFragment() {
-        Log.e("Activity","isPaused")
     }
 
     override fun onResumeFragment() {
-        Log.e("Activity","isResumed")
     }
 
 }

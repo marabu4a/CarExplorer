@@ -1,49 +1,41 @@
 package com.example.carexplorer.ui.fragment
+
 import android.os.Bundle
 import android.view.View
-import com.arellomobile.mvp.presenter.InjectPresenter
 import com.example.carexplorer.R
-import com.example.carexplorer.di.App
+import com.example.carexplorer.data.model.CachedArticle
 import com.example.carexplorer.presenter.ArticlePresenter
-import com.example.carexplorer.repository.remote.ApiService
+import com.example.carexplorer.presenter.ArticlePresenterFactory
 import com.example.carexplorer.ui.base.BaseFragment
+import com.example.carexplorer.util.ParcelableArgsBundler
 import com.example.carexplorer.view.ArticleView
+import com.hannesdorfmann.fragmentargs.annotation.Arg
+import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_article.*
-
-class ArticleFragment : BaseFragment(),ArticleView {
-    override val layoutId: Int = R.layout.fragment_article
-
-    override val showToolbar: Boolean = false
-
-    override var titleToolbar: String = "Новости"
+import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 
-    @InjectPresenter
-    lateinit var presenter : ArticlePresenter
+@FragmentWithArgs
+class ArticleFragment : BaseFragment(), ArticleView {
+    override val layoutRes: Int = R.layout.fragment_article
 
+    @Inject
+    lateinit var presenterFactory: ArticlePresenterFactory
 
+    @Arg(bundler = ParcelableArgsBundler::class)
+    lateinit var article: CachedArticle
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
+    private val presenter: ArticlePresenter by moxyPresenter {
+        presenterFactory.create()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        base {
-            val args = intent.getBundleExtra("args")
-            args?.let {
-                val image = it.getString(ApiService.PARAM_IMAGE_ARTICLE)
-                val text = it.getString(ApiService.PARAM_TEXT_ARTICLE)
-                val title = it.getString(ApiService.PARAM_TITLE_ARTICLE)
+        presenter.loadArticle(article.image!!, article.url!!)
 
-                titleToolbar = title!!
-                presenter.loadArticle(image!!,text!!)
-            }
-
-        }
 
     }
 
@@ -64,7 +56,7 @@ class ArticleFragment : BaseFragment(),ArticleView {
         presenter.stopWork()
     }
 
-    override fun showArticle(image : String,text : String) {
+    override fun showArticle(image: String, text: String) {
         //val imageGetter = GlideImageGetter(requireActivity(),tvTextArticle, Glide.with(this))
 //        val styledText = HtmlCompat.fromHtml(text,HtmlCompat.FROM_HTML_MODE_COMPACT,imageGetter,null)
 //        tvTextArticle.also {
@@ -75,9 +67,15 @@ class ArticleFragment : BaseFragment(),ArticleView {
         webText.settings.loadWithOverviewMode = true
         webText.settings.javaScriptEnabled = true
         webText.isHorizontalScrollBarEnabled = false
-        webText.loadDataWithBaseURL(null, "<style>@font-face {font-family: 'arial';src: url('file:///assets/fonts/FuturaPT_Medium.woff');}body " +
-                "{font-family: 'verdana';}" + "</style>\n"+ "<style>img{display: inline; height: auto; max-width: 100%;} " +
-                "</style>\n" + "<style>iframe{ height: auto; width: auto;}" + "</style>\n" + text, null, "utf-8", null)
+        webText.loadDataWithBaseURL(
+            null,
+            "<style>@font-face {font-family: 'arial';src: url('file:///assets/fonts/FuturaPT_Medium.woff');}body " +
+                    "{font-family: 'verdana';}" + "</style>\n" + "<style>img{display: inline; height: auto; max-width: 100%;} " +
+                    "</style>\n" + "<style>iframe{ height: auto; width: auto;}" + "</style>\n" + text,
+            null,
+            "utf-8",
+            null
+        )
 
         Picasso.get().load(image).into(ivImageArticle)
     }

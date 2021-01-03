@@ -1,11 +1,11 @@
 package com.example.carexplorer.view
 
-import com.arellomobile.mvp.MvpView
 import com.example.carexplorer.data.model.CachedArticle
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
-interface RecentFeedView : MvpView {
-    fun startLoading()
-    fun endLoading()
+@StateStrategyType(AddToEndSingleStrategy::class)
+interface RecentFeedView : BaseView {
     fun showRecentFeed(recentFeed: List<CachedArticle>)
     fun showMessage(textResource:Int)
 }

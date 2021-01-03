@@ -1,17 +1,21 @@
 package com.example.carexplorer.presenter
 
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
+
 import com.example.carexplorer.data.model.Source
 import com.example.carexplorer.repository.remote.NewsFeedRepository
 import com.example.carexplorer.view.NewsFeedView
+import com.google.auto.factory.AutoFactory
+import com.google.auto.factory.Provided
 import com.prof.rssparser.Article
 import kotlinx.coroutines.Job
+import moxy.InjectViewState
+import moxy.MvpPresenter
 import javax.inject.Inject
 
+@AutoFactory
 @InjectViewState
 class NewsFeedPresenter @Inject constructor(
-    repository: NewsFeedRepository
+    @Provided private val repository: NewsFeedRepository
 ): MvpPresenter<NewsFeedView>() {
     private val presenterJob = Job()
     private val url = "https://my-first-project-id-9bcf7.firebaseio.com/.json/"

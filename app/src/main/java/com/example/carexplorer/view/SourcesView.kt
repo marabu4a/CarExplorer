@@ -1,11 +1,11 @@
 package com.example.carexplorer.view
 
-import com.arellomobile.mvp.MvpView
 import com.example.carexplorer.data.model.Source
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
-interface SourcesView : MvpView {
-    fun startLoading()
+@StateStrategyType(AddToEndSingleStrategy::class)
+interface SourcesView : BaseView {
     fun showSources(sources : List<Source>)
-    fun endLoading()
     fun showMessage(textResource:Int)
 }

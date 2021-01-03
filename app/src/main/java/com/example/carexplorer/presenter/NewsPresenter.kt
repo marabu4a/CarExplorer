@@ -2,25 +2,28 @@ package com.example.carexplorer.presenter
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
 import com.example.carexplorer.repository.cache.ContentCache
 import com.example.carexplorer.repository.remote.NewsFeedRepository
 import com.example.carexplorer.view.NewsView
+import com.google.auto.factory.AutoFactory
+import com.google.auto.factory.Provided
 import com.prof.rssparser.Article
 import com.prof.rssparser.Parser
 import kotlinx.coroutines.*
+import moxy.InjectViewState
+import moxy.MvpPresenter
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+@AutoFactory
 @InjectViewState
 class NewsPresenter @Inject constructor(
-    cache : ContentCache,
-    repository: NewsFeedRepository
+    @Provided private val cache : ContentCache,
+    @Provided private val repository: NewsFeedRepository
 ) : MvpPresenter<NewsView>() {
     private val newsFeedRepository = repository
     private val articlesCache = cache

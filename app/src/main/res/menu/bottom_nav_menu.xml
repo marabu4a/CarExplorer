@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottomBarMain"
+        android:icon="@drawable/ic_search"
+        android:title="Лента" />
+    <item
+        android:id="@+id/bottomBarSources"
+        android:icon="@drawable/ic_search"
+        android:title="Источники" />
+    <item
+        android:id="@+id/bottomBarCategories"
+        android:icon="@drawable/ic_search"
+        android:title="Категории" />
+    <item
+        android:id="@+id/bottomBarFavorites"
+        android:icon="@drawable/ic_search"
+        android:title="Избранное" />
+
+</menu>

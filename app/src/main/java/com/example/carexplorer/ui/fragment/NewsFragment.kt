@@ -4,42 +4,51 @@ import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.RequiresApi
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
-import com.example.carexplorer.di.App
+import com.example.carexplorer.data.model.Source
+import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.presenter.NewsPresenter
+import com.example.carexplorer.presenter.NewsPresenterFactory
 import com.example.carexplorer.repository.remote.ApiService
 import com.example.carexplorer.ui.adapter.NewsAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseListFragment
+import com.example.carexplorer.util.ParcelableArgsBundler
 import com.example.carexplorer.view.NewsView
 import com.google.android.material.snackbar.Snackbar
+import com.hannesdorfmann.fragmentargs.annotation.Arg
+import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.haveno_items.*
 import kotlinx.android.synthetic.main.item_news.view.*
 import kotlinx.android.synthetic.main.nothing_search.*
+import moxy.ktx.moxyPresenter
 import java.util.*
 import javax.inject.Inject
 
+
+@FragmentWithArgs
 class NewsFragment : BaseListFragment(),NewsView {
     override val viewAdapter: BaseAdapter<*> = NewsAdapter()
 
-    override val layoutId: Int = R.layout.fragment_news
+    override val layoutRes: Int = R.layout.fragment_news
     private val listNews : MutableList<CachedArticle> = mutableListOf()
     private val displayList : MutableList<CachedArticle> = mutableListOf()
-    override var titleToolbar = ""
+
+    @Arg(bundler = ParcelableArgsBundler::class)
+    lateinit var source: Source
+
     @Inject
-    @InjectPresenter()
-    lateinit var presenter : NewsPresenter
+    lateinit var presenterFactory : NewsPresenterFactory
 
-    @ProvidePresenter
-    fun provide() = presenter
+    private val presenter : NewsPresenter by moxyPresenter {
+        presenterFactory.create()
+    }
 
-
-    init {
-        App.appComponent.inject(this)
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.stopWork()
     }
 
     override fun startLoading() {
@@ -48,10 +57,6 @@ class NewsFragment : BaseListFragment(),NewsView {
         recyclerView.visibility = View.GONE
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.stopWork()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,7 +97,6 @@ class NewsFragment : BaseListFragment(),NewsView {
             val sourceTitle = args.getString(ApiService.PARAM_TITLE_ARTICLE)
             if (savedInstanceState == null) {
                 presenter.loadNews(url!!,sourceTitle!!)
-                titleToolbar = sourceTitle!!
             }
             else {
                 endLoading()
@@ -165,7 +169,7 @@ class NewsFragment : BaseListFragment(),NewsView {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.favorites -> {
-                navigator.showFavorites(requireActivity())
+                router.navigateTo(Screens.Favorites())
             }
         }
         return super.onOptionsItemSelected(item)
@@ -215,7 +219,7 @@ class NewsFragment : BaseListFragment(),NewsView {
                     }
                 }
                 else -> {
-                    navigator.showWebPage(requireActivity(),it.url,it.title)
+                    router.navigateTo(Screens.WebPage(it.title,it.url!!))
                 }
             }
         }

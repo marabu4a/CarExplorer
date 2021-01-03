@@ -6,30 +6,31 @@ import android.view.*
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
-import com.example.carexplorer.di.App
 import com.example.carexplorer.helpers.NewsViewModel
 import com.example.carexplorer.helpers.SourcesViewModel
+import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.presenter.RandomNewsFeedPresenter
+import com.example.carexplorer.presenter.RandomNewsFeedPresenterFactory
 import com.example.carexplorer.ui.adapter.FragmentLifecycle
 import com.example.carexplorer.ui.adapter.NewsAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseListFragment
 import com.example.carexplorer.view.PopularFeedView
 import com.google.android.material.snackbar.Snackbar
+import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_popular_feed.*
 import kotlinx.android.synthetic.main.item_news.view.*
 import kotlinx.android.synthetic.main.nothing_search.*
+import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
+
+@FragmentWithArgs
 class RandomNewsFeedFragment : BaseListFragment(),PopularFeedView,FragmentLifecycle {
     override val viewAdapter: BaseAdapter<*> = NewsAdapter()
-    override val layoutId: Int = R.layout.fragment_popular_feed
-    override val showToolbar: Boolean = true
-    override var titleToolbar = "Новости"
+    override val layoutRes: Int = R.layout.fragment_popular_feed
     private lateinit var rViewModel : NewsViewModel
     private val listPopularArticles : MutableList<CachedArticle> = mutableListOf()
     private val displayList : MutableList<CachedArticle> = mutableListOf()
@@ -39,17 +40,11 @@ class RandomNewsFeedFragment : BaseListFragment(),PopularFeedView,FragmentLifecy
         const val tag = "popularFeedFragment"
     }
 
-
-
     @Inject
-    @InjectPresenter
-    lateinit var presenter : RandomNewsFeedPresenter
+    lateinit var presenterFactory : RandomNewsFeedPresenterFactory
 
-    @ProvidePresenter
-    fun provide() = presenter
-
-    init {
-        App.appComponent.inject(this)
+    private val presenter : RandomNewsFeedPresenter by moxyPresenter {
+        presenterFactory.create()
     }
 
 
@@ -123,7 +118,7 @@ class RandomNewsFeedFragment : BaseListFragment(),PopularFeedView,FragmentLifecy
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.favorites -> {
-                navigator.showFavorites(requireActivity())
+                router.navigateTo(Screens.Favorites())
             }
         }
         return super.onOptionsItemSelected(item)
@@ -172,7 +167,7 @@ class RandomNewsFeedFragment : BaseListFragment(),PopularFeedView,FragmentLifecy
                     }
                 }
                 else -> {
-                    navigator.showWebPage(requireActivity(),it.url,it.title)
+                    router.navigateTo(Screens.WebPage(it.title,it.url!!))
                 }
             }
 

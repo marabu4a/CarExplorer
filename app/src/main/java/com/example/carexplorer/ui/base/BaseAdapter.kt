@@ -4,7 +4,6 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseAdapter<vh : BaseAdapter.BaseViewHolder> : RecyclerView.Adapter<vh>() {
-//    abstract val layoutRes : Int
 
     var items : ArrayList<Any> = ArrayList()
     var onClick: OnClick? = null
@@ -15,17 +14,9 @@ abstract class BaseAdapter<vh : BaseAdapter.BaseViewHolder> : RecyclerView.Adapt
         notifyDataSetChanged()
     }
 
-//
-//    abstract fun createHolder(view: View,viewType: Int) : vh
-//
     override fun getItemCount(): Int {
         return items.size
     }
-//
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): vh {
-//            val inflater = LayoutInflater.from(parent.context).inflate(layoutRes, parent, false)
-//            return createHolder(inflater, viewType)
-//        }
 
 
     override fun onBindViewHolder(holder: vh, position: Int) {

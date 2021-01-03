@@ -9,15 +9,15 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebViewClient
 import com.example.carexplorer.R
-import com.example.carexplorer.di.App
 import com.example.carexplorer.ui.base.BaseFragment
+import com.hannesdorfmann.fragmentargs.annotation.Arg
+import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_webpage.*
 
+
+@FragmentWithArgs
 class WebPageFragment : BaseFragment() {
-    override val layoutId: Int = R.layout.fragment_webpage
-    override var titleToolbar = ""
-    override val showToolbar: Boolean
-        get() = true
+    override val layoutRes: Int = R.layout.fragment_webpage
 
     override fun onBackPressed() {
         if (webView.canGoBack()) {
@@ -29,15 +29,15 @@ class WebPageFragment : BaseFragment() {
 
     }
 
+    @Arg
+    lateinit var page : String
+
+    @Arg
+    lateinit var title: String
+
     companion object {
         val tag = "webPageFragment"
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,12 +54,9 @@ class WebPageFragment : BaseFragment() {
             val args = intent.getBundleExtra("args")
             val page = args?.getString("page")
             val title = args?.getString("title")
-            titleToolbar = title!!
 
             setupWebView(page!!)
         }
-
-
     }
 
     override fun onResume() {

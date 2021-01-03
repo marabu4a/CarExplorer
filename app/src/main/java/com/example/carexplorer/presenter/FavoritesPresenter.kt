@@ -1,21 +1,23 @@
 package com.example.carexplorer.presenter
 
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
 import com.example.carexplorer.repository.cache.ContentCache
 import com.example.carexplorer.view.FavoritesView
+import com.google.auto.factory.AutoFactory
+import com.google.auto.factory.Provided
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import moxy.InjectViewState
+import moxy.MvpPresenter
 import javax.inject.Inject
 
-
+@AutoFactory
 @InjectViewState
 class FavoritesPresenter @Inject constructor(
-    cache : ContentCache
+    @Provided private val cache : ContentCache
 ): MvpPresenter<FavoritesView>() {
     private val articlesCache = cache
     private lateinit var  items : List<CachedArticle>

@@ -1,16 +1,13 @@
 package com.example.carexplorer.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.dueeeke.tablayout.listener.OnTabSelectListener
 import com.example.carexplorer.R
-import com.example.carexplorer.di.App
 import com.example.carexplorer.helpers.InternetConnection
 import com.example.carexplorer.helpers.SegmentTabBehavior
 import com.example.carexplorer.ui.adapter.FragmentLifecycle
@@ -18,37 +15,17 @@ import com.example.carexplorer.ui.adapter.HomeViewPagerAdapter
 import com.example.carexplorer.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment : BaseFragment() {
-    override val layoutId: Int = R.layout.fragment_home
-    override var titleToolbar = "CarExplorer"
 
-    override val showToolbar: Boolean = true
+class MainFragment : BaseFragment() {
+    override val layoutRes: Int = R.layout.fragment_home
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
     companion object {
         val tag = "homeFragment"
     }
 
-
-
     private val titles: Array<String>? = arrayOf("Новости", "Статьи")
     private val mFragments = arrayListOf<Fragment>()
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         base {
@@ -63,7 +40,7 @@ class HomeFragment : BaseFragment() {
                     .setCancelable(false)
                     .setPositiveButton("Повторить") {
                         dialog, id -> finish()
-                        navigator.showHome(requireActivity())
+                        //navigator.showHome(requireActivity())
                     }
                 val alert = builder.create()
                 alert.show()

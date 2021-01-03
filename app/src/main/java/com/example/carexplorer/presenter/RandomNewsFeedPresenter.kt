@@ -1,25 +1,28 @@
 
 package com.example.carexplorer.presenter
 
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
 import com.example.carexplorer.data.model.Source
 import com.example.carexplorer.repository.cache.ContentCache
 import com.example.carexplorer.repository.remote.NewsFeedRepository
 import com.example.carexplorer.view.PopularFeedView
+import com.google.auto.factory.AutoFactory
+import com.google.auto.factory.Provided
 import com.prof.rssparser.Article
 import kotlinx.coroutines.*
+import moxy.InjectViewState
+import moxy.MvpPresenter
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+@AutoFactory
 @InjectViewState
 class RandomNewsFeedPresenter @Inject constructor(
-    repository : NewsFeedRepository,
-    cache : ContentCache
+    @Provided private val repository : NewsFeedRepository,
+    @Provided private val cache : ContentCache
 ) : MvpPresenter<PopularFeedView>() {
     private var presenterJob = Job()
     private val newsFeedRepository = repository

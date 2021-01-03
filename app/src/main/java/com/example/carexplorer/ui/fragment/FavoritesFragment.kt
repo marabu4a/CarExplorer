@@ -7,40 +7,35 @@ import android.view.*
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import com.andrefrsousa.superbottomsheet.SuperBottomSheetFragment
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
-import com.example.carexplorer.di.App
 import com.example.carexplorer.helpers.BottomSheetFilter
+import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.presenter.FavoritesPresenter
+import com.example.carexplorer.presenter.FavoritesPresenterFactory
 import com.example.carexplorer.ui.adapter.FavoritesAdapter
 import com.example.carexplorer.ui.base.BaseListFragment
 import com.example.carexplorer.view.FavoritesView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_categories.recyclerView
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import kotlinx.android.synthetic.main.nothing_items.*
+import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
 class FavoritesFragment : BaseListFragment(),FavoritesView,BottomSheetFilter.CallbackFilter {
-    override val layoutId: Int = R.layout.fragment_favorites
-    override var titleToolbar = "Избранное"
+    override val layoutRes: Int = R.layout.fragment_favorites
     var filterItems = arrayListOf<CachedArticle>()
-    private lateinit var popMenuAnchor : View
+
     private var bottomSheetFilter : SuperBottomSheetFragment? = BottomSheetFilter(this)
 
     override val viewAdapter = FavoritesAdapter()
 
     @Inject
-    @InjectPresenter
-    lateinit var presenter: FavoritesPresenter
+    lateinit var presenterFactory : FavoritesPresenterFactory
 
-    @ProvidePresenter
-    fun provide() = presenter
-
-
-    init {
-        App.appComponent.inject(this)
+    private val presenter : FavoritesPresenter by moxyPresenter {
+        presenterFactory.create()
     }
 
     override fun onCreateView(
@@ -51,17 +46,6 @@ class FavoritesFragment : BaseListFragment(),FavoritesView,BottomSheetFilter.Cal
         setHasOptionsMenu(true)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
-
-    override fun onResume() {
-        super.onResume()
-        base {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeButtonEnabled(true)
-            supportActionBar?.setDisplayShowHomeEnabled(true)
-
-        }
-    }
-
 
     @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -139,10 +123,10 @@ class FavoritesFragment : BaseListFragment(),FavoritesView,BottomSheetFilter.Cal
                     item,v -> (item as CachedArticle).let {
                 when (item.type) {
                     "news" -> {
-                        navigator.showWebPage(requireActivity(),it.url,it.title)
+                        router.navigateTo(Screens.WebPage(it.title,it.url!!))
                     }
                     else -> {
-                        navigator.showArticle(requireActivity(),it)
+                        router.navigateTo(Screens.Article(it))
                     }
                 }
                 }

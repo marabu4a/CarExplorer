@@ -1,14 +1,10 @@
 package com.example.carexplorer.view
-
-import com.arellomobile.mvp.MvpView
-import com.arellomobile.mvp.viewstate.strategy.AddToEndStrategy
-import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.example.carexplorer.data.model.CachedArticle
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
-@StateStrategyType(AddToEndStrategy::class)
-interface PopularFeedView : MvpView {
-    fun startLoading()
-    fun endLoading()
+@StateStrategyType(AddToEndSingleStrategy::class)
+interface PopularFeedView : BaseView {
     fun showPopularFeed(popularFeed: List<CachedArticle>)
     fun showMessage(textResource:Int)
 }

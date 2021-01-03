@@ -10,10 +10,8 @@ import com.example.carexplorer.repository.remote.ApiService
 import com.example.carexplorer.ui.activity.*
 import com.google.gson.Gson
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
-@Singleton
 class Navigator @Inject constructor(
 
 ) {
@@ -28,7 +26,7 @@ class Navigator @Inject constructor(
 
     fun showFavorites(context: Context) = context.startActivity<FavoritesActivity>()
 
-    fun showHome(context: Context) = context.startActivity<HomeActivity>()
+    fun showHome(context: Context) = context.startActivity<AppActivity>()
 
     fun showArticle(context: Context, cachedArticle: CachedArticle) {
         val bundle = Bundle()

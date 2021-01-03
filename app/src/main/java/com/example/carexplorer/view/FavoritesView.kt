@@ -1,12 +1,13 @@
 package com.example.carexplorer.view
 
-import com.arellomobile.mvp.MvpView
 import com.example.carexplorer.data.model.CachedArticle
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
-interface FavoritesView : MvpView {
-    fun startLoading()
+
+@StateStrategyType(AddToEndSingleStrategy::class)
+interface FavoritesView : BaseView {
     fun showContent(list : List<CachedArticle>)
-    fun endLoading()
     fun dismissBottomSheet(animate : Boolean)
     fun showMessage(textResource:Int)
 }

@@ -1,43 +1,52 @@
 package com.example.carexplorer.ui.base
 
 import android.os.Bundle
-import android.view.*
-import com.arellomobile.mvp.MvpAppCompatFragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import com.example.carexplorer.util.hideKeyboard
+import moxy.MvpAppCompatFragment
+import ru.terrakok.cicerone.Router
+import timber.log.Timber
 import javax.inject.Inject
 
 abstract class BaseFragment : MvpAppCompatFragment() {
-    abstract val layoutId : Int
-    abstract var titleToolbar : String
-
-    open val showToolbar = true
+    @get:LayoutRes
+    protected abstract val layoutRes : Int
 
     @Inject
-    lateinit var navigator: Navigator
+    protected lateinit var router : Router
+
+    open val isBottomBarVisible: Boolean
+        get() = true
+    open val isFullScreen: Boolean
+        get() = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(layoutId,container,false)
-    }
-
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        base {
-            if (showToolbar) supportActionBar?.show() else supportActionBar?.hide()
-            supportActionBar?.title = titleToolbar
-
-
+        return inflater.inflate(layoutRes,container,false).also {
+            Timber.v("onCreateView ${javaClass.simpleName}")
         }
     }
-    open fun onBackPressed() {}
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        view?.hideKeyboard()
+    }
+    open fun onBackPressed() {
+        view?.hideKeyboard()
+        //TODO разобраться в выходом
+//        if (parentFragmentManager.backStackEntryCount > 1) {
+//            router.exit()
+//        } else {
+//            route
+//        }
+    }
 
     fun hideSoftKeyboard() = base { hideSoftKeyboard() }
 

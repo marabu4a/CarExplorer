@@ -1,7 +1,9 @@
 package com.example.carexplorer.view
 
-import com.arellomobile.mvp.MvpView
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
-interface WebPageView : MvpView {
+@StateStrategyType(AddToEndSingleStrategy::class)
+interface WebPageView : BaseView {
     fun showError(textResource:Int)
 }

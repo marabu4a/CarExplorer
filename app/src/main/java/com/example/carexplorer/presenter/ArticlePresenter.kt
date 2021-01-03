@@ -1,13 +1,15 @@
 package com.example.carexplorer.presenter
 
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import com.example.carexplorer.view.ArticleView
+import com.google.auto.factory.AutoFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import moxy.InjectViewState
+import moxy.MvpPresenter
 
+@AutoFactory
 @InjectViewState
 class ArticlePresenter : MvpPresenter<ArticleView>() {
     private val presenterJob = Job()

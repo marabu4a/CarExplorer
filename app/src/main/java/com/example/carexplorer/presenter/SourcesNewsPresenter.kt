@@ -1,18 +1,21 @@
 package com.example.carexplorer.presenter
 
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.Source
 import com.example.carexplorer.repository.remote.SourcesRepository
 import com.example.carexplorer.view.SourcesView
+import com.google.auto.factory.AutoFactory
+import com.google.auto.factory.Provided
 import kotlinx.coroutines.*
+import moxy.InjectViewState
+import moxy.MvpPresenter
 import javax.inject.Inject
 
 
+@AutoFactory
 @InjectViewState
 class SourcesNewsPresenter @Inject constructor(
-    repository : SourcesRepository
+    @Provided private val repository : SourcesRepository
 ) : MvpPresenter<SourcesView>() {
     private val presenterJob = Job()
     private var sources : List<Source> = mutableListOf()

@@ -1,57 +1,36 @@
 package com.example.carexplorer.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.viewpager.widget.ViewPager
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.carexplorer.R
-import com.example.carexplorer.di.App
 import com.example.carexplorer.presenter.NewsFeedPresenter
+import com.example.carexplorer.presenter.NewsFeedPresenterFactory
 import com.example.carexplorer.ui.adapter.FragmentLifecycle
 import com.example.carexplorer.ui.adapter.ViewPagerAdapter
 import com.example.carexplorer.ui.base.BaseFragment
 import com.example.carexplorer.view.NewsFeedView
+import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_newsline.*
+import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
-class NewsFeedFragment : BaseFragment(),NewsFeedView,FragmentLifecycle {
-    override val layoutId: Int = R.layout.fragment_newsline
-    override val showToolbar: Boolean = true
 
-    override var titleToolbar = "Новости"
+@FragmentWithArgs
+class NewsFeedFragment : BaseFragment(),NewsFeedView,FragmentLifecycle {
 
     @Inject
-    @InjectPresenter
-    lateinit var presenter : NewsFeedPresenter
+    lateinit var presenterFactory : NewsFeedPresenterFactory
 
-    @ProvidePresenter
-    fun provide() = presenter
-
-
-    init {
-        App.appComponent.inject(this)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        retainInstance = true
-        return super.onCreateView(inflater, container, savedInstanceState)
+    private val presenter: NewsFeedPresenter by moxyPresenter {
+        presenterFactory.create()
     }
 
     companion object {
         val tag = "newsFeedFragment"
     }
+
+    override val layoutRes: Int = R.layout.fragment_newsline
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -92,15 +71,20 @@ class NewsFeedFragment : BaseFragment(),NewsFeedView,FragmentLifecycle {
         }
     }
 
+    override fun startLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun endLoading() {
+        TODO("Not yet implemented")
+    }
+
     override fun onPauseFragment() {
-        Log.e("Activity","isPaused")
+        TODO("Not yet implemented")
     }
 
     override fun onResumeFragment() {
-        Log.e("Activity","isResumed")
-//        base {
-//            val kk = actionBar
-//            kk!!.title = "Новости"
-//        }
+        TODO("Not yet implemented")
     }
+
 }

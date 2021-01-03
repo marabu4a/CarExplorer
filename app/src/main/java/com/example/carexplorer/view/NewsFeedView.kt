@@ -1,10 +1,10 @@
 package com.example.carexplorer.view
 
-import com.arellomobile.mvp.MvpView
-import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy
-import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.viewstate.strategy.StateStrategyType
 
-@StateStrategyType(OneExecutionStateStrategy::class)
-interface NewsFeedView : MvpView {
+
+@StateStrategyType(AddToEndSingleStrategy::class)
+interface NewsFeedView : BaseView {
 
 }

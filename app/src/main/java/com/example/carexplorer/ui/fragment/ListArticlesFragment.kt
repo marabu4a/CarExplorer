@@ -1,48 +1,51 @@
-    package com.example.carexplorer.ui.fragment
-
-
+package com.example.carexplorer.ui.fragment
 import android.os.Bundle
 import android.view.*
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
+import com.example.carexplorer.data.model.Category
 import com.example.carexplorer.data.model.Entry
-import com.example.carexplorer.di.App
+import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.presenter.ListArticlesPresenter
+import com.example.carexplorer.presenter.ListArticlesPresenterFactory
 import com.example.carexplorer.repository.remote.ApiService
 import com.example.carexplorer.ui.adapter.ListArticlesAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseListFragment
+import com.example.carexplorer.util.ParcelableArgsBundler
 import com.example.carexplorer.view.ListArticlesView
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.hannesdorfmann.fragmentargs.annotation.Arg
+import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
+import kotlinx.android.synthetic.main.fragment_categories.recyclerView
 import kotlinx.android.synthetic.main.fragment_list_articles.*
 import kotlinx.android.synthetic.main.item_preview_article.view.*
 import kotlinx.android.synthetic.main.nothing_search.*
+import moxy.ktx.moxyPresenter
 import java.util.*
 import javax.inject.Inject
 
-    class ListArticlesFragment : BaseListFragment(),ListArticlesView {
-    override val viewAdapter: BaseAdapter<*> = ListArticlesAdapter()
-    override val layoutId: Int = R.layout.fragment_list_articles
-    override val showToolbar: Boolean = true
 
-    override var titleToolbar = ""
+@FragmentWithArgs
+class ListArticlesFragment : BaseListFragment(),ListArticlesView {
+
+    override val viewAdapter: BaseAdapter<*> = ListArticlesAdapter()
+    override val layoutRes: Int = R.layout.fragment_list_articles
 
     private val listEntries : MutableList<CachedArticle> = mutableListOf()
     private val displayList : MutableList<CachedArticle> = mutableListOf()
 
+    @Arg(bundler = ParcelableArgsBundler::class)
+    lateinit var category: Category
+
+
     @Inject
-    @InjectPresenter
-    lateinit var presenter : ListArticlesPresenter
+    lateinit var presenterFactory: ListArticlesPresenterFactory
 
-    @ProvidePresenter
-    fun provide() = presenter
-
-    init {
-        App.appComponent.inject(this)
+    private val presenter : ListArticlesPresenter by moxyPresenter {
+        presenterFactory.create()
     }
 
     override fun onDestroy() {
@@ -70,7 +73,6 @@ import javax.inject.Inject
             val args = intent.getBundleExtra("args")
             args?.let {
                 val name = it.getString(ApiService.PARAM_NAME_CATEGORY)
-                titleToolbar = name!!
                 val jsonArray = it.getString(ApiService.PARAM_CATEGORIES)
                 val entries : List<Entry>
                 entries = getList(jsonArray, Entry::class.java)
@@ -156,7 +158,7 @@ import javax.inject.Inject
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.favorites -> {
-                navigator.showFavorites(requireActivity())
+                router.navigateTo(Screens.Favorites())
             }
         }
         return super.onOptionsItemSelected(item)
@@ -168,14 +170,14 @@ import javax.inject.Inject
                 when (v.id) {
                     R.id.button_favorite_entry -> {
                         if (v.button_favorite_entry.isChecked) {
-                            presenter.saveEntry(it)
+                            //presenter.saveEntry(it)
                         }
                         else {
-                            presenter.removeEntry(it)
+                            //presenter.removeEntry(it)
                         }
                     }
                     else -> {
-                        navigator.showArticle(requireActivity(),it)
+                        router.navigateTo(Screens.Article(it))
                     }
                 }
             }

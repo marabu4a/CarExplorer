@@ -5,12 +5,11 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.Category
-import com.example.carexplorer.di.App
+import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.presenter.CategoriesPresenter
+import com.example.carexplorer.presenter.CategoriesPresenterFactory
 import com.example.carexplorer.ui.adapter.CategoriesAdapter
 import com.example.carexplorer.ui.adapter.FragmentLifecycle
 import com.example.carexplorer.ui.base.BaseAdapter
@@ -18,31 +17,30 @@ import com.example.carexplorer.ui.base.BaseListFragment
 import com.example.carexplorer.view.CategoriesView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_categories.*
+import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
+
 class CategoriesFragment : BaseListFragment(),CategoriesView,FragmentLifecycle {
-    @Inject
-    @InjectPresenter
-    lateinit var categoriesPresenter : CategoriesPresenter
-    @ProvidePresenter
-    fun provide() = categoriesPresenter
 
-    override val layoutId: Int = R.layout.fragment_categories
+    override val layoutRes: Int = R.layout.fragment_categories
     override val viewAdapter: BaseAdapter<*> = CategoriesAdapter()
-    override var titleToolbar = "Новости"
-    override val showToolbar: Boolean = true
 
-    init {
-        App.appComponent.inject(this)
+
+    companion object {
+        val tag = "categoriesFragment"
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        categoriesPresenter.stopWork()
+        presenter.stopWork()
     }
 
-    companion object {
-        val tag = "categoriesFragment"
+    @Inject
+    lateinit var presenterFactory: CategoriesPresenterFactory
+
+    private val presenter: CategoriesPresenter by moxyPresenter {
+        presenterFactory.create()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,10 +52,11 @@ class CategoriesFragment : BaseListFragment(),CategoriesView,FragmentLifecycle {
             setHasFixedSize(true)
         }
 
-        categoriesPresenter.loadCategories()
+        presenter.loadCategories()
+
         setOnItemClickListener { it,v ->
             (it as Category).let {
-                    navigator.showListArticles(requireActivity(),it)
+                router.navigateTo(Screens.ListArticles(it))
             }
         }
     }

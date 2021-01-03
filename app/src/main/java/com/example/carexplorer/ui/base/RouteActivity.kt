@@ -1,8 +1,7 @@
 package com.example.carexplorer.ui.base
 
 import android.os.Bundle
-import com.arellomobile.mvp.MvpAppCompatActivity
-import com.example.carexplorer.di.App
+import moxy.MvpAppCompatActivity
 import javax.inject.Inject
 
 class RouteActivity : MvpAppCompatActivity() {
@@ -12,9 +11,7 @@ class RouteActivity : MvpAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.appComponent.inject(this)
         navigator.showHome(this)
-
     }
 
 }

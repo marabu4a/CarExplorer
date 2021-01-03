@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.carexplorer.R
 
 abstract class BaseListFragment : BaseFragment() {
-    override val layoutId: Int = R.layout.fragment_list
+    override val layoutRes: Int = R.layout.fragment_list
     lateinit var rView : RecyclerView
     protected lateinit var lManager : RecyclerView.LayoutManager
 
@@ -21,22 +21,6 @@ abstract class BaseListFragment : BaseFragment() {
         }
 
     }
-
-
-
-
-    override fun onResume() {
-        super.onResume()
-
-        base {
-            if (showToolbar) supportActionBar?.show() else supportActionBar?.hide()
-            supportActionBar?.title = titleToolbar
-
-
-        }
-    }
-
-
 
     fun setOnItemClickListener(func: (Any?,View) -> Unit) {
         viewAdapter.setOnClick(func)
