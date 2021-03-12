@@ -11,6 +11,10 @@
     <string name="deleted">Статья удалена из Избранного</string>
     <string name="errorLoading">Ошибка при получении данных.Повторите позже</string>
     <string name="deleteCachedFromFavorites">Статья успешно удалена из базы данных</string>
+
+    <string name="error_something_bad_happened_with_code">Ой, что-то пошло не так… Код ошибки: %1$d</string>
+    <string name="error_server_not_available">Извините, сервер недоступен</string>
+    <string name="error_unknown">Произошла ошибка, попробуйте позже</string>
     <string name="errorLoadingFromDb">Ошибка получения данных из базы данных</string>
     <string name="simpleError">"Ошибка "</string>
     <string name="errorDeleteFromDb">Ошибка при удалении из базы данных</string>
@@ -19,4 +23,10 @@
     <string name="errorLoadingSources">Ошибка загрузки источников</string>
     <string name="errorLoadingNews">Ошибка при загрузке новостей</string>
     <string name="delete">Удалить</string>
+
+
+    <string name="title_news_fragment">Лента</string>
+    <string name="title_sources_fragment">Источники</string>
+    <string name="title_categories_fragment">Статьи</string>
+    <string name="title_favorites_fragment">Избранное</string>
 </resources>

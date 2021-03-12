@@ -1,14 +1,14 @@
 package com.example.carexplorer.ui.fragment
+
 import android.os.Bundle
 import android.view.*
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
 import com.example.carexplorer.data.model.Category
-import com.example.carexplorer.data.model.Entry
 import com.example.carexplorer.helpers.navigation.Screens
+import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.ListArticlesPresenter
 import com.example.carexplorer.presenter.ListArticlesPresenterFactory
-import com.example.carexplorer.repository.remote.ApiService
 import com.example.carexplorer.ui.adapter.ListArticlesAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseListFragment
@@ -29,13 +29,13 @@ import javax.inject.Inject
 
 
 @FragmentWithArgs
-class ListArticlesFragment : BaseListFragment(),ListArticlesView {
+class ListArticlesFragment : BaseListFragment(), ListArticlesView {
 
     override val viewAdapter: BaseAdapter<*> = ListArticlesAdapter()
     override val layoutRes: Int = R.layout.fragment_list_articles
 
-    private val listEntries : MutableList<CachedArticle> = mutableListOf()
-    private val displayList : MutableList<CachedArticle> = mutableListOf()
+    private val listEntries: MutableList<CachedArticle> = mutableListOf()
+    private val displayList: MutableList<CachedArticle> = mutableListOf()
 
     @Arg(bundler = ParcelableArgsBundler::class)
     lateinit var category: Category
@@ -44,7 +44,7 @@ class ListArticlesFragment : BaseListFragment(),ListArticlesView {
     @Inject
     lateinit var presenterFactory: ListArticlesPresenterFactory
 
-    private val presenter : ListArticlesPresenter by moxyPresenter {
+    private val presenter: ListArticlesPresenter by moxyPresenter {
         presenterFactory.create()
     }
 
@@ -57,39 +57,21 @@ class ListArticlesFragment : BaseListFragment(),ListArticlesView {
     companion object {
         val tag = "listArticlesFragment"
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        retainInstance = true
         setHasOptionsMenu(true)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        base {
-            val args = intent.getBundleExtra("args")
-            args?.let {
-                val name = it.getString(ApiService.PARAM_NAME_CATEGORY)
-                val jsonArray = it.getString(ApiService.PARAM_CATEGORIES)
-                val entries : List<Entry>
-                entries = getList(jsonArray, Entry::class.java)
-                presenter.getArticles(entries)
-            }
-
-        }
+        presenter.getArticles(category.entries)
         initClickListener()
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        base {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeButtonEnabled(true)
-        }
     }
 
     override fun startLoading() {
@@ -117,15 +99,23 @@ class ListArticlesFragment : BaseListFragment(),ListArticlesView {
         ).setBackgroundTint(resources.getColor(R.color.violet)).show()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        parentRouter.exit()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_search,menu)
+        inflater.inflate(R.menu.menu_search, menu)
         val searchItem = menu.findItem(R.id.search)
 
         if (searchItem != null) {
             val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
-            searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean { return true }
+            searchView.setOnQueryTextListener(object :
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     if (newText!!.isNotEmpty()) {
@@ -138,11 +128,9 @@ class ListArticlesFragment : BaseListFragment(),ListArticlesView {
                         }
                         if (displayList.isEmpty()) {
                             layout_nothing_search.visibility = View.VISIBLE
-                        }
-                        else layout_nothing_search.visibility = View.GONE
+                        } else layout_nothing_search.visibility = View.GONE
                         viewAdapter.refreshData(displayList)
-                    }
-                    else {
+                    } else {
                         layout_nothing_search.visibility = View.GONE
                         displayList.clear()
                         displayList.addAll(listEntries)
@@ -158,7 +146,7 @@ class ListArticlesFragment : BaseListFragment(),ListArticlesView {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.favorites -> {
-                router.navigateTo(Screens.Favorites())
+                parentRouter.navigateTo(Screens.Favorites())
             }
         }
         return super.onOptionsItemSelected(item)
@@ -171,13 +159,12 @@ class ListArticlesFragment : BaseListFragment(),ListArticlesView {
                     R.id.button_favorite_entry -> {
                         if (v.button_favorite_entry.isChecked) {
                             //presenter.saveEntry(it)
-                        }
-                        else {
+                        } else {
                             //presenter.removeEntry(it)
                         }
                     }
                     else -> {
-                        router.navigateTo(Screens.Article(it))
+                        parentRouter.navigateTo(Screens.Article(it))
                     }
                 }
             }
@@ -186,7 +173,7 @@ class ListArticlesFragment : BaseListFragment(),ListArticlesView {
 }
 
 
-private fun <T> getList(jsonArray: String?, clazz: Class<T>) : List<T> {
-    val typeOfT = TypeToken.getParameterized(List::class.java,clazz).type
-    return Gson().fromJson(jsonArray,typeOfT)
+private fun <T> getList(jsonArray: String?, clazz: Class<T>): List<T> {
+    val typeOfT = TypeToken.getParameterized(List::class.java, clazz).type
+    return Gson().fromJson(jsonArray, typeOfT)
 }

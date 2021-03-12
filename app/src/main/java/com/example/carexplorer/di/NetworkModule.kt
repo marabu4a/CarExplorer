@@ -1,6 +1,8 @@
 package com.example.carexplorer.di
 
+import android.content.Context
 import com.example.carexplorer.repository.remote.ApiService
+import com.example.carexplorer.ui.base.NetworkManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import dagger.Module
@@ -23,8 +25,9 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(httlpLoggingInterceptor: StethoInterceptor) : OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(httlpLoggingInterceptor)
+    fun provideOkHttpClient(httlpLoggingInterceptor: StethoInterceptor) : OkHttpClient =
+        OkHttpClient.Builder()
+            .addNetworkInterceptor(httlpLoggingInterceptor)
         .connectTimeout(120, TimeUnit.SECONDS)
         .readTimeout(120, TimeUnit.SECONDS)
         .build()
@@ -36,7 +39,12 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGsonConverter() : Gson = Gson()
+    fun provideGsonConverter(): Gson = Gson()
+
+    @Provides
+    @Singleton
+    fun provideNetworkManager(context: Context): NetworkManager =
+        NetworkManager(applicationContext = context.applicationContext)
 
     companion object {
         const val CATEGORIES_BASE_URL = "https://my-project-id-326ba.firebaseio.com/.json/"

@@ -5,8 +5,7 @@ import com.example.carexplorer.ui.FlowFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 class FavoritesFlow : FlowFragment() {
-    override val flowName: String
-        get() = TODO("Not yet implemented")
+    override val flowName: String = "Favorites"
 
     override fun getLaunchScreen(): SupportAppScreen = Screens.Favorites()
 }

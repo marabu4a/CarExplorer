@@ -1,17 +1,16 @@
 package com.example.carexplorer.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.Category
 import com.example.carexplorer.helpers.navigation.Screens
+import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.CategoriesPresenter
 import com.example.carexplorer.presenter.CategoriesPresenterFactory
 import com.example.carexplorer.ui.adapter.CategoriesAdapter
-import com.example.carexplorer.ui.adapter.FragmentLifecycle
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseListFragment
 import com.example.carexplorer.view.CategoriesView
@@ -21,7 +20,7 @@ import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
 
-class CategoriesFragment : BaseListFragment(),CategoriesView,FragmentLifecycle {
+class CategoriesFragment : BaseListFragment(), CategoriesView {
 
     override val layoutRes: Int = R.layout.fragment_categories
     override val viewAdapter: BaseAdapter<*> = CategoriesAdapter()
@@ -56,7 +55,7 @@ class CategoriesFragment : BaseListFragment(),CategoriesView,FragmentLifecycle {
 
         setOnItemClickListener { it,v ->
             (it as Category).let {
-                router.navigateTo(Screens.ListArticles(it))
+                parentRouter.navigateTo(Screens.ListArticles(it))
             }
         }
     }
@@ -83,15 +82,6 @@ class CategoriesFragment : BaseListFragment(),CategoriesView,FragmentLifecycle {
         viewAdapter.clear()
         viewAdapter.add(listCategories)
         viewAdapter.notifyDataSetChanged()
-    }
-
-    override fun onPauseFragment() {
-        Log.e("Activity","isPausedddd")
-    }
-
-    override fun onResumeFragment() {
-
-
     }
 
 }

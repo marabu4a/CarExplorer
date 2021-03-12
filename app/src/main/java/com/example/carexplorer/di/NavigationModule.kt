@@ -1,20 +1,29 @@
 package com.example.carexplorer.di
 
+
+import com.example.carexplorer.App
+import com.example.carexplorer.helpers.navigation.LocalCiceroneHolder
 import dagger.Module
 import dagger.Provides
-import ru.terrakok.cicerone.Cicerone
-import ru.terrakok.cicerone.Router
+import ru.terrakok.cicerone.NavigatorHolder
 import javax.inject.Singleton
 
 @Module
 class NavigationModule {
-    private val cicerone :Cicerone<Router> = Cicerone.create()
 
     @Provides
     @Singleton
-    fun provideRouter() = cicerone.router
+    fun provideRouter() = App.cicerone.router
 
     @Provides
     @Singleton
-    fun provideNavigatorHolder() = cicerone.navigatorHolder
+    fun provideNavigatorHolder(): NavigatorHolder {
+        return App.cicerone.navigatorHolder
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocalNavigationHolder(): LocalCiceroneHolder {
+        return LocalCiceroneHolder()
+    }
 }

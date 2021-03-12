@@ -1,61 +1,72 @@
 package com.example.carexplorer.di
 
 import com.example.carexplorer.di.scope.FragmentScope
+import com.example.carexplorer.ui.FlowFragment
 import com.example.carexplorer.ui.base.BaseFragment
+import com.example.carexplorer.ui.flows.CategoriesFlow
+import com.example.carexplorer.ui.flows.FavoritesFlow
+import com.example.carexplorer.ui.flows.NewsFlow
+import com.example.carexplorer.ui.flows.SourcesFlow
 import com.example.carexplorer.ui.fragment.*
 import dagger.Module
-import dagger.android.AndroidInjectionModule
 import dagger.android.ContributesAndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
 
-@Module(includes = [AndroidInjectionModule::class])
+@Module(includes = [AndroidSupportInjectionModule::class])
 interface FragmentInjectionModule {
 
     @ContributesAndroidInjector
-    @FragmentScope
-    fun fragmentInjector() : BaseFragment
+    fun fragmentInjector(): BaseFragment
+
+    @ContributesAndroidInjector
+    fun flowInjector(): FlowFragment
 
     @ContributesAndroidInjector
     @FragmentScope
-    fun articleFragment() : ArticleFragment
+    fun articleFragment(): ArticleFragment
 
     @ContributesAndroidInjector
     @FragmentScope
-    fun categoriesFragment() : CategoriesFragment
+    fun categoriesFragment(): CategoriesFragment
 
     @ContributesAndroidInjector
     @FragmentScope
-    fun favoritesFragment() : FavoritesFragment
+    fun favoritesFragment(): FavoritesFragment
 
     @ContributesAndroidInjector
     @FragmentScope
-    fun homeFragment() : MainFragment
+    fun listArticlesFragment(): ListArticlesFragment
 
     @ContributesAndroidInjector
     @FragmentScope
-    fun listArticlesFragment() : ListArticlesFragment
+    fun newsFragment(): NewsFragment
 
     @ContributesAndroidInjector
     @FragmentScope
-    fun newsFeedFragment() : NewsFeedFragment
+    fun recentNewsFeedFragment(): RecentNewsFeedFragment
 
     @ContributesAndroidInjector
     @FragmentScope
-    fun newsFragment() : NewsFragment
+    fun sourcesNewsFeedFragment(): SourcesNewsFragment
 
     @ContributesAndroidInjector
     @FragmentScope
-    fun randomNewsFeedFragment() : RandomNewsFeedFragment
+    fun webPageFragment(): WebPageFragment
 
     @ContributesAndroidInjector
     @FragmentScope
-    fun recentNewsFeedFragment() : RecentNewsFeedFragment
+    fun sourcesFlowFragment(): SourcesFlow
 
     @ContributesAndroidInjector
     @FragmentScope
-    fun sourcesNewsFeedFragment() : SourcesNewsFragment
+    fun favoritesFlowFragment(): FavoritesFlow
 
     @ContributesAndroidInjector
     @FragmentScope
-    fun webPageFragment() : WebPageFragment
+    fun categoriesFlowFragment(): CategoriesFlow
+
+    @ContributesAndroidInjector
+    @FragmentScope
+    fun newsFlowFragment(): NewsFlow
 
 }

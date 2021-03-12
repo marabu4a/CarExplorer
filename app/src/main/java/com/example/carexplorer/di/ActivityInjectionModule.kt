@@ -1,18 +1,14 @@
 package com.example.carexplorer.di
 
-import com.example.carexplorer.di.scope.ActivityScope
-import com.example.carexplorer.ui.base.BaseActivity
+import com.example.carexplorer.ui.activity.AppActivity
 import dagger.Module
-import dagger.android.AndroidInjectionModule
 import dagger.android.ContributesAndroidInjector
 
-
-@Module(includes = [AndroidInjectionModule::class])
+@Module
 interface ActivityInjectionModule {
 
     @ContributesAndroidInjector(
         modules = [FragmentInjectionModule::class]
     )
-    @ActivityScope
-    fun activityInjector() : BaseActivity
+    fun activityInjector(): AppActivity
 }

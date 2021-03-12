@@ -2,20 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/bottomBarMain"
-        android:icon="@drawable/ic_search"
-        android:title="Лента" />
+        android:id="@+id/bottomBarNews"
+        android:icon="@drawable/selector_bottom_bar_feed"
+        android:title="@string/title_news_fragment" />
     <item
         android:id="@+id/bottomBarSources"
         android:icon="@drawable/ic_search"
-        android:title="Источники" />
+        android:title="@string/title_sources_fragment" />
     <item
         android:id="@+id/bottomBarCategories"
         android:icon="@drawable/ic_search"
-        android:title="Категории" />
+        android:title="@string/title_categories_fragment" />
     <item
         android:id="@+id/bottomBarFavorites"
         android:icon="@drawable/ic_search"
-        android:title="Избранное" />
+        android:title="@string/title_favorites_fragment" />
 
 </menu>

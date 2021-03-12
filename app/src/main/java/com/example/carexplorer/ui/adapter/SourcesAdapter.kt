@@ -18,9 +18,6 @@ class SourcesAdapter : BaseAdapter<SourcesViewHolder>() {
         return SourcesViewHolder(layoutInflater.inflate(R.layout.item_source,parent,false))
     }
 }
-
-//    override val layoutRes: Int = R.layout.item_source
-
     class SourcesViewHolder(view : View) : BaseViewHolder(view) {
         init {
             view.setOnClickListener {

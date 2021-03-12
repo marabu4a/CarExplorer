@@ -2,7 +2,6 @@ package com.example.carexplorer.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
@@ -11,6 +10,7 @@ import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
 import com.example.carexplorer.helpers.BottomSheetFilter
 import com.example.carexplorer.helpers.navigation.Screens
+import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.FavoritesPresenter
 import com.example.carexplorer.presenter.FavoritesPresenterFactory
 import com.example.carexplorer.ui.adapter.FavoritesAdapter
@@ -120,21 +120,22 @@ class FavoritesFragment : BaseListFragment(),FavoritesView,BottomSheetFilter.Cal
         viewAdapter.setOnClick(
             click = {
 
-                    item,v -> (item as CachedArticle).let {
-                when (item.type) {
-                    "news" -> {
-                        router.navigateTo(Screens.WebPage(it.title,it.url!!))
+                    item, v ->
+                (item as CachedArticle).let {
+                    when (item.type) {
+                        "news" -> {
+                            parentRouter.navigateTo(Screens.WebPage(it.title, it.url!!))
+                        }
+                        else -> {
+                            parentRouter.navigateTo(Screens.Article(it))
+                        }
                     }
-                    else -> {
-                        router.navigateTo(Screens.Article(it))
-                    }
-                }
                 }
             },
             longClick = { item, v ->
                 (item as CachedArticle).let { article ->
-                    val wrapper = ContextThemeWrapper(requireActivity(),R.style.popupMenuBack)
-                    val popupMenu = androidx.appcompat.widget.PopupMenu(wrapper,v)
+                    val wrapper = ContextThemeWrapper(requireActivity(), R.style.popupMenuBack)
+                    val popupMenu = androidx.appcompat.widget.PopupMenu(wrapper, v)
                     popupMenu.inflate(R.menu.meni_clicked_favorite)
                     popupMenu.setOnMenuItemClickListener { menuItem ->
                         when (menuItem.itemId) {
@@ -142,12 +143,6 @@ class FavoritesFragment : BaseListFragment(),FavoritesView,BottomSheetFilter.Cal
                                 presenter.deleteCachedArticles(article)
                                 filterItems.clear()
                                 filterItems.addAll(viewAdapter.removeArticle(article.title))
-
-
-                                        Log.e("Activity",filterItems.size.toString())
-
-
-
                                 true
                             }
                             else -> {
@@ -155,7 +150,7 @@ class FavoritesFragment : BaseListFragment(),FavoritesView,BottomSheetFilter.Cal
                             }
                         }
                     }
-                    val menu = MenuPopupHelper(requireActivity(),popupMenu.menu as MenuBuilder,v)
+                    val menu = MenuPopupHelper(requireActivity(), popupMenu.menu as MenuBuilder, v)
                     menu.setForceShowIcon(true)
                     menu.show()
                 }

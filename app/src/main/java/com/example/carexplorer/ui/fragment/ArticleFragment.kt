@@ -21,12 +21,12 @@ import javax.inject.Inject
 class ArticleFragment : BaseFragment(), ArticleView {
     override val layoutRes: Int = R.layout.fragment_article
 
-    @Inject
-    lateinit var presenterFactory: ArticlePresenterFactory
-
     @Arg(bundler = ParcelableArgsBundler::class)
     lateinit var article: CachedArticle
 
+
+    @Inject
+    lateinit var presenterFactory: ArticlePresenterFactory
     private val presenter: ArticlePresenter by moxyPresenter {
         presenterFactory.create()
     }
@@ -37,14 +37,6 @@ class ArticleFragment : BaseFragment(), ArticleView {
         presenter.loadArticle(article.image!!, article.url!!)
 
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        base {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeButtonEnabled(true)
-        }
     }
 
     companion object {

@@ -59,7 +59,6 @@ class NewsViewHolder(view: View) : BaseAdapter.BaseViewHolder(view) {
                     }
 
                 })
-            //Log.e("Activity",it.image)
             view.tvNews.text = it.title
             view.tvPubDate.text = it.pubDate
             view.tvNameSource.text = it.source

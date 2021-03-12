@@ -26,7 +26,7 @@ class Screens {
     class News(source: Source) : SupportScreen({ NewsFragmentBuilder(source).build() })
 
     class NewsFeed() : SupportAppScreen() {
-        override fun getFragment(): Fragment? = RecentNewsFeedFragment()
+        override fun getFragment(): Fragment = RecentNewsFeedFragment()
     }
 
     class Sources() : SupportAppScreen() {

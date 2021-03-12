@@ -11,4 +11,5 @@ class LocalCiceroneHolder {
             Cicerone.create()
         }
 
+    fun getRouter(containerTag: String): Router = getCicerone(containerTag).router
 }

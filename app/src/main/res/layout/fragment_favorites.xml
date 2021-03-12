@@ -6,14 +6,9 @@
     android:id="@+id/rlFavorites"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/toolbar"
-        android:id="@+id/toolbarFavorites">
-    </include>
-
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:id="@+id/recyclerView"
-        android:layout_below="@id/toolbarFavorites"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_height="wrap_content">
 

@@ -10,26 +10,23 @@ import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
 import com.example.carexplorer.helpers.NewsViewModel
 import com.example.carexplorer.helpers.navigation.Screens
+import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.RecentNewsFeedPresenter
 import com.example.carexplorer.presenter.RecentNewsFeedPresenterFactory
-import com.example.carexplorer.ui.adapter.FragmentLifecycle
 import com.example.carexplorer.ui.adapter.NewsAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseListFragment
 import com.example.carexplorer.view.RecentFeedView
 import com.google.android.material.snackbar.Snackbar
-import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_recent_feed.*
 import kotlinx.android.synthetic.main.item_news.view.*
 import kotlinx.android.synthetic.main.nothing_search.*
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
-
-@FragmentWithArgs
-class RecentNewsFeedFragment : BaseListFragment(),RecentFeedView,FragmentLifecycle {
+class RecentNewsFeedFragment : BaseListFragment(), RecentFeedView {
     override val viewAdapter: BaseAdapter<*> = NewsAdapter()
-    private val displayList : MutableList<CachedArticle> = mutableListOf()
+    private val displayList: MutableList<CachedArticle> = mutableListOf()
     private val listRecentArticles = mutableListOf<CachedArticle>()
     override val layoutRes: Int = R.layout.fragment_recent_feed
 
@@ -51,7 +48,6 @@ class RecentNewsFeedFragment : BaseListFragment(),RecentFeedView,FragmentLifecyc
         savedInstanceState: Bundle?
     ): View {
         setHasOptionsMenu(true)
-        retainInstance = true
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -124,7 +120,7 @@ class RecentNewsFeedFragment : BaseListFragment(),RecentFeedView,FragmentLifecyc
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.favorites -> {
-                router.navigateTo(Screens.Favorites())
+                parentRouter.navigateTo(Screens.Favorites())
             }
         }
         return super.onOptionsItemSelected(item)
@@ -160,7 +156,7 @@ class RecentNewsFeedFragment : BaseListFragment(),RecentFeedView,FragmentLifecyc
 
 
     private fun initClickListener() {
-        viewAdapter.setOnClick(click = {item,v ->
+        viewAdapter.setOnClick(click = { item, v ->
             (item as CachedArticle).let {
                 when (v.id) {
                     R.id.button_favorite_news -> {
@@ -171,22 +167,14 @@ class RecentNewsFeedFragment : BaseListFragment(),RecentFeedView,FragmentLifecyc
                         }
                     }
                     else -> {
-                        router.navigateTo(Screens.WebPage(it.title,it.url!!))
+                        parentRouter.navigateTo(Screens.WebPage(it.title, it.url!!))
                     }
                 }
             }
-        },longClick = {
-            item,v ->
+        }, longClick = { item, v ->
             (item as CachedArticle).let {
 
             }
         })
     }
-
-    override fun onPauseFragment() {
-    }
-
-    override fun onResumeFragment() {
-    }
-
 }

@@ -22,15 +22,16 @@ class WebPageFragment : BaseFragment() {
     override fun onBackPressed() {
         if (webView.canGoBack()) {
             webView.goBack()
-        }
-        else {
+        } else {
             super.onBackPressed()
         }
 
     }
 
+    override val isBottomBarVisible: Boolean = false
+
     @Arg
-    lateinit var page : String
+    lateinit var page: String
 
     @Arg
     lateinit var title: String
@@ -50,22 +51,7 @@ class WebPageFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        base {
-            val args = intent.getBundleExtra("args")
-            val page = args?.getString("page")
-            val title = args?.getString("title")
-
             setupWebView(page!!)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        base {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeButtonEnabled(true)
-            supportActionBar?.setDisplayShowHomeEnabled(true)
-        }
     }
 
 

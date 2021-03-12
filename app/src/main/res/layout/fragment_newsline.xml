@@ -5,9 +5,7 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include
-        layout="@layout/toolbar">
-    </include>
+    <include layout="@layout/component_base_toolbar"></include>
 <!--    <com.google.android.material.tabs.TabLayout-->
 
 <!--        android:id="@+id/tabNewsline"-->

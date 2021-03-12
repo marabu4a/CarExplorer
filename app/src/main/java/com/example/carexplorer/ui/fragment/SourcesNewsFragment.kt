@@ -1,7 +1,6 @@
 package com.example.carexplorer.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
@@ -10,22 +9,20 @@ import com.example.carexplorer.R
 import com.example.carexplorer.data.model.Source
 import com.example.carexplorer.helpers.SourcesViewModel
 import com.example.carexplorer.helpers.navigation.Screens
+import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.SourcesNewsPresenter
 import com.example.carexplorer.presenter.SourcesNewsPresenterFactory
-import com.example.carexplorer.ui.adapter.FragmentLifecycle
 import com.example.carexplorer.ui.adapter.SourcesAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseListFragment
 import com.example.carexplorer.view.SourcesView
 import com.google.android.material.snackbar.Snackbar
-import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_sources.*
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
 
-@FragmentWithArgs
-class SourcesNewsFragment : BaseListFragment(), SourcesView, FragmentLifecycle {
+class SourcesNewsFragment : BaseListFragment(), SourcesView {
     override val layoutRes: Int = R.layout.fragment_sources
     private var sViewModel = SourcesViewModel()
 
@@ -34,7 +31,7 @@ class SourcesNewsFragment : BaseListFragment(), SourcesView, FragmentLifecycle {
     @Inject
     lateinit var presenterFactory: SourcesNewsPresenterFactory
 
-    private val presenter : SourcesNewsPresenter by moxyPresenter {
+    private val presenter: SourcesNewsPresenter by moxyPresenter {
         presenterFactory.create()
     }
 
@@ -52,7 +49,6 @@ class SourcesNewsFragment : BaseListFragment(), SourcesView, FragmentLifecycle {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        retainInstance = true
         setHasOptionsMenu(true)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -93,7 +89,7 @@ class SourcesNewsFragment : BaseListFragment(), SourcesView, FragmentLifecycle {
     private fun initClickListener() {
         viewAdapter.setOnClick(click = { it, v ->
             (it as Source).let {
-                router.navigateTo(Screens.News(it))
+                parentRouter.navigateTo(Screens.News(it))
             }
         }, longClick = { it, v -> })
     }
@@ -106,7 +102,7 @@ class SourcesNewsFragment : BaseListFragment(), SourcesView, FragmentLifecycle {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.favorites -> {
-                router.navigateTo(Screens.Favorites())
+                parentRouter.navigateTo(Screens.Favorites())
             }
         }
         return super.onOptionsItemSelected(item)
@@ -139,12 +135,4 @@ class SourcesNewsFragment : BaseListFragment(), SourcesView, FragmentLifecycle {
         ).setBackgroundTint(resources.getColor(R.color.violet)).show()
     }
 
-
-    override fun onPauseFragment() {
-        Log.e("Activity", "isPaused")
-    }
-
-    override fun onResumeFragment() {
-        Log.e("Activity", "isResumed")
-    }
 }

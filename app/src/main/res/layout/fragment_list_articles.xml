@@ -8,7 +8,7 @@
     android:layout_gravity="center"
     android:id="@+id/llListArticles"
     xmlns:android="http://schemas.android.com/apk/res/android">
-        <include layout = "@layout/toolbar" />
+        <include layout="@layout/component_base_toolbar" />
 
 
             <androidx.recyclerview.widget.RecyclerView

@@ -19,14 +19,13 @@ class CategoriesPresenter @Inject constructor(
     private val presenterJob = Job()
 
     private val BASE_URL = "https://my-project-id-326ba.firebaseio.com/.json/"
-    private val categoriesRepository = repository
     private var categories : List<Category> = mutableListOf()
     fun loadCategories() {
         try {
         CoroutineScope(Dispatchers.Main + presenterJob).launch {
             viewState.startLoading()
             withContext(Dispatchers.IO) {
-                categories =  categoriesRepository.getCategories(BASE_URL)
+                categories = repository.getCategories(BASE_URL)
             }
             viewState.getListCategories(categories)
             viewState.endLoading()

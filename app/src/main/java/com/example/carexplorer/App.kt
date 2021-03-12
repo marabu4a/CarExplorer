@@ -1,40 +1,29 @@
 package com.example.carexplorer
 
-import android.app.Application
-import com.example.carexplorer.di.*
-import com.example.carexplorer.ui.activity.*
-import com.example.carexplorer.ui.fragment.*
+import com.example.carexplorer.di.DaggerAppComponent
 import com.facebook.stetho.Stetho
 import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import dagger.android.DaggerApplication
+import ru.terrakok.cicerone.Cicerone
+import ru.terrakok.cicerone.Router
 import timber.log.Timber
-import javax.inject.Inject
 
-class App : Application() , HasAndroidInjector {
-    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
+class App : DaggerApplication() {
+    private val applicationInjector =
+        DaggerAppComponent.builder().application(this).context(this).build()
 
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> = applicationInjector
 
     companion object {
-        lateinit var appComponent : AppComponent
-
+        lateinit var cicerone: Cicerone<Router>
+            private set
     }
+
     override fun onCreate() {
         super.onCreate()
-        initAppComponent()
+        cicerone = Cicerone.create()
         initStetho()
-
         Timber.plant(Timber.DebugTree())
-    }
-
-    private fun initAppComponent() {
-        appComponent = DaggerAppComponent.builder()
-            .context(this)
-            .build().apply {
-                inject(this@App)
-            }
     }
 
     private fun initStetho() {

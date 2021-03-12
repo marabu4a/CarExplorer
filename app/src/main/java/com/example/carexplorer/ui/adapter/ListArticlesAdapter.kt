@@ -15,7 +15,6 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_preview_article.view.*
 
 class ListArticlesAdapter : BaseAdapter<ListArticlesViewHolder>() {
-//    override val layoutRes: Int = R.layout.item_preview_article
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListArticlesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

@@ -8,9 +8,9 @@ import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
 import com.example.carexplorer.data.model.Source
 import com.example.carexplorer.helpers.navigation.Screens
+import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.NewsPresenter
 import com.example.carexplorer.presenter.NewsPresenterFactory
-import com.example.carexplorer.repository.remote.ApiService
 import com.example.carexplorer.ui.adapter.NewsAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseListFragment
@@ -71,14 +71,6 @@ class NewsFragment : BaseListFragment(),NewsView {
         val tag = "newsFragment"
     }
 
-    override fun onResume() {
-        super.onResume()
-        base {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeButtonEnabled(true)
-        }
-    }
-
     override fun showErrorScreen(state : Boolean) {
         if (state) {
             layout_haveno_items.visibility = View.VISIBLE
@@ -91,18 +83,7 @@ class NewsFragment : BaseListFragment(),NewsView {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        base {
-            val args = intent.getBundleExtra("args")
-            val url = args.getString(ApiService.PARAM_LINK_NEWS)
-            val sourceTitle = args.getString(ApiService.PARAM_TITLE_ARTICLE)
-            if (savedInstanceState == null) {
-                presenter.loadNews(url!!,sourceTitle!!)
-            }
-            else {
-                endLoading()
-            }
-        }
-
+        presenter.loadNews(source.url, source.title)
 
         initClickListener()
 //        setOnItemClickListener { item, v ->
@@ -169,7 +150,7 @@ class NewsFragment : BaseListFragment(),NewsView {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.favorites -> {
-                router.navigateTo(Screens.Favorites())
+                parentRouter.navigateTo(Screens.Favorites())
             }
         }
         return super.onOptionsItemSelected(item)
@@ -207,23 +188,22 @@ class NewsFragment : BaseListFragment(),NewsView {
 
 
     private fun initClickListener() {
-        viewAdapter.setOnClick(click = {
-            item,v -> (item as CachedArticle).let {
-            when (v.id) {
-                R.id.button_favorite_news -> {
-                    if (v.button_favorite_news.isChecked) {
-                        presenter.saveArticle(it)
+        viewAdapter.setOnClick(click = { item, v ->
+            (item as CachedArticle).let {
+                when (v.id) {
+                    R.id.button_favorite_news -> {
+                        if (v.button_favorite_news.isChecked) {
+                            presenter.saveArticle(it)
+                        } else {
+                            presenter.removeArticle(it)
+                        }
                     }
-                    else {
-                        presenter.removeArticle(it)
+                    else -> {
+                        parentRouter.navigateTo(Screens.WebPage(it.title, it.url!!))
                     }
-                }
-                else -> {
-                    router.navigateTo(Screens.WebPage(it.title,it.url!!))
                 }
             }
-        }
-        },longClick = {item,v ->
+        }, longClick = { item, v ->
         })
     }
 
