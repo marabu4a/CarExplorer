@@ -1,4 +1,4 @@
-package com.example.carexplorer.repository.remote
+package com.example.carexplorer.data.model.retrofit.service
 
 import com.example.carexplorer.data.model.Category
 import com.example.carexplorer.data.model.Source

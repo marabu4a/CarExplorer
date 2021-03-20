@@ -1,4 +1,4 @@
-package com.example.carexplorer.ui
+package com.example.carexplorer.ui.base
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,7 +8,6 @@ import com.example.carexplorer.helpers.navigation.CustomSupportAppNavigator
 import com.example.carexplorer.helpers.navigation.LocalCiceroneHolder
 import com.example.carexplorer.helpers.navigation.RouterProvider
 import com.example.carexplorer.ui.activity.AppActivity
-import com.example.carexplorer.ui.base.BaseFragment
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder

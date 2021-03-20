@@ -21,9 +21,9 @@ class ListArticlesPresenter @Inject constructor(
     private val presenterJob = Job()
     fun getArticles(list : List<Entry>) {
         CoroutineScope(Dispatchers.Main + presenterJob).launch {
-            viewState.startLoading()
+            viewState.showLoading()
             viewState.showListArticles(convertEntries(list)!!)
-            viewState.endLoading()
+            viewState.hideLoading()
         }
     }
 

@@ -6,7 +6,4 @@ import moxy.viewstate.strategy.StateStrategyType
 
 
 @StateStrategyType(AddToEndSingleStrategy::class)
-interface BaseView : MvpView {
-    fun startLoading()
-    fun endLoading()
-}
+interface BaseView : MvpView {}

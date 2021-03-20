@@ -1,13 +1,15 @@
 package com.example.carexplorer.di
 
 import android.content.Context
-import com.example.carexplorer.repository.remote.ApiService
-import com.example.carexplorer.ui.base.NetworkManager
+import com.example.carexplorer.data.model.retrofit.service.CategoriesApiService
+import com.example.carexplorer.data.model.retrofit.service.SourcesApiService
+import com.example.carexplorer.util.NetworkManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -19,18 +21,34 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideApiService(gson: Gson,
-                          client: OkHttpClient
-    ) : ApiService = buildApi(gson,client, CATEGORIES_BASE_URL)
+    fun provideCategoriesService(
+        gson: Gson,
+        client: OkHttpClient
+    ): CategoriesApiService = buildApi(gson, client, CATEGORIES_BASE_URL)
+
+    @Singleton
+    @Provides
+    fun providesSourcesService(
+        gson: Gson,
+        client: OkHttpClient
+    ): SourcesApiService = buildApi(gson, client, SOURCES_BASE_URL)
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(httlpLoggingInterceptor: StethoInterceptor) : OkHttpClient =
+    fun provideOkHttpClient(
+        stethoInterceptor: StethoInterceptor,
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient =
         OkHttpClient.Builder()
-            .addNetworkInterceptor(httlpLoggingInterceptor)
-        .connectTimeout(120, TimeUnit.SECONDS)
-        .readTimeout(120, TimeUnit.SECONDS)
-        .build()
+            .addNetworkInterceptor(stethoInterceptor)
+            .connectTimeout(120, TimeUnit.SECONDS)
+            .readTimeout(120, TimeUnit.SECONDS)
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
+        HttpLoggingInterceptor()
 
     @Provides
     @Singleton
@@ -47,8 +65,8 @@ class NetworkModule {
         NetworkManager(applicationContext = context.applicationContext)
 
     companion object {
-        const val CATEGORIES_BASE_URL = "https://my-project-id-326ba.firebaseio.com/.json/"
-        const val SOURCES_BASE_URL = "https://my-project-id-326ba.firebaseio.com/.json/"
+        const val CATEGORIES_BASE_URL = "https://my-project-id-326ba.firebaseio.com/"
+        const val SOURCES_BASE_URL = "https://my-first-project-id-9bcf7.firebaseio.com/"
     }
 
 }

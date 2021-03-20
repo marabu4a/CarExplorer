@@ -1,4 +1,4 @@
-package com.example.carexplorer.ui.base
+package com.example.carexplorer.util
 
 import android.content.Context
 import android.net.ConnectivityManager

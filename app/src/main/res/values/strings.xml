@@ -29,4 +29,6 @@
     <string name="title_sources_fragment">Источники</string>
     <string name="title_categories_fragment">Статьи</string>
     <string name="title_favorites_fragment">Избранное</string>
+    <string name="categories_title">Материалы</string>
+    <string name="recent_feed_title">Лента</string>
 </resources>

@@ -20,18 +20,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/webPageToolbar" />
 
-        <com.github.rahatarmanahmed.cpv.CircularProgressView
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/cpvWeb"
-            android:layout_width="@dimen/loaded_size"
-            android:layout_height="@dimen/loaded_size"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:cpv_indeterminate="true"
-            app:cpv_animAutostart="true"
-            app:cpv_color="@color/colorPrimaryDark" />
+        <ProgressBar
+            android:id="@+id/webPageLoadingIndicator"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:paddingTop="-4dp"
+            app:layout_constraintTop_toBottomOf="@id/webPageToolbar" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/progressGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="4dp"
+            app:layout_constraintTop_toTopOf="@id/webPageToolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

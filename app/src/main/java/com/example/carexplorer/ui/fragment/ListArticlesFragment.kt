@@ -74,7 +74,12 @@ class ListArticlesFragment : BaseListFragment(), ListArticlesView {
 
     }
 
-    override fun startLoading() {
+    override fun hideLoading() {
+        recyclerView.visibility = View.VISIBLE
+        cpvListArticles.visibility = View.GONE
+    }
+
+    override fun showLoading() {
         recyclerView.visibility = View.GONE
         cpvListArticles.visibility = View.VISIBLE
     }
@@ -84,11 +89,6 @@ class ListArticlesFragment : BaseListFragment(), ListArticlesView {
         viewAdapter.clear()
         viewAdapter.add(entries)
         viewAdapter.notifyDataSetChanged()
-    }
-
-    override fun endLoading() {
-        recyclerView.visibility = View.VISIBLE
-        cpvListArticles.visibility = View.GONE
     }
 
     override fun showMessage(textResource: Int) {

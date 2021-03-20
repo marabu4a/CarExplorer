@@ -5,5 +5,5 @@ import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface WebPageView : BaseView {
-    fun showError(textResource:Int)
+    fun loadUrl(url: String)
 }

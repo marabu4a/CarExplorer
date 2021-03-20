@@ -30,11 +30,6 @@ class CategoriesFragment : BaseListFragment(), CategoriesView {
         val tag = "categoriesFragment"
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.stopWork()
-    }
-
     @Inject
     lateinit var presenterFactory: CategoriesPresenterFactory
 
@@ -60,16 +55,6 @@ class CategoriesFragment : BaseListFragment(), CategoriesView {
         }
     }
 
-    override fun startLoading() {
-        recyclerView.visibility = View.GONE
-        cpvCategories.visibility = View.VISIBLE
-    }
-
-    override fun endLoading() {
-        recyclerView.visibility = View.VISIBLE
-        cpvCategories.visibility = View.GONE
-    }
-
     override fun showMessage(textResource: Int) {
         Snackbar.make(
             rlCategories,
@@ -78,10 +63,20 @@ class CategoriesFragment : BaseListFragment(), CategoriesView {
         ).setBackgroundTint(resources.getColor(R.color.violet)).show()
     }
 
-    override fun getListCategories(listCategories : List<Category>) {
+    override fun getListCategories(listCategories: List<Category>) {
         viewAdapter.clear()
         viewAdapter.add(listCategories)
         viewAdapter.notifyDataSetChanged()
+    }
+
+    override fun showLoading() {
+        recyclerView.visibility = View.GONE
+        cpvCategories.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        recyclerView.visibility = View.VISIBLE
+        cpvCategories.visibility = View.GONE
     }
 
 }

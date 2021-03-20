@@ -9,13 +9,16 @@ import android.view.WindowManager
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.carexplorer.R
+import com.example.carexplorer.di.injectViewModel
 import com.example.carexplorer.helpers.navigation.CustomSupportAppNavigator
 import com.example.carexplorer.helpers.navigation.Flows
 import com.example.carexplorer.helpers.navigation.RouterProvider
-import com.example.carexplorer.ui.FlowFragment
 import com.example.carexplorer.ui.base.BaseFragment
+import com.example.carexplorer.ui.base.FlowFragment
 import com.example.carexplorer.util.ActionDebouncer
+import com.example.carexplorer.viewmodel.SourcesViewModel
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -33,6 +36,11 @@ import javax.inject.Provider
 
 class AppActivity : MvpAppCompatActivity(), RouterProvider, HasAndroidInjector, AppView {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var sourcesViewModel: SourcesViewModel
 
     @Inject
     lateinit var mainActivityProvider: ActivityProvider
@@ -59,6 +67,7 @@ class AppActivity : MvpAppCompatActivity(), RouterProvider, HasAndroidInjector, 
         CustomSupportAppNavigator(this, supportFragmentManager, R.layout.activity_main)
     }
 
+
     override fun onResumeFragments() {
         super.onResumeFragments()
         navigatorHolder.get().setNavigator(navigator)
@@ -83,6 +92,12 @@ class AppActivity : MvpAppCompatActivity(), RouterProvider, HasAndroidInjector, 
 
         Timber.e("onCreate AppActivity")
         super.onCreate(savedInstanceState)
+
+        sourcesViewModel = injectViewModel(viewModelFactory)
+
+        if (savedInstanceState == null) {
+            sourcesViewModel.fetchSources()
+        }
 
         setContentView(R.layout.activity_main)
 

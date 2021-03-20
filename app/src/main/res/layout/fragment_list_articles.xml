@@ -1,33 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_gravity="center"
     android:id="@+id/llListArticles"
     xmlns:android="http://schemas.android.com/apk/res/android">
-        <include layout="@layout/component_base_toolbar" />
+
+    <com.example.carexplorer.ui.toolbar.DefaultToolbar
+        android:id="@+id/listArticlesToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/recyclerView" />
+    <androidx.recyclerview.widget.RecyclerView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/listArticlesToolbar"
+        android:id="@+id/recyclerView" />
 
-        <com.github.rahatarmanahmed.cpv.CircularProgressView
-            android:id="@+id/cpvListArticles"
-            android:layout_width="@dimen/loaded_size"
-            android:layout_height="@dimen/loaded_size"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:cpv_indeterminate="true"
-            app:cpv_animAutostart="true"
-            app:cpv_color="@color/violet" />
+    <com.github.rahatarmanahmed.cpv.CircularProgressView
+        android:id="@+id/cpvListArticles"
+        android:layout_width="@dimen/loaded_size"
+        android:layout_height="@dimen/loaded_size"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:cpv_indeterminate="true"
+        app:cpv_animAutostart="true"
+        app:cpv_color="@color/violet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-    <include layout="@layout/nothing_search"/>
+    <include layout="@layout/nothing_search" />
 
-    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

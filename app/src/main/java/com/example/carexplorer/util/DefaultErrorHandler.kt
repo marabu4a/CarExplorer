@@ -1,7 +1,8 @@
-package com.example.carexplorer.ui.base
+package com.example.carexplorer.util
 
 import android.content.Context
 import com.example.carexplorer.R
+import com.example.carexplorer.ui.base.ErrorHandler
 import retrofit2.HttpException
 import java.net.ConnectException
 import javax.inject.Inject

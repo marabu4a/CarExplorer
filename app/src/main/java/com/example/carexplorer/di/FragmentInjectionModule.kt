@@ -1,8 +1,8 @@
 package com.example.carexplorer.di
 
 import com.example.carexplorer.di.scope.FragmentScope
-import com.example.carexplorer.ui.FlowFragment
 import com.example.carexplorer.ui.base.BaseFragment
+import com.example.carexplorer.ui.base.FlowFragment
 import com.example.carexplorer.ui.flows.CategoriesFlow
 import com.example.carexplorer.ui.flows.FavoritesFlow
 import com.example.carexplorer.ui.flows.NewsFlow
@@ -39,7 +39,7 @@ interface FragmentInjectionModule {
 
     @ContributesAndroidInjector
     @FragmentScope
-    fun newsFragment(): NewsFragment
+    fun newsFragment(): SourceNewsFragment
 
     @ContributesAndroidInjector
     @FragmentScope
@@ -47,7 +47,7 @@ interface FragmentInjectionModule {
 
     @ContributesAndroidInjector
     @FragmentScope
-    fun sourcesNewsFeedFragment(): SourcesNewsFragment
+    fun sourcesNewsFeedFragment(): SourcesFragment
 
     @ContributesAndroidInjector
     @FragmentScope

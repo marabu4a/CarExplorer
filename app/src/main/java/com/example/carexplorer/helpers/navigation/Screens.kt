@@ -23,14 +23,14 @@ class Screens {
     class ListArticles(category: Category) :
         SupportScreen({ ListArticlesFragmentBuilder(category).build() })
 
-    class News(source: Source) : SupportScreen({ NewsFragmentBuilder(source).build() })
+    class SourceNews(source: Source) : SupportScreen({ SourceNewsFragmentBuilder(source).build() })
 
     class NewsFeed() : SupportAppScreen() {
         override fun getFragment(): Fragment = RecentNewsFeedFragment()
     }
 
     class Sources() : SupportAppScreen() {
-        override fun getFragment(): Fragment = SourcesNewsFragment()
+        override fun getFragment(): Fragment = SourcesFragment()
     }
 
     class WebPage(title: String, page: String) :

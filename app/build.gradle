@@ -13,8 +13,8 @@ android {
         }
     defaultConfig {
         applicationId "com.example.carexplorer"
-        minSdkVersion 21
-        targetSdkVersion 29
+        minSdkVersion 26
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -35,8 +35,8 @@ kapt {
 }
 
 ext {
-    kotlinCoroutinesVersion = '1.3.0-M1'
-    okHttpVersion = '3.8.1'
+    kotlinCoroutinesVersion = '1.4.2'
+    okHttpVersion = '4.9.0'
     gsonVersion = '2.8.6'
     lifecycle = '2.2.0'
     permissionUtilsVersion = "1.0.9"

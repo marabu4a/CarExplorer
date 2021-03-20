@@ -1,17 +1,14 @@
 package com.example.carexplorer.presenter
 
-import android.os.Build.VERSION_CODES
-import androidx.annotation.RequiresApi
-import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
+import com.example.carexplorer.data.model.Source
+import com.example.carexplorer.data.model.retrofit.usecase.news.GetNewsUseCase
 import com.example.carexplorer.repository.cache.ContentCache
-import com.example.carexplorer.repository.remote.NewsFeedRepository
+import com.example.carexplorer.ui.base.ErrorHandler
 import com.example.carexplorer.view.RecentFeedView
 import com.google.auto.factory.AutoFactory
 import com.google.auto.factory.Provided
-import kotlinx.coroutines.*
 import moxy.InjectViewState
-import moxy.MvpPresenter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -20,69 +17,41 @@ import javax.inject.Inject
 @AutoFactory
 @InjectViewState
 class RecentNewsFeedPresenter @Inject constructor(
-    @Provided private val repository : NewsFeedRepository,
-    @Provided private val cache : ContentCache
-) : MvpPresenter<RecentFeedView>() {
-    private val presenterJob = Job()
-    private val articlesCache = cache
-    @RequiresApi(VERSION_CODES.O)
+    @Provided private val useCase: GetNewsUseCase,
+    @Provided private val cachedDb: ContentCache,
+    @Provided override val errorHandler: ErrorHandler
+) : NewsPresenter<RecentFeedView>(cachedDb, errorHandler) {
+
+    private var articles: MutableList<CachedArticle>? = null
+
     private val dateTimeStrToLocalDateTime: (CachedArticle?) -> LocalDateTime = {
         LocalDateTime.parse(it?.pubDate, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
     }
 
-    @RequiresApi(VERSION_CODES.O)
-    fun handleRecentNewsFeed(articles: List<CachedArticle>) {
-        try {
-            var sortedArticles = mutableListOf<CachedArticle>()
-            CoroutineScope(Dispatchers.Main + presenterJob).launch {
-                viewState.startLoading()
-
-                withContext(Dispatchers.IO) {
-                    sortedArticles =
-                        articles.sortedByDescending(dateTimeStrToLocalDateTime) as MutableList<CachedArticle>
+    fun fetchFeed(sources: List<Source>) {
+        if (articles != null) return
+        viewState.showLoading()
+        sources.map {
+            useCase.onObtain { params, deferred ->
+                viewState.hideLoading()
+                if (articles == null) {
+                    articles = mutableListOf<CachedArticle>()
                 }
-
-                viewState.showRecentFeed(sortedArticles)
-                viewState.endLoading()
-            }
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            viewState.showMessage(R.string.errorLoading)
+                articles?.addAll(deferred.await().convertToCachedNews())
+                viewState.showRecentFeed(articles!!)
+            }.execute(GetNewsUseCase.Params(it.url, it.title), false)
         }
+//        articles =
+//            articles.sortedByDescending(dateTimeStrToLocalDateTime) as MutableList<CachedArticle>
+
     }
 
-
-    fun stopWork() {
-        presenterJob.cancel()
-    }
-
-    fun saveArticle(article: CachedArticle) {
-        try {
-            CoroutineScope(Dispatchers.IO).launch {
-                article.cached = true
-                articlesCache.saveArticle(article)
-                viewState.showMessage(R.string.succesfull)
-            }
-        }
-        catch( e : Exception) {
-            e.printStackTrace()
-            viewState.showMessage(R.string.errorSavingToDb)
-        }
-    }
-
-    fun removeArticle(article: CachedArticle) {
-        try {
-            CoroutineScope(Dispatchers.IO).launch {
-                article.cached = false
-                articlesCache.removeArticleByTitle(article.title)
-                viewState.showMessage(R.string.deleted)
-            }
-        }
-        catch(e: Exception) {
-            e.printStackTrace()
-            viewState.showMessage(R.string.errorDeleteFromDb)
-        }
-
+    override fun onDestroy() {
+        super.onDestroy()
+        articles = null
     }
 }
+
+
+
+

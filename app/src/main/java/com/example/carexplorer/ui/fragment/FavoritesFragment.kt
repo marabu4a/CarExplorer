@@ -60,11 +60,6 @@ class FavoritesFragment : BaseListFragment(),FavoritesView,BottomSheetFilter.Cal
 
     }
 
-    override fun startLoading() {
-        layout_nothing_items.visibility = View.GONE
-        recyclerView.visibility = View.GONE
-    }
-
     override fun showContent(list: List<CachedArticle>) {
         if (list.isEmpty()) {
             layout_nothing_items.visibility = View.VISIBLE
@@ -78,10 +73,6 @@ class FavoritesFragment : BaseListFragment(),FavoritesView,BottomSheetFilter.Cal
         viewAdapter.clear()
         viewAdapter.add(list)
         viewAdapter.notifyDataSetChanged()
-    }
-
-    override fun endLoading() {
-        recyclerView.visibility = View.VISIBLE
     }
 
     override fun dismissBottomSheet(animate : Boolean) {
@@ -102,10 +93,10 @@ class FavoritesFragment : BaseListFragment(),FavoritesView,BottomSheetFilter.Cal
     }
 
     override fun filter(tab: Int) {
-        presenter.filterList(tab,filterItems)
+        presenter.filterList(tab, filterItems)
     }
 
-    override fun showMessage(textResource:Int) {
+    override fun showMessage(textResource: Int) {
         Snackbar.make(
             rlFavorites,
             textResource,
@@ -113,7 +104,14 @@ class FavoritesFragment : BaseListFragment(),FavoritesView,BottomSheetFilter.Cal
         ).setBackgroundTint(resources.getColor(R.color.violet)).show()
     }
 
+    override fun showLoading() {
+        layout_nothing_items.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+    }
 
+    override fun hideLoading() {
+        recyclerView.visibility = View.VISIBLE
+    }
 
     @SuppressLint("RestrictedApi")
     private fun initClickListener() {

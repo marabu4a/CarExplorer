@@ -1,21 +1,22 @@
 package com.example.carexplorer.ui.fragment
 
-import android.os.Build
 import android.os.Bundle
-import android.view.*
-import androidx.annotation.RequiresApi
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
 import com.example.carexplorer.data.model.Source
 import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.helpers.navigation.parentRouter
-import com.example.carexplorer.presenter.NewsPresenter
-import com.example.carexplorer.presenter.NewsPresenterFactory
+import com.example.carexplorer.presenter.SourceNewsPresenter
+import com.example.carexplorer.presenter.SourceNewsPresenterFactory
 import com.example.carexplorer.ui.adapter.NewsAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseListFragment
 import com.example.carexplorer.util.ParcelableArgsBundler
-import com.example.carexplorer.view.NewsView
+import com.example.carexplorer.view.SourceNewsView
 import com.google.android.material.snackbar.Snackbar
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
@@ -29,42 +30,21 @@ import javax.inject.Inject
 
 
 @FragmentWithArgs
-class NewsFragment : BaseListFragment(),NewsView {
+class SourceNewsFragment : BaseListFragment(), SourceNewsView {
     override val viewAdapter: BaseAdapter<*> = NewsAdapter()
 
     override val layoutRes: Int = R.layout.fragment_news
-    private val listNews : MutableList<CachedArticle> = mutableListOf()
-    private val displayList : MutableList<CachedArticle> = mutableListOf()
+    private val listNews: MutableList<CachedArticle> = mutableListOf()
+    private val displayList: MutableList<CachedArticle> = mutableListOf()
 
     @Arg(bundler = ParcelableArgsBundler::class)
     lateinit var source: Source
 
     @Inject
-    lateinit var presenterFactory : NewsPresenterFactory
+    lateinit var presenterFactory: SourceNewsPresenterFactory
 
-    private val presenter : NewsPresenter by moxyPresenter {
+    private val presenter: SourceNewsPresenter by moxyPresenter {
         presenterFactory.create()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.stopWork()
-    }
-
-    override fun startLoading() {
-        layout_haveno_items.visibility = View.GONE
-        cpvNews.visibility = View.VISIBLE
-        recyclerView.visibility = View.GONE
-    }
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     companion object {
@@ -80,33 +60,11 @@ class NewsFragment : BaseListFragment(),NewsView {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.loadNews(source.url, source.title)
+        presenter.fetchNews(source.url, source.title)
 
         initClickListener()
-//        setOnItemClickListener { item, v ->
-//            (item as CacheArticle).let {
-//                when (v.id) {
-//                    R.id.button_favorite_news -> {
-//                        if (view.button_favorite_news.isChecked) {
-//                            Log.e("Activity","true")
-//                        }
-//                        else {
-//                            Log.e("Activity","false")
-//                        }
-//                    }
-//                    else -> {
-//                        navigator.showWebPage(requireActivity(),it.url)
-//                    }
-//                }
-//            }
-//        }
-
-
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -170,10 +128,6 @@ class NewsFragment : BaseListFragment(),NewsView {
         viewAdapter.notifyDataSetChanged()
     }
 
-    override fun endLoading() {
-        cpvNews.visibility = View.GONE
-        recyclerView.visibility = View.VISIBLE
-    }
 
     override fun showMessage(textResource: Int) {
         val snackBar = Snackbar.make(
@@ -185,7 +139,16 @@ class NewsFragment : BaseListFragment(),NewsView {
         snackBar.show()
     }
 
+    override fun hideLoading() {
+        cpvNews.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
+    }
 
+    override fun showLoading() {
+        layout_haveno_items.visibility = View.GONE
+        cpvNews.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+    }
 
     private fun initClickListener() {
         viewAdapter.setOnClick(click = { item, v ->
@@ -193,9 +156,9 @@ class NewsFragment : BaseListFragment(),NewsView {
                 when (v.id) {
                     R.id.button_favorite_news -> {
                         if (v.button_favorite_news.isChecked) {
-                            presenter.saveArticle(it)
+                            presenter.saveArticleToDb(it)
                         } else {
-                            presenter.removeArticle(it)
+                            presenter.removeArticleFromDb(it)
                         }
                     }
                     else -> {
