@@ -1,8 +1,7 @@
 package com.example.carexplorer.helpers
 
 import com.example.carexplorer.data.model.CachedArticle
-import com.example.carexplorer.data.model.Entry
-import com.prof.rssparser.Article
+import com.example.carexplorer.data.model.enities.Article
 
 object TypeConverter {
     fun convertToCacheArticle(article : Article) : CachedArticle {
@@ -16,18 +15,19 @@ object TypeConverter {
             content = "")
     }
 
-    fun convertToCacheArticle(entry: Entry) : CachedArticle {
+    fun convertToCacheArticle(article: Article): CachedArticle {
         return CachedArticle(
-            title = entry.title,
-            image = entry.image,
-            content = entry.content,
+            title = article.title,
+            image = article.image,
+            content = article.content,
             url = "",
             source = "",
             pubDate = "",
-            type = "entry")
+            type = "entry"
+        )
     }
 
-    fun convertToArticle(cachedArticle: CachedArticle) : Article {
+    fun convertToArticle(cachedArticle: CachedArticle): Article {
         return Article(
             title = cachedArticle.title,
             image = cachedArticle.image,
@@ -37,8 +37,8 @@ object TypeConverter {
         )
     }
 
-    fun converttoEntry(cachedArticle: CachedArticle) : Entry {
-        return Entry(
+    fun converttoEntry(cachedArticle: CachedArticle): Article {
+        return Article(
             title = cachedArticle.title,
             image = cachedArticle.image!!,
             content = cachedArticle.content!!

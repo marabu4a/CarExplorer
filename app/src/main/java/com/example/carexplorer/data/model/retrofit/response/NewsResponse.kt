@@ -1,4 +1,10 @@
 package com.example.carexplorer.data.model.retrofit.response
 
-class NewsResponse {
+import com.example.carexplorer.data.model.enities.News
+
+class NewsResponse(
+    success: Int,
+    message: String,
+    news: List<News>
+) {
 }

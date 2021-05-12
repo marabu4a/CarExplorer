@@ -2,8 +2,8 @@ package com.example.carexplorer.helpers.navigation
 
 import androidx.fragment.app.Fragment
 import com.example.carexplorer.data.model.CachedArticle
-import com.example.carexplorer.data.model.Category
-import com.example.carexplorer.data.model.Source
+import com.example.carexplorer.data.model.enities.Category
+import com.example.carexplorer.data.model.enities.Source
 import com.example.carexplorer.ui.fragment.*
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 

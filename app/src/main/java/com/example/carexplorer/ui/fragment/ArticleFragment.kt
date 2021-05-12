@@ -9,6 +9,7 @@ import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.ArticlePresenter
 import com.example.carexplorer.presenter.ArticlePresenterFactory
 import com.example.carexplorer.ui.base.BaseFragment
+import com.example.carexplorer.util.HTMLUtil
 import com.example.carexplorer.util.ParcelableArgsBundler
 import com.example.carexplorer.view.ArticleView
 import com.hannesdorfmann.fragmentargs.annotation.Arg
@@ -43,10 +44,6 @@ class ArticleFragment : BaseFragment(), ArticleView {
 
     }
 
-    companion object {
-        val tag = "articleFragment"
-    }
-
     @SuppressLint("SetJavaScriptEnabled")
     override fun showArticle(image: String, text: String) {
         //val imageGetter = GlideImageGetter(requireActivity(),tvTextArticle, Glide.with(this))
@@ -61,17 +58,13 @@ class ArticleFragment : BaseFragment(), ArticleView {
             domStorageEnabled = true
             loadsImagesAutomatically = true
             loadWithOverviewMode = true
+            minimumFontSize = 14
         }
-        articleWebText.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
         articleWebText.fitsSystemWindows = true
 
-        val head =
-            "<head><style>@font-face {font-family: 'myFont';src: url('file:///assets/fonts/futura_pt_demi.ttf');}body {font-family: 'myFont';}</style></head>"
-
-        val finalLink = "<html>$head<body style=\"font-family: myFont\">$text</body></html>"
         articleWebText.loadDataWithBaseURL(
-            "",
-            finalLink,
+            "file:///android_asset/",
+            HTMLUtil.getHtmlWithNewFont(text),
             "text/html",
             "utf-8",
             null
@@ -91,5 +84,9 @@ class ArticleFragment : BaseFragment(), ArticleView {
 
     override fun onBackPressed() {
         presenter.onBackPressed()
+    }
+
+    companion object {
+        val tag = "articleFragment"
     }
 }

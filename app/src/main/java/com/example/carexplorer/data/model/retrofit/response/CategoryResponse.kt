@@ -1,7 +1,9 @@
 package com.example.carexplorer.data.model.retrofit.response
 
-import com.example.carexplorer.data.model.Category
+import com.example.carexplorer.data.model.enities.Category
 
-data class CategoriesResponse(
+class CategoriesResponse(
+    success: Int,
+    message: String,
     val categories: List<Category>
-)
+) : BaseResponse(success, message)

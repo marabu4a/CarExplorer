@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import androidx.core.view.isVisible
 import com.example.carexplorer.R
 import com.example.carexplorer.helpers.navigation.parentRouter
@@ -61,13 +59,15 @@ class WebPageFragment : BaseFragment(), WebPageView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        with(webPageToolbar) {
+            setNavigationOnClickListener { onBackPressed() }
+            initShareAndReloadMenu({}, {})
+        }
         setupWebView()
-        webPageToolbar.title = title
         presenter.loadUrl(page)
     }
 
     override fun loadUrl(url: String) {
-        webPageLoadingIndicator.isVisible = true
         webView.loadUrl(url)
     }
 
@@ -75,13 +75,32 @@ class WebPageFragment : BaseFragment(), WebPageView {
     private fun setupWebView() {
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                webPageLoadingIndicator.isVisible = true
+                webPageLoadingIndicator?.isVisible = true
                 return false
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
+                webPageLoadingIndicator?.isVisible = false
                 super.onPageFinished(view, url)
-                webPageLoadingIndicator.isVisible = false
+            }
+
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
+
+            }
+
+            override fun onReceivedHttpError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                errorResponse: WebResourceResponse?
+            ) {
+                if (errorResponse?.statusCode == 404) {
+                    webPageErrorImage.isVisible = true
+                    webPageErrorText.isVisible = true
+                }
             }
         }
         webView.settings.apply {
@@ -93,10 +112,12 @@ class WebPageFragment : BaseFragment(), WebPageView {
             builtInZoomControls = true
             displayZoomControls = false
             loadWithOverviewMode = true
-            useWideViewPort = true
-
+            cacheMode = WebSettings.LOAD_DEFAULT
+            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            setAppCacheEnabled(true)
+            databaseEnabled = true
         }
-        webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+        //webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
         webView.fitsSystemWindows = true
 
     }

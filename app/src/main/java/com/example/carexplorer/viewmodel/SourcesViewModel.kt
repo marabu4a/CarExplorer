@@ -1,7 +1,7 @@
 package com.example.carexplorer.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.example.carexplorer.data.model.Source
+import com.example.carexplorer.data.model.enities.Source
 import com.example.carexplorer.data.model.retrofit.usecase.sources.SourcesRepository
 import com.example.carexplorer.ui.base.mvi.ViewState
 import kotlinx.coroutines.Dispatchers

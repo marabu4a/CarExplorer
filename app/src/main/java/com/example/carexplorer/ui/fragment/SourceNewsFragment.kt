@@ -7,7 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
-import com.example.carexplorer.data.model.Source
+import com.example.carexplorer.data.model.enities.Source
 import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.SourceNewsPresenter
@@ -62,8 +62,9 @@ class SourceNewsFragment : BaseListFragment(), SourceNewsView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.fetchNews(source.url, source.title)
-
+        presenter.fetchNews(source.url, source.name)
+        sourcesNewsToolbar.title = source.name
+        sourcesNewsToolbar.setNavigationOnClickListener { onBackPressed() }
         initClickListener()
     }
 
@@ -114,13 +115,17 @@ class SourceNewsFragment : BaseListFragment(), SourceNewsView {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onBackPressed() {
+        parentRouter.exit()
+        super.onBackPressed()
+    }
 
-    override fun showNews(news : List<CachedArticle>) {
+
+    override fun showNews(news: List<CachedArticle>) {
         listNews.addAll(news)
         if (news.isNullOrEmpty()) {
             layout_haveno_items.visibility = View.VISIBLE
-        }
-        else {
+        } else {
             layout_haveno_items.visibility = View.GONE
         }
         viewAdapter.clear()

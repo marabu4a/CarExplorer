@@ -1,109 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-        <androidx.cardview.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:layout_margin="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp"
+    app:layout_constraintTop_toTopOf="@+id/clNews">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clNews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground">
+
+        <RelativeLayout
+            android:id="@+id/rl"
             android:layout_width="match_parent"
-            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toTopOf="@id/clNews">
 
-            app:cardCornerRadius="10dp"
-            app:cardElevation="10dp"
-            app:layout_constraintTop_toTopOf="@+id/clNews"
-            android:layout_height="wrap_content">
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:background="?android:attr/selectableItemBackground"
+            <ImageView
+                android:id="@+id/ivNews"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/clNews">
-                <View
-                    app:layout_constraintTop_toTopOf="parent
-"                   android:id="@+id/anchor"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp">
+                android:layout_height="175dp"
+                android:foreground="@drawable/gradient"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/test_image" />
 
-                </View>
-                <RelativeLayout
-                    app:layout_constraintTop_toTopOf="@id/clNews"
-                    android:id="@+id/rl"
-                    android:layout_width="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_height="wrap_content">
+            <com.github.rahatarmanahmed.cpv.CircularProgressView
+                android:id="@+id/cpv"
+                android:layout_width="@dimen/loaded_size"
+                android:layout_height="@dimen/loaded_size"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_vertical"
+                android:visibility="visible"
+                app:cpv_animAutostart="true"
+                app:cpv_color="@color/violet"
+                app:cpv_indeterminate="true" />
 
+        </RelativeLayout>
 
+        <TextView
+            android:id="@+id/tvNews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="3dp"
+            android:fontFamily="@font/futura_pt_heavy"
+            android:textColor="@color/black"
+            android:textSize="19sp"
+            app:layout_constraintTop_toBottomOf="@+id/rl"
+            tools:text="Получается что это новость" />
 
+        <View
+            android:id="@+id/newsDivider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/lightGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvNews" />
 
-                    <ImageView
+        <TextView
+            android:id="@+id/tvNameSource"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginStart="13dp"
+            android:fontFamily="@font/futura_pt_book"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="@id/button_favorite_news"
+            app:layout_constraintEnd_toStartOf="@id/tvPubDate"
+            app:layout_constraintStart_toStartOf="@id/clNews"
+            app:layout_constraintTop_toTopOf="@id/button_favorite_news"
+            tools:text="Автоновости">
 
-                        android:layout_width="match_parent"
-                        android:id="@+id/ivNews"
+        </TextView>
 
-                        android:foreground="@drawable/gradient"
-                        android:scaleType="centerCrop"
-                        android:layout_height="175dp">
-                    </ImageView>
-                    <ToggleButton
-                        android:id="@+id/button_favorite_news"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_alignParentEnd="true"
-                        android:background="@drawable/button_favorite_white"
-                        android:checked="false"
-                        android:text=""
-                        android:elevation="20dp"
-                        android:textOff=""
-                        android:textOn=""/>
+        <TextView
+            android:id="@+id/tvPubDate"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginStart="13dp"
+            android:fontFamily="@font/futura_pt_book"
+            android:textSize="17sp"
+            app:layout_constraintStart_toEndOf="@id/tvNameSource"
+            app:layout_constraintTop_toTopOf="@id/tvNameSource"
+            tools:text="11:11:11" />
 
-                    <com.github.rahatarmanahmed.cpv.CircularProgressView
-                        android:id="@+id/cpv"
-                        android:layout_centerInParent="true"
-                        android:layout_width="@dimen/loaded_size"
-                        android:layout_height="@dimen/loaded_size"
-                        android:layout_gravity="center_vertical"
-                        app:cpv_indeterminate="true"
+        <ToggleButton
+            android:id="@+id/button_favorite_news"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/button_favorite_white"
+            android:checked="false"
+            android:elevation="20dp"
+            android:text=""
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/newsDivider" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        app:cpv_animAutostart="true"
-                        android:visibility="visible"
-                        app:cpv_color="@color/violet" />
-
-                </RelativeLayout>
-
-                <TextView
-                    android:textColor="@color/black"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="3dp"
-                    android:fontFamily="@font/futura_pt_heavy"
-                    android:layout_height="wrap_content"
-                    android:textSize="19sp"
-                    android:id="@+id/tvNews"
-                    app:layout_constraintTop_toBottomOf="@+id/rl">
-                </TextView>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:id="@+id/tvNameSource"
-                    android:layout_marginStart="13dp"
-                    android:layout_marginTop="3dp"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/futura_pt_book"
-                    app:layout_constraintStart_toStartOf="@id/clNews"
-                    app:layout_constraintTop_toBottomOf="@id/tvNews"
-                    app:layout_constraintEnd_toStartOf="@id/tvPubDate">
-
-                </TextView>
-                <TextView
-                    android:fontFamily="@font/futura_pt_book"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="3dp"
-                    app:layout_constraintTop_toBottomOf="@+id/tvNews"
-                    android:layout_marginStart="13dp"
-                    android:id="@+id/tvPubDate"
-                    app:layout_constraintStart_toEndOf="@id/tvNameSource"
-                    android:textSize="15sp">
-                </TextView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
+</androidx.cardview.widget.CardView>

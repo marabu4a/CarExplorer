@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/llNews"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/component_base_toolbar"
-        android:id="@+id/toolbarNews"></include>
+    <com.example.carexplorer.ui.toolbar.DefaultToolbar
+        android:id="@+id/sourcesNewsToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:id="@+id/recyclerView"
-        android:layout_below="@id/toolbarNews"
+        android:clipToPadding="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sourcesNewsToolbar"
         android:layout_height="wrap_content">
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -28,10 +35,14 @@
         android:visibility="gone"
         app:cpv_indeterminate="true"
         app:cpv_animAutostart="true"
-        app:cpv_color="@color/violet" />
+        app:cpv_color="@color/violet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <include layout="@layout/nothing_search"/>
+    <include layout="@layout/nothing_search" />
 
-    <include layout="@layout/haveno_items"/>
+    <include layout="@layout/haveno_items" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

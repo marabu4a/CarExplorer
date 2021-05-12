@@ -1,5 +1,5 @@
 package com.example.carexplorer.presenter
-import com.example.carexplorer.data.model.Category
+import com.example.carexplorer.data.model.enities.Category
 
 import com.example.carexplorer.data.model.retrofit.usecase.categories.GetCategoriesUseCase
 import com.example.carexplorer.helpers.flow.execute

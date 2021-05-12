@@ -1,8 +1,7 @@
 package com.example.carexplorer.di
 
 import android.content.Context
-import com.example.carexplorer.data.model.retrofit.service.CategoriesApiService
-import com.example.carexplorer.data.model.retrofit.service.SourcesApiService
+import com.example.carexplorer.data.model.retrofit.service.ApiService
 import com.example.carexplorer.util.NetworkManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
@@ -19,19 +18,26 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
 
-    @Singleton
-    @Provides
-    fun provideCategoriesService(
-        gson: Gson,
-        client: OkHttpClient
-    ): CategoriesApiService = buildApi(gson, client, CATEGORIES_BASE_URL)
+//    @Singleton
+//    @Provides
+//    fun provideCategoriesService(
+//        gson: Gson,
+//        client: OkHttpClient
+//    ): CategoriesApiService = buildApi(gson, client, CATEGORIES_BASE_URL)
+
+//    @Singleton
+//    @Provides
+//    fun providesSourcesService(
+//        gson: Gson,
+//        client: OkHttpClient
+//    ): SourcesApiService = buildApi(gson, client, SOURCES_BASE_URL)
 
     @Singleton
     @Provides
-    fun providesSourcesService(
+    fun provideApiService(
         gson: Gson,
         client: OkHttpClient
-    ): SourcesApiService = buildApi(gson, client, SOURCES_BASE_URL)
+    ): ApiService = buildApi(gson, client, BASE_URL)
 
     @Provides
     @Singleton
@@ -65,8 +71,10 @@ class NetworkModule {
         NetworkManager(applicationContext = context.applicationContext)
 
     companion object {
-        const val CATEGORIES_BASE_URL = "https://my-project-id-326ba.firebaseio.com/"
-        const val SOURCES_BASE_URL = "https://my-first-project-id-9bcf7.firebaseio.com/"
+        const val SERVER_URL = "http://u107086.test-handyhost.ru"
+        const val BASE_URL = "$SERVER_URL/rest_api/"
+//        const val CATEGORIES_BASE_URL = "https://my-project-id-326ba.firebaseio.com/"
+//        const val SOURCES_BASE_URL = "https://my-first-project-id-9bcf7.firebaseio.com/"
     }
 
 }

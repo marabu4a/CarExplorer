@@ -1,7 +1,7 @@
 package com.example.carexplorer.presenter
 
 import com.example.carexplorer.data.model.CachedArticle
-import com.example.carexplorer.data.model.Source
+import com.example.carexplorer.data.model.enities.Source
 import com.example.carexplorer.data.model.retrofit.usecase.news.GetNewsUseCase
 import com.example.carexplorer.repository.cache.ContentCache
 import com.example.carexplorer.ui.base.ErrorHandler
@@ -39,7 +39,7 @@ class RecentNewsFeedPresenter @Inject constructor(
                 }
                 articles?.addAll(deferred.await().convertToCachedNews())
                 viewState.showRecentFeed(articles!!)
-            }.execute(GetNewsUseCase.Params(it.url, it.title), false)
+            }.execute(GetNewsUseCase.Params(it.url, it.name), false)
         }
 //        articles =
 //            articles.sortedByDescending(dateTimeStrToLocalDateTime) as MutableList<CachedArticle>

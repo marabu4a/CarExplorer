@@ -1,6 +1,6 @@
 package com.example.carexplorer.data.model.retrofit.usecase.sources
 
-import com.example.carexplorer.data.model.Source
+import com.example.carexplorer.data.model.enities.Source
 import kotlinx.coroutines.flow.Flow
 
 interface SourcesRepository {

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.carexplorer.R
-import com.example.carexplorer.data.model.Category
+import com.example.carexplorer.data.model.enities.Category
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_category.view.*
@@ -34,7 +34,7 @@ class CategoriesAdapter : BaseAdapter<CategoriesAdapter.CategoriesViewHolder>() 
         override fun onBind(item: Any) {
             (item as Category).let {
                 view.tvNameCategory.text = it.name
-                view.tvInfoCategory.text = it.info
+                view.tvInfoCategory.text = it.description
                 Picasso.get().load(it.image).into(view.ivImageCategory)
             }
         }

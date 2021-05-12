@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.carexplorer.R
-import com.example.carexplorer.data.model.Source
+import com.example.carexplorer.data.model.enities.Source
 import com.example.carexplorer.di.injectViewModel
 import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.helpers.navigation.parentRouter

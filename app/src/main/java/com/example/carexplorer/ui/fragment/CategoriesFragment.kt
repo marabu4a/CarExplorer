@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.carexplorer.R
-import com.example.carexplorer.data.model.Category
+import com.example.carexplorer.data.model.enities.Category
 import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.CategoriesPresenter

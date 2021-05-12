@@ -31,4 +31,5 @@
     <string name="title_favorites_fragment">Избранное</string>
     <string name="categories_title">Материалы</string>
     <string name="recent_feed_title">Лента</string>
+    <string name="webpage_error_loading">К сожалению, при загрузке данных произошла ошибка, попробуйте перезагрузить страницу</string>
 </resources>

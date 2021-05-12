@@ -1,6 +1,6 @@
 package com.example.carexplorer.view
 
-import com.example.carexplorer.data.model.Category
+import com.example.carexplorer.data.model.enities.Category
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
 

@@ -6,9 +6,9 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:ellipsize="end"
-    android:fontFamily="sans-serif-medium"
+    android:fontFamily="@font/futura_pt_heavy"
     android:maxLines="1"
     android:textAlignment="center"
     android:textColor="@color/white"
-    android:textSize="17sp"
+    android:textSize="22sp"
     tools:text="Заголовок" />
