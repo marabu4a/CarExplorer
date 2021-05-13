@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rlCategories">
 
+        <com.example.carexplorer.ui.toolbar.DefaultToolbar
+            android:id="@+id/categoriesToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/categories_title" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:id="@+id/recyclerView"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            >
-        </androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoriesToolbar"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"></androidx.recyclerview.widget.RecyclerView>
 
 
         <com.github.rahatarmanahmed.cpv.CircularProgressView
@@ -23,10 +33,14 @@
             android:layout_width="@dimen/loaded_size"
             android:layout_height="@dimen/loaded_size"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_centerInParent="true"
             app:cpv_animAutostart="true"
             app:cpv_color="@color/colorPrimaryDark"
             app:cpv_indeterminate="true" />
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

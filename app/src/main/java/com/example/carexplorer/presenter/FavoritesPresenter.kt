@@ -17,21 +17,21 @@ import javax.inject.Inject
 @AutoFactory
 @InjectViewState
 class FavoritesPresenter @Inject constructor(
-    @Provided private val cache : ContentCache
+    @Provided private val cachedDb: ContentCache
 ): MvpPresenter<FavoritesView>() {
-    private val articlesCache = cache
-    private lateinit var  items : List<CachedArticle>
+    private var favoriteArticles: List<CachedArticle>? = null
 
     fun fetchCachedArticles() {
+        if (favoriteArticles != null) return
         try {
             CoroutineScope(Dispatchers.Main).launch {
-                viewState.startLoading()
+                viewState.showLoading()
                 withContext(Dispatchers.IO) {
-                    items = articlesCache.getArticles()
+                    favoriteArticles = cachedDb.getArticles()
                 }
-                items = items.reversed()
-                viewState.showContent(items)
-                viewState.endLoading()
+                favoriteArticles = favoriteArticles?.reversed()
+                viewState.showContent(favoriteArticles.orEmpty())
+                viewState.hideLoading()
             }
         }
         catch (e: Exception) {
@@ -44,7 +44,7 @@ class FavoritesPresenter @Inject constructor(
         try {
             CoroutineScope(Dispatchers.Main).launch {
                 withContext(Dispatchers.IO) {
-                    articlesCache.removeArticleByTitle(article.title)
+                    cachedDb.removeArticleByTitle(article.title)
                 }
 
             }

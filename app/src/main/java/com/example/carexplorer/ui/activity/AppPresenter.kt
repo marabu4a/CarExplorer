@@ -16,6 +16,11 @@ open class AppPresenter @Inject constructor(
 
     private var shallNavbarBeVisible: Boolean = true
 
+
+    override fun onFirstViewAttach() {
+        viewState.showStartScreen()
+    }
+
     fun setBottomNavbarVisibility(isVisible: Boolean) {
         shallNavbarBeVisible = isVisible
         updateBottomNavbarVisibility()

@@ -5,7 +5,7 @@ import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(AddToEndSingleStrategy::class)
-interface RecentFeedView : BaseView {
+interface RecentFeedView : LoadingView {
     fun showRecentFeed(recentFeed: List<CachedArticle>)
-    fun showMessage(textResource:Int)
+    fun showMessage(textResource: Int)
 }

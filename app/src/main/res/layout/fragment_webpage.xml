@@ -1,37 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <com.example.carexplorer.ui.toolbar.DefaultToolbar
-            android:id="@+id/webPageToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="Страница" />
+    <com.example.carexplorer.ui.toolbar.DefaultToolbar
+        android:id="@+id/webPageToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Страница" />
 
-        <WebView
-            android:id="@+id/webView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/webPageToolbar" />
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/webPageToolbar" />
 
-        <com.github.rahatarmanahmed.cpv.CircularProgressView
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/cpvWeb"
-            android:layout_width="@dimen/loaded_size"
-            android:layout_height="@dimen/loaded_size"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:cpv_indeterminate="true"
-            app:cpv_animAutostart="true"
-            app:cpv_color="@color/colorPrimaryDark" />
+    <ProgressBar
+        android:id="@+id/webPageLoadingIndicator"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/white"
+        android:indeterminateTintMode="src_atop"
+        android:paddingBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="@id/webPageToolbar"
+        app:layout_constraintTop_toBottomOf="@id/webPageToolbar" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/webPageErrorImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/sad_emoji"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/webPageErrorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/futura_pt_medium"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:text="@string/webpage_error_loading"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/webPageErrorImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

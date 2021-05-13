@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import com.example.carexplorer.R
-import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.ui.activity.AppActivity
 import com.example.carexplorer.util.hideKeyboard
 import com.hannesdorfmann.fragmentargs.FragmentArgs
@@ -52,12 +51,6 @@ abstract class BaseFragment : MvpAppCompatFragment() {
 
     open fun onBackPressed() {
         view?.hideKeyboard()
-        //TODO разобраться в выходом
-        //if (parentFragmentManager.backStackEntryCount > 1) {
-        parentRouter.exit()
-        //} else {
-        //routeToMainTab()
-        //}
     }
 
     fun routeToMainTab() {

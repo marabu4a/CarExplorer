@@ -5,25 +5,37 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebViewClient
+import android.webkit.*
+import androidx.core.view.isVisible
 import com.example.carexplorer.R
+import com.example.carexplorer.helpers.navigation.parentRouter
+import com.example.carexplorer.presenter.WebPagePresenter
+import com.example.carexplorer.presenter.WebPagePresenterFactory
 import com.example.carexplorer.ui.base.BaseFragment
+import com.example.carexplorer.view.WebPageView
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_webpage.*
+import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 
 @FragmentWithArgs
-class WebPageFragment : BaseFragment() {
+class WebPageFragment : BaseFragment(), WebPageView {
     override val layoutRes: Int = R.layout.fragment_webpage
+
+    @Inject
+    lateinit var presenterFactory: WebPagePresenterFactory
+
+    private val presenter: WebPagePresenter by moxyPresenter {
+        presenterFactory.create(parentRouter)
+    }
 
     override fun onBackPressed() {
         if (webView.canGoBack()) {
             webView.goBack()
         } else {
-            super.onBackPressed()
+            presenter.onBackPressed()
         }
 
     }
@@ -36,9 +48,6 @@ class WebPageFragment : BaseFragment() {
     @Arg
     lateinit var title: String
 
-    companion object {
-        val tag = "webPageFragment"
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,67 +59,70 @@ class WebPageFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-            setupWebView(page!!)
+        with(webPageToolbar) {
+            setNavigationOnClickListener { onBackPressed() }
+            initShareAndReloadMenu({}, {})
+        }
+        setupWebView()
+        presenter.loadUrl(page)
     }
 
-
+    override fun loadUrl(url: String) {
+        webView.loadUrl(url)
+    }
 
     @SuppressLint("SetJavaScriptEnabled")
-    fun setupWebView(url : String) {
-        webView.webViewClient = WebViewClient()
-        webView.webChromeClient = WebChromeClient()
-        val wvSettings = webView.settings
-        wvSettings.apply {
+    private fun setupWebView() {
+        webView.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                webPageLoadingIndicator?.isVisible = true
+                return false
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                webPageLoadingIndicator?.isVisible = false
+                super.onPageFinished(view, url)
+            }
+
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
+
+            }
+
+            override fun onReceivedHttpError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                errorResponse: WebResourceResponse?
+            ) {
+                if (errorResponse?.statusCode == 404) {
+                    webPageErrorImage.isVisible = true
+                    webPageErrorText.isVisible = true
+                }
+            }
+        }
+        webView.settings.apply {
             cacheMode = WebSettings.LOAD_DEFAULT
             setAppCacheEnabled(true)
             javaScriptEnabled = true
-            //displayZoomControls = true
-            //loadsImagesAutomatically = true
-            useWideViewPort = true
-            loadWithOverviewMode = true
-                javaScriptCanOpenWindowsAutomatically = true
-            mediaPlaybackRequiresUserGesture = false
             domStorageEnabled = true
-            setSupportMultipleWindows(true)
-            //loadWithOverviewMode = true
-            //allowContentAccess = true
-            //allowUniversalAccessFromFileURLs = true
-
+            loadsImagesAutomatically = true
+            builtInZoomControls = true
+            displayZoomControls = false
+            loadWithOverviewMode = true
+            cacheMode = WebSettings.LOAD_DEFAULT
+            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            setAppCacheEnabled(true)
+            databaseEnabled = true
         }
-        webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-        webView.webViewClient = object : WebViewClient() {
-
-
-//            override fun shouldOverrideUrlLoading(
-//                view: WebView?,
-//                request: WebResourceRequest?
-//            ): Boolean {
-//                //cpvWeb.visibility = View.VISIBLE
-//                view?.loadUrl(url)
-//                return true
-//            }
-//
-//            @RequiresApi(Build.VERSION_CODES.M)
-//            override fun onReceivedError(
-//                view: WebView?,
-//                request: WebResourceRequest?,
-//                error: WebResourceError?
-//            ) {
-//                Snackbar.make(
-//                    webView,
-//                    "Ошибка!: $error",
-//                    Snackbar.LENGTH_LONG
-//                )
-//            }
-
-//            override fun onPageFinished(view: WebView?, url: String?) {
-//                cpvWeb.visibility = View.GONE
-//                super.onPageFinished(view, url)
-//            }
-        }
-        webView.isHorizontalScrollBarEnabled = false
+        //webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
         webView.fitsSystemWindows = true
-        webView.loadUrl(url)
+
+    }
+
+    companion object {
+        val tag = "webPageFragment"
     }
 }

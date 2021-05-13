@@ -1,90 +1,62 @@
 package com.example.carexplorer.presenter
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
 import com.example.carexplorer.repository.cache.ContentCache
-import com.example.carexplorer.repository.remote.NewsFeedRepository
-import com.example.carexplorer.view.NewsView
-import com.google.auto.factory.AutoFactory
-import com.google.auto.factory.Provided
+import com.example.carexplorer.ui.base.ErrorHandler
+import com.example.carexplorer.view.BaseView
 import com.prof.rssparser.Article
-import com.prof.rssparser.Parser
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import moxy.InjectViewState
-import moxy.MvpPresenter
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
-@AutoFactory
 @InjectViewState
-class NewsPresenter @Inject constructor(
-    @Provided private val cache : ContentCache,
-    @Provided private val repository: NewsFeedRepository
-) : MvpPresenter<NewsView>() {
-    private val newsFeedRepository = repository
-    private val articlesCache = cache
-    private val presenterJob = Job()
-    private val parser = Parser()
+open class NewsPresenter<T : BaseView> @Inject constructor(
+    private val contentDb: ContentCache,
+    errorHandler: ErrorHandler
+) : BasePresenter<T>(errorHandler) {
     private var articles = listOf<Article>()
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun loadNews(url: String,sourceTitle : String) {
+
+    fun saveArticleToDb(article: CachedArticle) {
         try {
-            CoroutineScope(Dispatchers.Main + presenterJob).launch {
-                viewState.startLoading()
-                try {
-                    withContext(Dispatchers.IO) {
-                        articles = newsFeedRepository.handleNewsFeed(url,sourceTitle)
-                        articles.forEach {
-                            it.pubDate = parseDate(it.pubDate)
-                        }
-                    }
-                } catch (e:Exception) {
-                    e.printStackTrace()
-                    viewState.showErrorScreen(true)
-                    viewState.showMessage(R.string.errorLoading)
-                }
-                if (!articles.isNullOrEmpty()) {
-                    viewState.showNews(convertNews(articles)!!)
-                }
-                else {
-                    viewState.showErrorScreen(true)
-                }
-                viewState.endLoading()
+            CoroutineScope(Dispatchers.IO).launch {
+                article.cached = true
+                contentDb.saveArticle(article)
+                //viewState.showPositiveMessage(R.string.succesfull)
             }
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
-            viewState.showMessage(R.string.errorLoading)
+            onError(e)
+        }
+    }
+
+    fun removeArticleFromDb(article: CachedArticle) {
+        try {
+            CoroutineScope(Dispatchers.IO).launch {
+                article.cached = false
+                contentDb.removeArticleByTitle(article.title)
+                //viewState.showMessage(R.string.deleted)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            //viewState.showMessage(R.string.errorDeleteFromDb)
         }
 
     }
-    fun stopWork() {
-        presenterJob.cancel()
-    }
 
-    private suspend fun convertNews(list : List<Article>) : List<CachedArticle>? {
-        val listCachedArticles : MutableList<CachedArticle> = mutableListOf()
-        list.forEach {
-            listCachedArticles.add(
-                CachedArticle(
-                    title = it.title!!,
-                    image = it.image,
-                    url = checkUrl(it.guid,it.link),
-                    source = it.sourceName,
-                    content = it.content,
-                    type = "news",
-                    pubDate = it.pubDate,
-                    cached = checkCachedNews(it.title!!)
-                )
-            )
+    protected suspend fun checkNewsInCache(newsTitle: String): Boolean {
+        var isCached = false
+        withContext(Dispatchers.IO) {
+            if (contentDb.getArticleByTitle(newsTitle) != null) {
+                isCached = true
+            }
         }
-        return listCachedArticles
+        return isCached
     }
 
-    private fun checkUrl(guid : String?,link : String?) : String? {
+    protected fun checkUrlExisting(guid: String?, link: String?): String? {
         return if (guid != null) {
             if (guid.contains("http")) {
                 guid
@@ -92,63 +64,23 @@ class NewsPresenter @Inject constructor(
         } else link
     }
 
-    private suspend fun checkCachedNews(newsTitle : String) : Boolean {
-        var isCached = false
-        withContext(Dispatchers.IO) {
-            if (articlesCache.getArticleByTitle(newsTitle) != null) {
-                isCached = true
+    protected suspend fun List<Article>.convertToCachedNews() =
+        mutableListOf<CachedArticle>().also { list ->
+            this.forEach {
+                list.add(
+                    CachedArticle(
+                        title = it.title!!,
+                        image = it.image,
+                        url = checkUrlExisting(it.guid, it.link),
+                        source = it.sourceName,
+                        content = it.content,
+                        type = "news",
+                        pubDate = it.pubDate,
+                        cached = checkNewsInCache(it.title!!)
+                    )
+                )
             }
         }
-        return isCached
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun parseDate(pubDate : String?) : String? {
-        return try {
-
-            val sourceSdf = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
-            val date = sourceSdf.parse(pubDate)
-
-
-            val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
-            sdf.format(date)
-        } catch (e: ParseException) {
-            e.printStackTrace()
-            pubDate
-        }
-    }
-
-    fun saveArticle(article: CachedArticle) {
-        try {
-            CoroutineScope(Dispatchers.IO).launch {
-                article.cached = true
-                articlesCache.saveArticle(article)
-                viewState.showMessage(R.string.succesfull)
-            }
-        }
-        catch( e : Exception) {
-            e.printStackTrace()
-            viewState.showMessage(R.string.errorSavingToDb)
-        }
-    }
-
-    fun removeArticle(article: CachedArticle) {
-        try {
-            CoroutineScope(Dispatchers.IO).launch {
-                article.cached = false
-                articlesCache.removeArticleByTitle(article.title)
-                viewState.showMessage(R.string.deleted)
-            }
-        }
-        catch(e: Exception) {
-            e.printStackTrace()
-            viewState.showMessage(R.string.errorDeleteFromDb)
-        }
-
-    }
-
-
-
 
 }
 

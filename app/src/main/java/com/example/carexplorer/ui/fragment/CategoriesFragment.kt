@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.carexplorer.R
-import com.example.carexplorer.data.model.Category
+import com.example.carexplorer.data.model.enities.Category
 import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.CategoriesPresenter
@@ -28,11 +28,6 @@ class CategoriesFragment : BaseListFragment(), CategoriesView {
 
     companion object {
         val tag = "categoriesFragment"
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.stopWork()
     }
 
     @Inject
@@ -60,16 +55,6 @@ class CategoriesFragment : BaseListFragment(), CategoriesView {
         }
     }
 
-    override fun startLoading() {
-        recyclerView.visibility = View.GONE
-        cpvCategories.visibility = View.VISIBLE
-    }
-
-    override fun endLoading() {
-        recyclerView.visibility = View.VISIBLE
-        cpvCategories.visibility = View.GONE
-    }
-
     override fun showMessage(textResource: Int) {
         Snackbar.make(
             rlCategories,
@@ -78,10 +63,20 @@ class CategoriesFragment : BaseListFragment(), CategoriesView {
         ).setBackgroundTint(resources.getColor(R.color.violet)).show()
     }
 
-    override fun getListCategories(listCategories : List<Category>) {
+    override fun getListCategories(listCategories: List<Category>) {
         viewAdapter.clear()
         viewAdapter.add(listCategories)
         viewAdapter.notifyDataSetChanged()
+    }
+
+    override fun showLoading() {
+        recyclerView.visibility = View.GONE
+        cpvCategories.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        recyclerView.visibility = View.VISIBLE
+        cpvCategories.visibility = View.GONE
     }
 
 }

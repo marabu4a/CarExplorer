@@ -5,7 +5,7 @@
     android:id="@+id/clSources"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.example.carexplorer.ui.toolbar.DefaultToolbar
+    <com.example.carexplorer.ui.toolbar.SimpleToolbar
         android:id="@+id/sourcesToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -4,11 +4,11 @@ import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
-import com.example.carexplorer.helpers.NewsViewModel
+import com.example.carexplorer.di.injectViewModel
 import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.RecentNewsFeedPresenter
@@ -17,10 +17,12 @@ import com.example.carexplorer.ui.adapter.NewsAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseListFragment
 import com.example.carexplorer.view.RecentFeedView
+import com.example.carexplorer.viewmodel.SourcesViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_recent_feed.*
 import kotlinx.android.synthetic.main.item_news.view.*
 import kotlinx.android.synthetic.main.nothing_search.*
+import kotlinx.coroutines.flow.collectLatest
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
@@ -30,9 +32,12 @@ class RecentNewsFeedFragment : BaseListFragment(), RecentFeedView {
     private val listRecentArticles = mutableListOf<CachedArticle>()
     override val layoutRes: Int = R.layout.fragment_recent_feed
 
-    companion object {
-        val tag = "recentFeedFragment"
-    }
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var sourcesViewModel: SourcesViewModel
 
 
     @Inject
@@ -40,6 +45,11 @@ class RecentNewsFeedFragment : BaseListFragment(), RecentFeedView {
 
     private val presenter: RecentNewsFeedPresenter by moxyPresenter {
         presenterFactory.create()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sourcesViewModel = injectViewModel(viewModelFactory)
     }
 
     override fun onCreateView(
@@ -51,25 +61,19 @@ class RecentNewsFeedFragment : BaseListFragment(), RecentFeedView {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.stopWork()
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState == null) {
-            ViewModelProviders.of(requireActivity()).get(NewsViewModel::class.java).getNewsList()
-                .observe(viewLifecycleOwner, Observer {
-                    presenter.handleRecentNewsFeed(it)
-                })
+        lifecycleScope.launchWhenCreated {
+            sourcesViewModel.status.collectLatest { status ->
+                when (status) {
+                    is SourcesViewModel.SourcesViewModelState.Success -> {
+                        presenter.fetchFeed(status.data)
+                    }
+                }
+            }
         }
-        else {
-            endLoading()
-        }
-
         initClickListener()
     }
 
@@ -135,13 +139,12 @@ class RecentNewsFeedFragment : BaseListFragment(), RecentFeedView {
         viewAdapter.notifyDataSetChanged()
     }
 
-
-    override fun endLoading() {
+    override fun hideLoading() {
         cpvRecentFeed.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
     }
 
-    override fun startLoading() {
+    override fun showLoading() {
         recyclerView.visibility = View.GONE
         cpvRecentFeed.visibility = View.VISIBLE
     }
@@ -161,9 +164,9 @@ class RecentNewsFeedFragment : BaseListFragment(), RecentFeedView {
                 when (v.id) {
                     R.id.button_favorite_news -> {
                         if (v.button_favorite_news.isChecked) {
-                            presenter.saveArticle(it)
+                            presenter.saveArticleToDb(it)
                         } else {
-                            presenter.removeArticle(it)
+                            presenter.removeArticleFromDb(it)
                         }
                     }
                     else -> {
@@ -176,5 +179,9 @@ class RecentNewsFeedFragment : BaseListFragment(), RecentFeedView {
 
             }
         })
+    }
+
+    companion object {
+        val tag = "recentFeedFragment"
     }
 }

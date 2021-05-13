@@ -3,7 +3,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.carexplorer.R
-import com.example.carexplorer.data.model.Source
+import com.example.carexplorer.data.model.enities.Source
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseAdapter.BaseViewHolder
 import com.squareup.picasso.Picasso

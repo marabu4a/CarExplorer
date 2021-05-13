@@ -41,21 +41,21 @@ abstract class BaseToolbar @JvmOverloads constructor(
         setBackgroundColor(color(R.color.colorAccent))
     }
 
-//    fun initCatalogMenu(
-//        onSearchPressed: () -> Unit,
-//        onFiltersPressed: () -> Unit
-//    ) {
-//        with(toolbar) {
-//            inflateMenu(R.menu.catalog_menu)
-//            setOnMenuItemClickListener {
-//                when (it.itemId) {
-//                    R.id.action_filters -> onFiltersPressed()
-//                    R.id.action_search -> onSearchPressed()
-//                }
-//                true
-//            }
-//        }
-//    }
+    fun initShareAndReloadMenu(
+        onSharePressed: () -> Unit,
+        onFavoritesPressed: () -> Unit
+    ) {
+        with(toolbar) {
+            inflateMenu(R.menu.menu_web)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.menuWebFavorites -> onFavoritesPressed()
+                    R.id.menuWebShare -> onSharePressed()
+                }
+                true
+            }
+        }
+    }
 
 //    fun initAddMenu(
 //        onAddPressed: () -> Unit

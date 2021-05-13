@@ -3,19 +3,19 @@
 
     <item
         android:id="@+id/bottomBarNews"
-        android:icon="@drawable/selector_bottom_bar_feed"
+        android:icon="@drawable/selector_bottom_bar_home"
         android:title="@string/title_news_fragment" />
     <item
         android:id="@+id/bottomBarSources"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/selector_bottom_bar_sources"
         android:title="@string/title_sources_fragment" />
     <item
         android:id="@+id/bottomBarCategories"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/selector_bottom_bar_categories"
         android:title="@string/title_categories_fragment" />
     <item
         android:id="@+id/bottomBarFavorites"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/selector_bottom_bar_bookmark"
         android:title="@string/title_favorites_fragment" />
 
 </menu>

@@ -2,8 +2,8 @@ package com.example.carexplorer.helpers.navigation
 
 import androidx.fragment.app.Fragment
 import com.example.carexplorer.data.model.CachedArticle
-import com.example.carexplorer.data.model.Category
-import com.example.carexplorer.data.model.Source
+import com.example.carexplorer.data.model.enities.Category
+import com.example.carexplorer.data.model.enities.Source
 import com.example.carexplorer.ui.fragment.*
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
@@ -23,14 +23,14 @@ class Screens {
     class ListArticles(category: Category) :
         SupportScreen({ ListArticlesFragmentBuilder(category).build() })
 
-    class News(source: Source) : SupportScreen({ NewsFragmentBuilder(source).build() })
+    class SourceNews(source: Source) : SupportScreen({ SourceNewsFragmentBuilder(source).build() })
 
     class NewsFeed() : SupportAppScreen() {
         override fun getFragment(): Fragment = RecentNewsFeedFragment()
     }
 
     class Sources() : SupportAppScreen() {
-        override fun getFragment(): Fragment = SourcesNewsFragment()
+        override fun getFragment(): Fragment = SourcesFragment()
     }
 
     class WebPage(title: String, page: String) :

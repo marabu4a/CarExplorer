@@ -5,7 +5,7 @@ import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(AddToEndSingleStrategy::class)
-interface ListArticlesView : BaseView {
-    fun showListArticles(entries : List<CachedArticle>)
-    fun showMessage(textResource:Int)
+interface ListArticlesView : LoadingView {
+    fun showListArticles(entries: List<CachedArticle>)
+    fun showMessage(textResource: Int)
 }

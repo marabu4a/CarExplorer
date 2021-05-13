@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.*
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
-import com.example.carexplorer.data.model.Category
+import com.example.carexplorer.data.model.enities.Category
 import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.ListArticlesPresenter
@@ -69,12 +69,17 @@ class ListArticlesFragment : BaseListFragment(), ListArticlesView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.getArticles(category.entries)
+        //presenter.getArticles(category.articles)
         initClickListener()
 
     }
 
-    override fun startLoading() {
+    override fun hideLoading() {
+        recyclerView.visibility = View.VISIBLE
+        cpvListArticles.visibility = View.GONE
+    }
+
+    override fun showLoading() {
         recyclerView.visibility = View.GONE
         cpvListArticles.visibility = View.VISIBLE
     }
@@ -84,11 +89,6 @@ class ListArticlesFragment : BaseListFragment(), ListArticlesView {
         viewAdapter.clear()
         viewAdapter.add(entries)
         viewAdapter.notifyDataSetChanged()
-    }
-
-    override fun endLoading() {
-        recyclerView.visibility = View.VISIBLE
-        cpvListArticles.visibility = View.GONE
     }
 
     override fun showMessage(textResource: Int) {

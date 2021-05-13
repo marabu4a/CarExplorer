@@ -2,7 +2,7 @@ package com.example.carexplorer.presenter
 
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.CachedArticle
-import com.example.carexplorer.data.model.Entry
+import com.example.carexplorer.data.model.enities.Article
 import com.example.carexplorer.repository.cache.ContentCache
 import com.example.carexplorer.view.ListArticlesView
 import com.google.auto.factory.AutoFactory
@@ -19,11 +19,11 @@ class ListArticlesPresenter @Inject constructor(
 ) : MvpPresenter<ListArticlesView>() {
     private val articlesCache = cache
     private val presenterJob = Job()
-    fun getArticles(list : List<Entry>) {
+    fun getArticles(list: List<Article>) {
         CoroutineScope(Dispatchers.Main + presenterJob).launch {
-            viewState.startLoading()
+            viewState.showLoading()
             viewState.showListArticles(convertEntries(list)!!)
-            viewState.endLoading()
+            viewState.hideLoading()
         }
     }
 
@@ -56,8 +56,8 @@ class ListArticlesPresenter @Inject constructor(
         }
     }
 
-    private suspend fun convertEntries(list : List<Entry>) : List<CachedArticle>? {
-        val listEntries : MutableList<CachedArticle> = mutableListOf()
+    private suspend fun convertEntries(list: List<Article>): List<CachedArticle>? {
+        val listEntries: MutableList<CachedArticle> = mutableListOf()
         list.forEach {
             listEntries.add(
                 CachedArticle(

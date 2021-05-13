@@ -20,7 +20,8 @@ import javax.inject.Singleton
         NavigationModule::class,
         ParserModule::class,
         UtilModule::class,
-        CacheModule::class]
+        CacheModule::class,
+        ViewModelModule::class]
 )
 
 interface AppComponent : AndroidInjector<App> {

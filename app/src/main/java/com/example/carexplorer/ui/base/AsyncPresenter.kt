@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.collect
 import moxy.MvpView
 import org.xml.sax.ErrorHandler
 
-@UseExperimental(ExperimentalCoroutinesApi::class, InternalCoroutinesApi::class)
 open class AsyncPresenter<TView : MvpView>(
     factoryProvider: UseCaseExecutorsFactoryProvider,
     errorHandler: ErrorHandler
