@@ -7,5 +7,5 @@ import ru.terrakok.cicerone.android.support.SupportAppScreen
 class CategoriesFlow : FlowFragment() {
     override val flowName: String = "Categories"
 
-    override fun getLaunchScreen(): SupportAppScreen = Screens.Categories()
+    override fun getLaunchScreen(): SupportAppScreen = Screens.CategoriesScreen()
 }

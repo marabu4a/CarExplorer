@@ -144,10 +144,10 @@ class AppActivity : MvpAppCompatActivity(), RouterProvider, HasAndroidInjector, 
     override fun resetTabs(exceptProfile: Boolean) {
         with(supportFragmentManager) {
             beginTransaction().apply {
-                findFragmentByTag(Flows.News.screenKey)?.also { remove(it) }
-                findFragmentByTag(Flows.Categories.screenKey)?.also { remove(it) }
-                findFragmentByTag(Flows.Sources.screenKey)?.also { remove(it) }
-                findFragmentByTag(Flows.Favorites.screenKey)?.also { remove(it) }
+                findFragmentByTag(Flows.NewsScreenFlow.screenKey)?.also { remove(it) }
+                findFragmentByTag(Flows.CategoriesScreenFlow.screenKey)?.also { remove(it) }
+                findFragmentByTag(Flows.SourcesScreenFlow.screenKey)?.also { remove(it) }
+                findFragmentByTag(Flows.FavoritesScreenFlow.screenKey)?.also { remove(it) }
             }.apply {
                 // after saveInstanceState immediate commit is unavailable and [canPerformTransactions]
                 // does not always help: https://console.firebase.google.com/u/1/project/kari-3568a/crashlytics/app/android:ru.kari.android/issues/05161b19542575cb3af99a9afacbb030
@@ -223,10 +223,10 @@ class AppActivity : MvpAppCompatActivity(), RouterProvider, HasAndroidInjector, 
     }
 
     private fun getTabByMenuItemId(itemId: Int) = when (itemId) {
-        R.id.bottomBarCategories -> Flows.Categories
-        R.id.bottomBarFavorites -> Flows.Favorites
-        R.id.bottomBarNews -> Flows.News
-        R.id.bottomBarSources -> Flows.Sources
+        R.id.bottomBarCategories -> Flows.CategoriesScreenFlow
+        R.id.bottomBarFavorites -> Flows.FavoritesScreenFlow
+        R.id.bottomBarNews -> Flows.NewsScreenFlow
+        R.id.bottomBarSources -> Flows.SourcesScreenFlow
         else -> throw IllegalArgumentException("Unknown itemId")
     }
 

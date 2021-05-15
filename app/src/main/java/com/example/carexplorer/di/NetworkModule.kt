@@ -5,6 +5,7 @@ import com.example.carexplorer.data.model.retrofit.service.ApiService
 import com.example.carexplorer.util.NetworkManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -63,7 +64,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGsonConverter(): Gson = Gson()
+    fun provideGsonConverter(): Gson = GsonBuilder().setLenient().create()
 
     @Provides
     @Singleton
@@ -73,8 +74,6 @@ class NetworkModule {
     companion object {
         const val SERVER_URL = "http://u107086.test-handyhost.ru"
         const val BASE_URL = "$SERVER_URL/rest_api/"
-//        const val CATEGORIES_BASE_URL = "https://my-project-id-326ba.firebaseio.com/"
-//        const val SOURCES_BASE_URL = "https://my-first-project-id-9bcf7.firebaseio.com/"
     }
 
 }

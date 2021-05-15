@@ -8,6 +8,5 @@ import moxy.viewstate.strategy.StateStrategyType
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface FavoritesView : LoadingView {
     fun showContent(list: List<CachedArticle>)
-    fun dismissBottomSheet(animate: Boolean)
     fun showMessage(textResource: Int)
 }

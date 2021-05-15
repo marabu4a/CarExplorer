@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.carexplorer.data.model.CachedArticle
+import com.example.carexplorer.data.model.enities.Article
+import com.example.carexplorer.data.model.enities.News
 
-@Database(entities = [CachedArticle::class],version = 3,exportSchema = false)
+@Database(entities = [News::class,Article::class],version = 1,exportSchema = false)
  abstract class ContentDatabase : RoomDatabase() {
 
-     abstract val contentDao: ContentDao
+     abstract val articlesDao: ArticlesDao
+     abstract val newsDao : NewsDao
 
      companion object {
 

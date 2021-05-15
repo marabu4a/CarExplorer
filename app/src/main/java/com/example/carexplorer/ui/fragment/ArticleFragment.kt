@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import com.example.carexplorer.R
-import com.example.carexplorer.data.model.CachedArticle
+import com.example.carexplorer.data.model.enities.Article
 import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.ArticlePresenter
 import com.example.carexplorer.presenter.ArticlePresenterFactory
@@ -18,13 +18,12 @@ import kotlinx.android.synthetic.main.fragment_article.*
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
-
 @FragmentWithArgs
 class ArticleFragment : BaseFragment(), ArticleView {
     override val layoutRes: Int = R.layout.fragment_article
 
     @Arg(bundler = ParcelableArgsBundler::class)
-    lateinit var article: CachedArticle
+    lateinit var article: Article
 
 
     @Inject
@@ -38,10 +37,7 @@ class ArticleFragment : BaseFragment(), ArticleView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        presenter.loadArticle(article.image!!, article.content!!)
-
-
+        presenter.loadArticle(article.image, article.content)
     }
 
     @SuppressLint("SetJavaScriptEnabled")

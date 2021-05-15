@@ -4,24 +4,19 @@ import com.example.carexplorer.data.model.enities.News
 import com.example.carexplorer.data.model.enities.toNews
 import com.example.carexplorer.data.model.retrofit.service.ApiService
 import com.example.carexplorer.helpers.flow.UseCase
-import timber.log.Timber
 import javax.inject.Inject
 
-class GetSourceNewsUseCase @Inject constructor(
+class GetRecentNewsUseCase @Inject constructor(
     private val apiService: ApiService
-) : UseCase<GetSourceNewsUseCase.Params, List<News>> {
+) : UseCase<Unit, List<News>> {
 
-    override suspend fun execute(params: Params): List<News> {
-        val result = apiService.getNewsBySource(params.name)
-        Timber.e(result.toString())
+    override suspend fun execute(params: Unit): List<News> {
+        val result = apiService.getRecentNews()
+
         if (result.isSuccessful) {
             return result.body()?.news.orEmpty().mapNotNull { it.toNews() }
         }
         return mutableListOf()
     }
 
-
-    data class Params(
-        val name: String
-    )
 }

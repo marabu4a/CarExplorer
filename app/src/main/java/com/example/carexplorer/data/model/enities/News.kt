@@ -1,23 +1,32 @@
 package com.example.carexplorer.data.model.enities
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
+@Entity(tableName = "news_table")
 @Parcelize
-class News(
-    @SerializedName("news_id")
+data class News(
     val id: Int,
-    @SerializedName("news_title")
+    @PrimaryKey
     val title: String,
-    @SerializedName("news_description")
-    val description: String,
-    @SerializedName("news_image")
+    val description: String?,
     val image: String,
-    @SerializedName("news_date")
     val date: String,
-    @SerializedName("news_link")
     val link: String,
-    @SerializedName("news_source_name")
-    val sourceName: String
+    val sourceName: String,
+    val isFavorite: Boolean = false
 ) : Parcelable
+
+fun NewsNw.toNews(): News? {
+    return News(
+        id = id ?: return null,
+        title = title ?: return null,
+        description = description,
+        image = image ?: return null,
+        date = date ?: return null,
+        link = link ?: return null,
+        sourceName = sourceName ?: return null,
+        )
+}

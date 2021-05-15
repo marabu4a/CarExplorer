@@ -1,7 +1,7 @@
 package com.example.carexplorer.presenter
 
-import com.example.carexplorer.data.model.CachedArticle
-import com.example.carexplorer.repository.cache.ContentCache
+import com.example.carexplorer.data.model.enities.News
+import com.example.carexplorer.repository.cache.NewsCache
 import com.example.carexplorer.ui.base.ErrorHandler
 import com.example.carexplorer.view.BaseView
 import com.prof.rssparser.Article
@@ -14,16 +14,15 @@ import javax.inject.Inject
 
 @InjectViewState
 open class NewsPresenter<T : BaseView> @Inject constructor(
-    private val contentDb: ContentCache,
+    private val newsDb: NewsCache,
     errorHandler: ErrorHandler
 ) : BasePresenter<T>(errorHandler) {
-    private var articles = listOf<Article>()
+    private var news = listOf<Article>()
 
-    fun saveArticleToDb(article: CachedArticle) {
+    fun saveArticleToDb(article: News) {
         try {
             CoroutineScope(Dispatchers.IO).launch {
-                article.cached = true
-                contentDb.saveArticle(article)
+                newsDb.saveNews(article.copy(isFavorite = true))
                 //viewState.showPositiveMessage(R.string.succesfull)
             }
         } catch (e: Exception) {
@@ -32,11 +31,10 @@ open class NewsPresenter<T : BaseView> @Inject constructor(
         }
     }
 
-    fun removeArticleFromDb(article: CachedArticle) {
+    fun removeArticleFromDb(article: News) {
         try {
             CoroutineScope(Dispatchers.IO).launch {
-                article.cached = false
-                contentDb.removeArticleByTitle(article.title)
+                newsDb.removeNewsByTitle(article.title)
                 //viewState.showMessage(R.string.deleted)
             }
         } catch (e: Exception) {
@@ -46,41 +44,41 @@ open class NewsPresenter<T : BaseView> @Inject constructor(
 
     }
 
-    protected suspend fun checkNewsInCache(newsTitle: String): Boolean {
+    protected suspend fun checkCachedNews(newsTitle: String): Boolean {
         var isCached = false
         withContext(Dispatchers.IO) {
-            if (contentDb.getArticleByTitle(newsTitle) != null) {
+            if (newsDb.getNewsByTitle(newsTitle) != null) {
                 isCached = true
             }
         }
         return isCached
     }
+    //
+    //protected fun checkUrlExisting(guid: String?, link: String?): String? {
+    //    return if (guid != null) {
+    //        if (guid.contains("http")) {
+    //            guid
+    //        } else link
+    //    } else link
+    //}
 
-    protected fun checkUrlExisting(guid: String?, link: String?): String? {
-        return if (guid != null) {
-            if (guid.contains("http")) {
-                guid
-            } else link
-        } else link
-    }
-
-    protected suspend fun List<Article>.convertToCachedNews() =
-        mutableListOf<CachedArticle>().also { list ->
-            this.forEach {
-                list.add(
-                    CachedArticle(
-                        title = it.title!!,
-                        image = it.image,
-                        url = checkUrlExisting(it.guid, it.link),
-                        source = it.sourceName,
-                        content = it.content,
-                        type = "news",
-                        pubDate = it.pubDate,
-                        cached = checkNewsInCache(it.title!!)
-                    )
-                )
-            }
-        }
+    //protected suspend fun List<Article>.convertToCachedNews() =
+    //    mutableListOf<CachedArticle>().also { list ->
+    //        this.forEach {
+    //            list.add(
+    //                CachedArticle(
+    //                    title = it.title!!,
+    //                    image = it.image,
+    //                    url = checkUrlExisting(it.guid, it.link),
+    //                    source = it.sourceName,
+    //                    content = it.content,
+    //                    type = "news",
+    //                    pubDate = it.pubDate,
+    //                    cached = checkNewsInCache(it.title!!)
+    //                )
+    //            )
+    //        }
+    //    }
 
 }
 

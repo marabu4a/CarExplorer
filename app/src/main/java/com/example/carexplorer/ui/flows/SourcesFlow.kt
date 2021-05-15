@@ -7,5 +7,5 @@ import ru.terrakok.cicerone.android.support.SupportAppScreen
 class SourcesFlow : FlowFragment() {
     override val flowName: String = "Sources"
 
-    override fun getLaunchScreen(): SupportAppScreen = Screens.Sources()
+    override fun getLaunchScreen(): SupportAppScreen = Screens.SourcesScreen()
 }
