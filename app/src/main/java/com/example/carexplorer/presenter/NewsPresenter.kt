@@ -1,7 +1,7 @@
 package com.example.carexplorer.presenter
 
+import com.example.carexplorer.data.cache.NewsCache
 import com.example.carexplorer.data.model.enities.News
-import com.example.carexplorer.repository.cache.NewsCache
 import com.example.carexplorer.ui.base.ErrorHandler
 import com.example.carexplorer.view.BaseView
 import com.prof.rssparser.Article
@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import moxy.InjectViewState
+import timber.log.Timber
 import javax.inject.Inject
 
 @InjectViewState
@@ -22,6 +23,7 @@ open class NewsPresenter<T : BaseView> @Inject constructor(
     fun saveArticleToDb(article: News) {
         try {
             CoroutineScope(Dispatchers.IO).launch {
+                Timber.e("Saving")
                 newsDb.saveNews(article.copy(isFavorite = true))
                 //viewState.showPositiveMessage(R.string.succesfull)
             }

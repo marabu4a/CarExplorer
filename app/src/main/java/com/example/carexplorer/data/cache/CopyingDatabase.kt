@@ -1,4 +1,4 @@
-package com.example.carexplorer.repository.cache
+package com.example.carexplorer.data.cache
 
 //class CopyingDatabase {
 //

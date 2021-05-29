@@ -2,15 +2,15 @@ package com.example.carexplorer.ui.fragment
 
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.andrefrsousa.superbottomsheet.SuperBottomSheetFragment
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.enities.News
 import com.example.carexplorer.di.injectViewModel
+import com.example.carexplorer.helpers.BottomSheetFilter
 import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.RecentNewsFeedPresenter
@@ -30,7 +30,17 @@ class RecentNewsFeedFragment : BaseFragment(), RecentFeedView {
     private val displayList: MutableList<News> = mutableListOf()
     private val listRecentArticles = mutableListOf<News>()
     override val layoutRes: Int = R.layout.fragment_recent_feed
+    private var currentToolbarTitle: String? = "Свежее"
+        get() = recentFeedToolbar.title
 
+    private var bottomSheetFilter: SuperBottomSheetFragment? = BottomSheetFilter(
+        firstValuePair = Pair("Свежее",true ),
+        Pair("Случайное",false),
+        OnSelected = {
+            recentFeedToolbar.title = it
+            currentToolbarTitle = it
+        }
+    )
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -51,18 +61,21 @@ class RecentNewsFeedFragment : BaseFragment(), RecentFeedView {
         sourcesViewModel = injectViewModel(viewModelFactory)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
+    override fun onResume() {
+        recentFeedToolbar.title = currentToolbarTitle
+        super.onResume()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        recentFeedToolbar.initSearchMenu {
+
+        }
+        recentFeedToolbar.title = currentToolbarTitle
+        recentFeedToolbar.onClick = {
+            bottomSheetFilter?.show(childFragmentManager,"BottomSheetFilter")
+        }
         newsAdapter = NewsAdapter(onNewsClick = {
             parentRouter.navigateTo(Screens.WebPageScreen(it.title, it.link))
         },
@@ -79,15 +92,6 @@ class RecentNewsFeedFragment : BaseFragment(), RecentFeedView {
             adapter = newsAdapter
         }
         presenter.fetchFeed()
-        //lifecycleScope.launchWhenCreated {
-        //    sourcesViewModel.status.collectLatest { status ->
-        //        when (status) {
-        //            is SourcesViewModel.SourcesViewModelState.Success -> {
-        //
-        //            }
-        //        }
-        //    }
-        //}
     }
 
 

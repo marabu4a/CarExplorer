@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="290dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="#ffffff"
@@ -13,17 +13,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/rb1"
-            android:text="Все"
-            android:textSize="20sp"
-            android:fontFamily="@font/futura_pt_demi"
-            android:layoutDirection="rtl"
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="70dp">
 
-        </com.google.android.material.radiobutton.MaterialRadioButton>
+
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/rb2"
             android:text="Новости"

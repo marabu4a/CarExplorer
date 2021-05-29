@@ -10,12 +10,11 @@ import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.enities.News
+import com.example.carexplorer.helpers.util.setOnDebouncedClickListener
 import com.example.carexplorer.ui.base.BaseAdapter
-import com.example.carexplorer.util.setOnDebouncedClickListener
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_news.view.*
-import timber.log.Timber
 
 class NewsAdapter(
     private val onNewsClick: (News) -> Unit,
@@ -35,7 +34,6 @@ class NewsAdapter(
         position: Int
     ) = with((holder as NewsViewHolder).containerView) {
         var item = data[position] as News
-        Timber.e(item.toString())
         if (item.image.isNotEmpty()) {
             Picasso
                 .get()
@@ -53,7 +51,6 @@ class NewsAdapter(
 
                 })
         }
-
         tvNews.text = item.title
         tvPubDate.text = item.date
         tvNameSource.text = item.sourceName

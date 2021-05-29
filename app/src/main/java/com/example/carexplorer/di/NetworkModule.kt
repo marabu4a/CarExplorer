@@ -2,7 +2,7 @@ package com.example.carexplorer.di
 
 import android.content.Context
 import com.example.carexplorer.data.model.retrofit.service.ApiService
-import com.example.carexplorer.util.NetworkManager
+import com.example.carexplorer.helpers.util.NetworkManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

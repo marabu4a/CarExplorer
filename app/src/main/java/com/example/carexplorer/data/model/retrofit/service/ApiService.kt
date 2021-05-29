@@ -16,6 +16,7 @@ interface ApiService {
         const val ARTICLES_BY_CATEGORY = "getArticlesByCategory.php"
         const val NEWS_BY_SOURCE = "getNewsBySource.php"
         const val RECENT_NEWS = "getRandomNews.php"
+        const val POPULAR_NEWS = "getPopularNews.php"
     }
 
     @GET(CATEGORIES)
@@ -32,5 +33,8 @@ interface ApiService {
 
     @GET(RECENT_NEWS)
     suspend fun getRecentNews(): Response<NewsResponse>
+
+    @GET(POPULAR_NEWS)
+    suspend fun getPopularNews() : Response<NewsResponse>
 
 }

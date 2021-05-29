@@ -3,6 +3,7 @@ package com.example.carexplorer.data.model.enities
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.carexplorer.helpers.isNullOrNotEmpty
 import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "news_table")
@@ -17,16 +18,16 @@ data class News(
     val link: String,
     val sourceName: String,
     val isFavorite: Boolean = false
-) : Parcelable
+) : Parcelable, Favorite
 
 fun NewsNw.toNews(): News? {
     return News(
         id = id ?: return null,
-        title = title ?: return null,
+        title = title?.isNullOrNotEmpty() ?: return null,
         description = description,
-        image = image ?: return null,
-        date = date ?: return null,
-        link = link ?: return null,
-        sourceName = sourceName ?: return null,
+        image = image?.isNullOrNotEmpty() ?: return null,
+        date = date?.isNullOrNotEmpty() ?: return null,
+        link = link?.isNullOrNotEmpty() ?: return null,
+        sourceName = sourceName?.isNullOrNotEmpty() ?: return null,
         )
 }

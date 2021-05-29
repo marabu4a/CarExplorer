@@ -15,9 +15,9 @@ import com.example.carexplorer.di.injectViewModel
 import com.example.carexplorer.helpers.navigation.CustomSupportAppNavigator
 import com.example.carexplorer.helpers.navigation.Flows
 import com.example.carexplorer.helpers.navigation.RouterProvider
+import com.example.carexplorer.helpers.util.ActionDebouncer
 import com.example.carexplorer.ui.base.BaseFragment
 import com.example.carexplorer.ui.base.FlowFragment
-import com.example.carexplorer.util.ActionDebouncer
 import com.example.carexplorer.viewmodel.SourcesViewModel
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
@@ -109,6 +109,7 @@ class AppActivity : MvpAppCompatActivity(), RouterProvider, HasAndroidInjector, 
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN /*or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR*/
                 )
+        bottomBar.selectedItemId = R.id.bottomBarNews
         initBottomBar()
 
 
@@ -122,8 +123,6 @@ class AppActivity : MvpAppCompatActivity(), RouterProvider, HasAndroidInjector, 
                 )
             } else insets
         }
-        //bottomBar.applyWindowInsetsAsPadding(all = false)
-
     }
 
     override fun onPause() {
@@ -149,8 +148,6 @@ class AppActivity : MvpAppCompatActivity(), RouterProvider, HasAndroidInjector, 
                 findFragmentByTag(Flows.SourcesScreenFlow.screenKey)?.also { remove(it) }
                 findFragmentByTag(Flows.FavoritesScreenFlow.screenKey)?.also { remove(it) }
             }.apply {
-                // after saveInstanceState immediate commit is unavailable and [canPerformTransactions]
-                // does not always help: https://console.firebase.google.com/u/1/project/kari-3568a/crashlytics/app/android:ru.kari.android/issues/05161b19542575cb3af99a9afacbb030
                 if (isStateSaved) commitAllowingStateLoss()
                 else commitNow()
             }
@@ -233,9 +230,9 @@ class AppActivity : MvpAppCompatActivity(), RouterProvider, HasAndroidInjector, 
     private fun openTab(tab: SupportAppScreen) {
         val currentFragment = currentTabFragment
         val newFragment = supportFragmentManager.findFragmentByTag(tab.screenKey)
-
+        Timber.i("try opening $newFragment from $currentFragment")
         if (currentFragment != null && newFragment != null && currentFragment == newFragment) return
-
+        Timber.i("opening $newFragment from $currentFragment")
         supportFragmentManager.beginTransaction().apply {
             if (newFragment == null) add(
                 R.id.mainContainer,

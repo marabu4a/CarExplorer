@@ -29,16 +29,16 @@ abstract class FlowFragment : BaseFragment(), RouterProvider {
     @Inject
     lateinit var localCiceroneHolder: LocalCiceroneHolder
 
-    private val cicerone: Cicerone<Router> by lazy {
+    private val ciceroneHolder: Cicerone<Router> by lazy {
         localCiceroneHolder.getCicerone(flowName)
     }
 
     override val ciceroneRouter: Router by lazy {
-        cicerone.router
+        ciceroneHolder.router
     }
 
     private val navigatorHolder: NavigatorHolder by lazy {
-        cicerone.navigatorHolder
+        ciceroneHolder.navigatorHolder
     }
 
     private val navigator: Navigator by lazy {

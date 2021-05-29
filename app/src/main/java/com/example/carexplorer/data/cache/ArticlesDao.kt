@@ -1,13 +1,14 @@
-package com.example.carexplorer.repository.cache
+package com.example.carexplorer.data.cache
 
 import androidx.room.*
 import com.example.carexplorer.data.model.enities.Article
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ArticlesDao : ArticlesCache {
 
     @Query("SELECT * FROM articles_table")
-    override fun getArticles() : List<Article>
+    override fun getArticles() : Flow<List<Article>>
 
     @Query("SELECT * FROM articles_table WHERE title = :title")
     override fun getArticleByTitle(title : String) : Article

@@ -10,8 +10,8 @@ import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.enities.Article
+import com.example.carexplorer.helpers.util.setOnDebouncedClickListener
 import com.example.carexplorer.ui.base.BaseAdapter
-import com.example.carexplorer.util.setOnDebouncedClickListener
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_preview_article.view.*

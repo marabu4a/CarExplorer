@@ -6,11 +6,11 @@ import android.view.View
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.enities.Article
 import com.example.carexplorer.helpers.navigation.parentRouter
+import com.example.carexplorer.helpers.util.HTMLUtil
+import com.example.carexplorer.helpers.util.ParcelableArgsBundler
 import com.example.carexplorer.presenter.ArticlePresenter
 import com.example.carexplorer.presenter.ArticlePresenterFactory
 import com.example.carexplorer.ui.base.BaseFragment
-import com.example.carexplorer.util.HTMLUtil
-import com.example.carexplorer.util.ParcelableArgsBundler
 import com.example.carexplorer.view.ArticleView
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
@@ -37,18 +37,14 @@ class ArticleFragment : BaseFragment(), ArticleView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        with(articleToolbar) {
+            title = article.title
+        }
         presenter.loadArticle(article.image, article.content)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun showArticle(image: String, text: String) {
-        //val imageGetter = GlideImageGetter(requireActivity(),tvTextArticle, Glide.with(this))
-//        val styledText = HtmlCompat.fromHtml(text,HtmlCompat.FROM_HTML_MODE_COMPACT,imageGetter,null)
-//        tvTextArticle.also {
-//            it.text = styledText
-//            it.movementMethod = LinkMovementMethod.getInstance()
-//        }
-        //TODO try to set custom font
         articleWebText.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
@@ -65,7 +61,6 @@ class ArticleFragment : BaseFragment(), ArticleView {
             "utf-8",
             null
         )
-        //Picasso.get().load(image).into(ivImageArticle)
     }
 
     override fun showLoading() {

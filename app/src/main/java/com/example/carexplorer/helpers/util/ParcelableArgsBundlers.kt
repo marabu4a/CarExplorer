@@ -1,4 +1,4 @@
-package com.example.carexplorer.util
+package com.example.carexplorer.helpers.util
 
 import android.os.Bundle
 import android.os.Parcelable

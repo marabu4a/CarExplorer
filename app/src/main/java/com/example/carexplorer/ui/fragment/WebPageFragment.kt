@@ -1,6 +1,7 @@
 package com.example.carexplorer.ui.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,6 @@ import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_webpage.*
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
-
 
 @FragmentWithArgs
 class WebPageFragment : BaseFragment(), WebPageView {
@@ -61,7 +61,9 @@ class WebPageFragment : BaseFragment(), WebPageView {
         super.onViewCreated(view, savedInstanceState)
         with(webPageToolbar) {
             setNavigationOnClickListener { onBackPressed() }
-            initShareAndReloadMenu({}, {})
+            initShareAndReloadMenu({
+                onShareButtonClicked()
+            }, {})
         }
         setupWebView()
         presenter.loadUrl(page)
@@ -117,9 +119,18 @@ class WebPageFragment : BaseFragment(), WebPageView {
             setAppCacheEnabled(true)
             databaseEnabled = true
         }
-        //webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
         webView.fitsSystemWindows = true
 
+    }
+
+    private fun onShareButtonClicked() {
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            flags = Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+            putExtra(Intent.EXTRA_SUBJECT, title)
+            putExtra(Intent.EXTRA_TEXT, page)
+        }
+        startActivity(Intent.createChooser(shareIntent, "News URL"))
     }
 
     companion object {

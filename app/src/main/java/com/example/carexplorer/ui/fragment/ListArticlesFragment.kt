@@ -8,12 +8,12 @@ import com.example.carexplorer.data.model.enities.Article
 import com.example.carexplorer.data.model.enities.Category
 import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.helpers.navigation.parentRouter
+import com.example.carexplorer.helpers.util.ParcelableArgsBundler
 import com.example.carexplorer.presenter.ListArticlesPresenter
 import com.example.carexplorer.presenter.ListArticlesPresenterFactory
 import com.example.carexplorer.ui.adapter.ListArticlesAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseFragment
-import com.example.carexplorer.util.ParcelableArgsBundler
 import com.example.carexplorer.view.ListArticlesView
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -40,7 +40,7 @@ class ListArticlesFragment : BaseFragment(), ListArticlesView {
     lateinit var presenterFactory: ListArticlesPresenterFactory
 
     private val presenter: ListArticlesPresenter by moxyPresenter {
-        presenterFactory.create()
+        presenterFactory.create(parentRouter)
     }
 
     override fun onDestroy() {
@@ -55,6 +55,12 @@ class ListArticlesFragment : BaseFragment(), ListArticlesView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        listArticlesToolbar.apply {
+            title = category.name
+            setNavigationOnClickListener {
+                presenter.onBackPressed()
+            }
+        }
         listArticlesAdapter = ListArticlesAdapter(
             onArticleClick = {
                 parentRouter.navigateTo(Screens.ArticleScreen(it))

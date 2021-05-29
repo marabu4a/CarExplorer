@@ -4,11 +4,17 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.andrefrsousa.superbottomsheet.SuperBottomSheetFragment
 import com.example.carexplorer.R
-import com.example.carexplorer.data.model.CachedArticle
+import com.example.carexplorer.data.model.enities.Article
+import com.example.carexplorer.data.model.enities.Favorite
+import com.example.carexplorer.data.model.enities.News
+import com.example.carexplorer.helpers.FavoritesBottomSheet
+import com.example.carexplorer.helpers.navigation.Screens
+import com.example.carexplorer.helpers.navigation.parentRouter
 import com.example.carexplorer.presenter.FavoritesPresenter
 import com.example.carexplorer.presenter.FavoritesPresenterFactory
-import com.example.carexplorer.ui.base.BaseAdapter
+import com.example.carexplorer.ui.adapter.FavoritesAdapter
 import com.example.carexplorer.ui.base.BaseFragment
 import com.example.carexplorer.view.FavoritesView
 import com.google.android.material.snackbar.Snackbar
@@ -19,8 +25,7 @@ import javax.inject.Inject
 
 class FavoritesFragment : BaseFragment(), FavoritesView {
     override val layoutRes: Int = R.layout.fragment_favorites
-    var filterItems = arrayListOf<CachedArticle>()
-    private var favoritesAdapter: BaseAdapter<*>? = null
+    private var favoritesAdapter: FavoritesAdapter? = null
 
     @Inject
     lateinit var presenterFactory: FavoritesPresenterFactory
@@ -29,34 +34,52 @@ class FavoritesFragment : BaseFragment(), FavoritesView {
         presenterFactory.create()
     }
 
+    private var bottomSheetFilter: SuperBottomSheetFragment? = FavoritesBottomSheet(
+        firstValuePair = Pair("Все материалы",true ),
+        Pair("Новости",false),
+        Pair("Статьи",false),
+        OnSelected = {
+            favoritesToolbar.title = it
+        }
+    )
+
     @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //favoritesAdapter = FavoritesAdapter(
-        //
-        //)
+        favoritesToolbar.initSearchMenu {
+
+        }
+        favoritesToolbar.onClick = {
+            bottomSheetFilter?.show(childFragmentManager,"FavoritesBottomSheet")
+        }
+        favoritesAdapter = FavoritesAdapter(
+            {
+                onItemClick(it)
+            },{
+                presenter.deleteCachedEntry(it)
+            }
+        )
         favoritesRV.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
-
+            adapter = favoritesAdapter
         }
-        //presenter.fetchCachedArticles()
+        presenter.fetchCachedEntries()
         initClickListener()
 
     }
 
-    override fun showContent(list: List<CachedArticle>) {
-        //if (list.isEmpty()) {
-        //    layout_nothing_items.visibility = View.VISIBLE
-        //} else {
-        //    layout_nothing_items.visibility = View.GONE
-        //}
-        //if (filterItems.isEmpty()) {
-        //    filterItems.addAll(list)
-        //}
-        //viewAdapter.clear()
-        //viewAdapter.add(list)
-        //viewAdapter.notifyDataSetChanged()
+    override fun updateContent(list: ArrayList<Favorite>) {
+        favoritesAdapter?.addAll(list)
+    }
+
+    override fun showContent(list: ArrayList<Favorite>) {
+        if (list.isEmpty()) {
+            layout_nothing_items.visibility = View.VISIBLE
+        } else {
+            layout_nothing_items.visibility = View.GONE
+        }
+        favoritesAdapter?.addAll(items = list)
     }
     //override fun onOptionsItemSelected(item: MenuItem): Boolean {
     //    when (item.itemId) {
@@ -89,23 +112,32 @@ class FavoritesFragment : BaseFragment(), FavoritesView {
         favoritesRV.visibility = View.VISIBLE
     }
 
+    private fun onItemClick(item: Favorite) {
+        when (item) {
+            is News -> {
+                parentRouter.navigateTo(Screens.WebPageScreen(item.title,item.link))
+            }
+            is Article -> {
+                parentRouter.navigateTo(Screens.ArticleScreen(item))
+            }
+            else -> throw IllegalArgumentException("invalid")
+        }
+    }
+
+    private fun onRemoveClick(item: Favorite) {
+        when (item) {
+            is News -> {
+
+            }
+            is Article -> {
+
+            }
+            else -> throw IllegalArgumentException("invalid")
+        }
+    }
+
     @SuppressLint("RestrictedApi")
     private fun initClickListener() {
-        //viewAdapter.setOnClick(
-        //    click = {
-        //
-        //            item, v ->
-        //        (item as CachedArticle).let {
-        //            when (item.type) {
-        //                "news" -> {
-        //                    parentRouter.navigateTo(Screens.WebPageScreen(it.title, it.url!!))
-        //                }
-        //                else -> {
-        //                    parentRouter.navigateTo(Screens.ArticleScreen(it))
-        //                }
-        //            }
-        //        }
-        //    },
         //    longClick = { item, v ->
         //        (item as CachedArticle).let { article ->
         //            val wrapper = ContextThemeWrapper(requireActivity(), R.style.popupMenuBack)

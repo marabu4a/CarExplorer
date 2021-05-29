@@ -1,15 +1,16 @@
 package com.example.carexplorer.presenter
 
 import com.example.carexplorer.R
+import com.example.carexplorer.data.cache.ArticlesCache
 import com.example.carexplorer.data.model.enities.Article
 import com.example.carexplorer.data.model.retrofit.usecase.articles.GetArticlesByCategoryUseCase
-import com.example.carexplorer.repository.cache.ArticlesCache
 import com.example.carexplorer.ui.base.ErrorHandler
 import com.example.carexplorer.view.ListArticlesView
 import com.google.auto.factory.AutoFactory
 import com.google.auto.factory.Provided
 import kotlinx.coroutines.*
 import moxy.InjectViewState
+import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 @AutoFactory
@@ -17,9 +18,14 @@ import javax.inject.Inject
 class ListArticlesPresenter @Inject constructor(
     @Provided private val articlesCache : ArticlesCache,
     @Provided private val getArticlesByCategoryUseCase: GetArticlesByCategoryUseCase,
-    @Provided override val errorHandler: ErrorHandler
+    @Provided override val errorHandler: ErrorHandler,
+    private val  router: Router
 ) : BasePresenter<ListArticlesView>(errorHandler) {
     private val presenterJob = Job()
+
+    override fun onBackPressed() {
+        router.exit()
+    }
 
     fun fetchArticles(category: String) {
         getArticlesByCategoryUseCase.onObtain { params, deferred ->

@@ -8,12 +8,12 @@ import com.example.carexplorer.data.model.enities.News
 import com.example.carexplorer.data.model.enities.Source
 import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.helpers.navigation.parentRouter
+import com.example.carexplorer.helpers.util.ParcelableArgsBundler
 import com.example.carexplorer.presenter.SourceNewsPresenter
 import com.example.carexplorer.presenter.SourceNewsPresenterFactory
 import com.example.carexplorer.ui.adapter.NewsAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseFragment
-import com.example.carexplorer.util.ParcelableArgsBundler
 import com.example.carexplorer.view.SourceNewsView
 import com.google.android.material.snackbar.Snackbar
 import com.hannesdorfmann.fragmentargs.annotation.Arg
@@ -56,6 +56,9 @@ class SourceNewsFragment : BaseFragment(), SourceNewsView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sourcesNewsToolbar.initSearchMenu {
+
+        }
         sourceNewsAdapter = NewsAdapter(
             onFavoriteClick = {
                 if (it.isFavorite) {

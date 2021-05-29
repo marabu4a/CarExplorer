@@ -1,14 +1,14 @@
 package com.example.carexplorer.presenter
 
+import com.example.carexplorer.data.cache.NewsCache
 import com.example.carexplorer.data.model.enities.News
 import com.example.carexplorer.data.model.retrofit.usecase.news.GetRecentNewsUseCase
-import com.example.carexplorer.repository.cache.NewsCache
+import com.example.carexplorer.helpers.convertDateTime
 import com.example.carexplorer.ui.base.ErrorHandler
 import com.example.carexplorer.view.RecentFeedView
 import com.google.auto.factory.AutoFactory
 import com.google.auto.factory.Provided
 import moxy.InjectViewState
-import timber.log.Timber
 import javax.inject.Inject
 
 @AutoFactory
@@ -31,8 +31,7 @@ class RecentNewsFeedPresenter @Inject constructor(
                 recentNews = mutableListOf<News>()
             }
             recentNews?.addAll(deferred.await() as List<News>)
-            Timber.e(recentNews?.size.toString())
-            viewState.showRecentFeed(recentNews.orEmpty().map { it.copy(isFavorite = checkCachedNews(it.title)) })
+            viewState.showRecentFeed(recentNews.orEmpty().map { it.copy(isFavorite = checkCachedNews(it.title),date = it.date.convertDateTime()) })
         }.execute(Unit, true)
         //        articles =
         //            articles.sortedByDescending(dateTimeStrToLocalDateTime) as MutableList<CachedArticle>

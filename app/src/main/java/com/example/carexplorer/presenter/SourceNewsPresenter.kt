@@ -1,8 +1,9 @@
 package com.example.carexplorer.presenter
 
+import com.example.carexplorer.data.cache.NewsCache
 import com.example.carexplorer.data.model.enities.News
 import com.example.carexplorer.data.model.retrofit.usecase.news.GetSourceNewsUseCase
-import com.example.carexplorer.repository.cache.NewsCache
+import com.example.carexplorer.helpers.convertDateTime
 import com.example.carexplorer.ui.base.ErrorHandler
 import com.example.carexplorer.view.SourceNewsView
 import com.google.auto.factory.AutoFactory
@@ -22,7 +23,6 @@ class SourceNewsPresenter @Inject constructor(
     private var sourceNews: List<News>? = null
 
     fun fetchNews(name: String) {
-        Timber.e("$name")
         if (sourceNews != null) return
         viewState.showLoading()
         executorsFactory.create(
@@ -36,7 +36,7 @@ class SourceNewsPresenter @Inject constructor(
                 sourceNews = deferred.await()
                 Timber.e(sourceNews.toString())
                 viewState.hideLoading()
-                viewState.showNews(sourceNews.orEmpty().map { it.copy(isFavorite = checkCachedNews(it.title)) })
+                viewState.showNews(sourceNews.orEmpty().map { it.copy(isFavorite = checkCachedNews(it.title), date = it.date.convertDateTime()) })
             }
         ).execute(GetSourceNewsUseCase.Params(name))
     }

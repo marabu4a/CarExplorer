@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.enities.Category
+import com.example.carexplorer.helpers.util.setOnDebouncedClickListener
 import com.example.carexplorer.ui.base.BaseAdapter
-import com.example.carexplorer.util.setOnDebouncedClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_category.view.*
 
