@@ -7,5 +7,5 @@ import ru.terrakok.cicerone.android.support.SupportAppScreen
 class FavoritesFlow : FlowFragment() {
     override val flowName: String = "Favorites"
 
-    override fun getLaunchScreen(): SupportAppScreen = Screens.Favorites()
+    override fun getLaunchScreen(): SupportAppScreen = Screens.FavoritesScreen()
 }

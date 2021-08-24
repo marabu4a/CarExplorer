@@ -19,7 +19,12 @@ class CategoriesPresenter @Inject constructor(
 
     private var categories: List<Category>? = null
 
-    fun loadCategories() {
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        loadCategories()
+    }
+
+    private fun loadCategories() {
         if (categories != null) return
         viewState.showLoading()
         getCategoriesUseCase.onObtain { _, deferred ->

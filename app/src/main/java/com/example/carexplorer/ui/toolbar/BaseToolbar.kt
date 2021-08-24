@@ -5,8 +5,8 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.example.carexplorer.R
-import com.example.carexplorer.util.color
-import com.example.carexplorer.util.inflate
+import com.example.carexplorer.helpers.util.color
+import com.example.carexplorer.helpers.util.inflate
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.component_base_toolbar.view.*
 
@@ -49,7 +49,7 @@ abstract class BaseToolbar @JvmOverloads constructor(
             inflateMenu(R.menu.menu_web)
             setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.menuWebFavorites -> onFavoritesPressed()
+                    //R.id.menuWebFavorites -> onFavoritesPressed()
                     R.id.menuWebShare -> onSharePressed()
                 }
                 true
@@ -57,105 +57,119 @@ abstract class BaseToolbar @JvmOverloads constructor(
         }
     }
 
-//    fun initAddMenu(
-//        onAddPressed: () -> Unit
-//    ) {
-//        with(toolbar) {
-//            inflateMenu(R.menu.add_action_menu)
-//            setOnMenuItemClickListener {
-//                if (it.itemId == R.id.action_add) {
-//                    onAddPressed()
-//                }
-//                true
-//            }
-//        }
-//    }
+    fun initSearchMenu(
+        onSearchClick: () -> Unit
+    ) {
+        with(toolbar) {
+            inflateMenu(R.menu.menu_search)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.menuSearch -> onSearchClick()
+                }
+                true
+            }
+        }
+    }
 
-//    fun initSaveMenu(
-//        onSavePressed: () -> Unit
-//    ) {
-//        with(toolbar) {
-//            inflateMenu(R.menu.save_action_menu)
-//            setOnMenuItemClickListener {
-//                if (it.itemId == R.id.action_save) {
-//                    onSavePressed()
-//                }
-//                true
-//            }
-//        }
-//    }
+    //    fun initAddMenu(
+    //        onAddPressed: () -> Unit
+    //    ) {
+    //        with(toolbar) {
+    //            inflateMenu(R.menu.add_action_menu)
+    //            setOnMenuItemClickListener {
+    //                if (it.itemId == R.id.action_add) {
+    //                    onAddPressed()
+    //                }
+    //                true
+    //            }
+    //        }
+    //    }
 
-//    fun initNewsMenu(
-//        onFavouriteToggled: (isChecked: Boolean) -> Unit,
-//        onSharePressed: () -> Unit
-//    ) {
-//        with(toolbar) {
-//            inflateMenu(R.menu.product_detail_menu)
-//            setOnMenuItemClickListener { menuItem ->
-//                when (menuItem.itemId) {
-//                    R.id.action_add_to_fav -> {
-//                        menuItem.isChecked = !menuItem.isChecked
-//                        onFavouriteToggled(menuItem.isChecked)
-//                        true
-//                    }
-//                    R.id.action_share -> {
-//                        onSharePressed()
-//                        true
-//                    }
-//                    else -> false
-//                }
-//            }
-//        }
-//    }
+    //    fun initSaveMenu(
+    //        onSavePressed: () -> Unit
+    //    ) {
+    //        with(toolbar) {
+    //            inflateMenu(R.menu.save_action_menu)
+    //            setOnMenuItemClickListener {
+    //                if (it.itemId == R.id.action_save) {
+    //                    onSavePressed()
+    //                }
+    //                true
+    //            }
+    //        }
+    //    }
 
-//    fun initFilterMenu(
-//        onClearPressed: () -> Unit
-//    ) {
-//        with(toolbar) {
-//            inflateMenu(R.menu.filters_menu)
-//            setOnMenuItemClickListener {
-//                if (it.itemId == R.id.action_clear_filters) {
-//                    onClearPressed()
-//                }
-//                true
-//            }
-//        }
-//    }
+    //    fun initNewsMenu(
+    //        onFavouriteToggled: (isChecked: Boolean) -> Unit,
+    //        onSharePressed: () -> Unit
+    //    ) {
+    //        with(toolbar) {
+    //            inflateMenu(R.menu.product_detail_menu)
+    //            setOnMenuItemClickListener { menuItem ->
+    //                when (menuItem.itemId) {
+    //                    R.id.action_add_to_fav -> {
+    //                        menuItem.isChecked = !menuItem.isChecked
+    //                        onFavouriteToggled(menuItem.isChecked)
+    //                        true
+    //                    }
+    //                    R.id.action_share -> {
+    //                        onSharePressed()
+    //                        true
+    //                    }
+    //                    else -> false
+    //                }
+    //            }
+    //        }
+    //    }
 
-//    fun initSearchMenu(
-//        onSearchPressed: () -> Unit
-//    ) {
-//        with(toolbar) {
-//            inflateMenu(R.menu.categories_menu)
-//            setOnMenuItemClickListener {
-//                when (it.itemId) {
-//                    R.id.action_search -> onSearchPressed()
-//                }
-//                true
-//            }
-//        }
-//    }
+    //    fun initFilterMenu(
+    //        onClearPressed: () -> Unit
+    //    ) {
+    //        with(toolbar) {
+    //            inflateMenu(R.menu.filters_menu)
+    //            setOnMenuItemClickListener {
+    //                if (it.itemId == R.id.action_clear_filters) {
+    //                    onClearPressed()
+    //                }
+    //                true
+    //            }
+    //        }
+    //    }
 
-//    fun initCloseMenu(
-//        onClosePressed: () -> Unit
-//    ) {
-//        with(toolbar) {
-//            inflateMenu(R.menu.close_menu)
-//            setOnMenuItemClickListener {
-//                when (it.itemId) {
-//                    R.id.action_close -> onClosePressed()
-//                }
-//                true
-//            }
-//        }
-//    }
+    //    fun initSearchMenu(
+    //        onSearchPressed: () -> Unit
+    //    ) {
+    //        with(toolbar) {
+    //            inflateMenu(R.menu.categories_menu)
+    //            setOnMenuItemClickListener {
+    //                when (it.itemId) {
+    //                    R.id.action_search -> onSearchPressed()
+    //                }
+    //                true
+    //            }
+    //        }
+    //    }
 
-//    fun setIconAlpha(@IdRes iconId: Int, alpha: Float) {
-//        toolbar.menu?.findItem(iconId)?.icon?.apply {
-//            mutate()
-//            setAlpha((alpha * 255).roundToInt())
-//        }
-//    }
+    //    fun initCloseMenu(
+    //        onClosePressed: () -> Unit
+    //    ) {
+    //        with(toolbar) {
+    //            inflateMenu(R.menu.close_menu)
+    //            setOnMenuItemClickListener {
+    //                when (it.itemId) {
+    //                    R.id.action_close -> onClosePressed()
+    //                }
+    //                true
+    //            }
+    //        }
+    //    }
+
+    //    fun setIconAlpha(@IdRes iconId: Int, alpha: Float) {
+    //        toolbar.menu?.findItem(iconId)?.icon?.apply {
+    //            mutate()
+    //            setAlpha((alpha * 255).roundToInt())
+    //        }
+    //    }
 
     fun setNavigationOnClickListener(onClick: () -> Unit) {
         toolbar.setNavigationOnClickListener { onClick() }

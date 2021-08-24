@@ -17,7 +17,7 @@
     <androidx.recyclerview.widget.RecyclerView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:id="@+id/recyclerView"
+        android:id="@+id/sourceNewsRV"
         android:clipToPadding="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

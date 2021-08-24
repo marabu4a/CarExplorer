@@ -2,84 +2,46 @@ package com.example.carexplorer.ui.base
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.extensions.LayoutContainer
 
 abstract class BaseAdapter<vh : BaseAdapter.BaseViewHolder> : RecyclerView.Adapter<vh>() {
 
-    var items : ArrayList<Any> = ArrayList()
-    var onClick: OnClick? = null
-
-    fun refreshData(list : List<Any>) {
-        items.clear()
-        items.addAll(list)
-        notifyDataSetChanged()
-    }
+    var items: ArrayList<Any> = ArrayList()
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-
     override fun onBindViewHolder(holder: vh, position: Int) {
-            holder.bind(items[position])
-            holder.onClick = onClick
+        bind(holder, items, position)
     }
 
-    fun getItem(position: Int) : Any {
+    fun getItem(position: Int): Any {
         return items[position]
-   }
-
-   fun add(item : Any) {
-       items.add(item)
-   }
-
-   fun add(listAny : List<Any>) {
-       items.addAll(listAny)
-  }
-
-   fun clear() {
-       items.clear()
-   }
-
-
-
-
-
-    fun setOnClick(click : (Any?,View) -> Unit,longClick : (Any?,View) -> Unit = {_,_ ->}) {
-        onClick = object : OnClick {
-            override fun onClick(item: Any?, view: View) {
-                click(item,view)
-            }
-
-            override fun onLongClick(item: Any?, view: View) {
-                longClick(item,view)
-            }
-
-        }
-
     }
-    interface OnClick {
-        fun onClick(item: Any?,view: View)
-        fun onLongClick(item: Any?,view: View)
+
+    fun refresh(list: List<Any>) {
+        items.clear()
+        items.addAll(list)
+        notifyDataSetChanged()
     }
-    abstract class BaseViewHolder(protected val view: View) : RecyclerView.ViewHolder(view) {
-        abstract fun onBind(item : Any)
 
-        var onClick : OnClick? = null
-        var item : Any? = null
-
-        init {
-            view.setOnClickListener {
-                onClick?.onClick(item,it)
-            }
-            view.setOnLongClickListener {
-                onClick?.onLongClick(item,it)
-                false
-            }
-        }
-        fun bind(item: Any) {
-            this.item = item
-
-            onBind(item)
-        }
+    fun add(listAny: List<Any>) {
+        clear()
+        items.addAll(listAny)
+        notifyDataSetChanged()
     }
+
+    fun clear() {
+        items.clear()
+    }
+
+    open fun bind(
+        holder: RecyclerView.ViewHolder,
+        data: ArrayList<Any>,
+        position: Int
+    ) {
+    }
+
+    abstract class BaseViewHolder(protected val view: View) : LayoutContainer, RecyclerView.ViewHolder(view)
 }

@@ -1,6 +1,6 @@
 package com.example.carexplorer.data.model.retrofit.response
 
-import com.example.carexplorer.util.ServerBaseException
+import com.example.carexplorer.helpers.util.ServerBaseException
 import com.google.gson.Gson
 import okhttp3.ResponseBody
 import retrofit2.Response

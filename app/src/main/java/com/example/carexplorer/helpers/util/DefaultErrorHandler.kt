@@ -1,4 +1,4 @@
-package com.example.carexplorer.util
+package com.example.carexplorer.helpers.util
 
 import android.content.Context
 import com.example.carexplorer.R

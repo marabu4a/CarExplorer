@@ -7,78 +7,74 @@ import android.view.animation.Animation
 import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.CompoundButton
+import androidx.recyclerview.widget.RecyclerView
 import com.example.carexplorer.R
-import com.example.carexplorer.data.model.CachedArticle
+import com.example.carexplorer.data.model.enities.News
+import com.example.carexplorer.helpers.util.setOnDebouncedClickListener
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_news.view.*
 
-class NewsAdapter : BaseAdapter<NewsViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        return NewsViewHolder(
-            layoutInflater.inflate(
-                R.layout.item_news,
-                parent,
-                false
-            )
+class NewsAdapter(
+    private val onNewsClick: (News) -> Unit,
+    private val onFavoriteClick: (News) -> Unit
+) : BaseAdapter<NewsAdapter.NewsViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder = NewsViewHolder(
+        LayoutInflater.from(parent.context).inflate(
+            R.layout.item_news,
+            parent,
+            false
         )
-    }
+    )
 
-}
-
-class NewsViewHolder(view: View) : BaseAdapter.BaseViewHolder(view) {
-    init {
-        view.setOnClickListener {
-            onClick?.onClick(item,it)
-        }
-        view.button_favorite_news.setOnClickListener {
-            onClick?.onClick(item,it)
-        }
-        view.setOnLongClickListener {
-            onClick?.onLongClick(item, it)
-            true
-        }
-    }
-    override fun onBind(item: Any) {
-        (item as CachedArticle).let {
-
+    override fun bind(
+        holder: RecyclerView.ViewHolder,
+        data: ArrayList<Any>,
+        position: Int
+    ) = with((holder as NewsViewHolder).containerView) {
+        var item = data[position] as News
+        if (item.image.isNotEmpty()) {
             Picasso
                 .get()
-                .load(it.image)
+                .load(item.image)
                 .error(R.drawable.placeholder)
-                .into(view.ivNews, object : Callback {
+                .into(ivNews, object : Callback {
                     override fun onSuccess() {
-                        view.cpv.visibility = View.GONE
+                        cpv.visibility = View.GONE
                     }
 
                     override fun onError(e: Exception?) {
-                        Picasso.get().load(R.drawable.placeholder).into(view.ivNews)
-                        view.cpv.visibility = View.GONE
+                        Picasso.get().load(R.drawable.placeholder).into(ivNews)
+                        cpv.visibility = View.GONE
                     }
 
                 })
-            view.tvNews.text = it.title
-            view.tvPubDate.text = it.pubDate
-            view.tvNameSource.text = it.source
-            if (it.cached) {
-                view.button_favorite_news.isChecked = true
-            }
-            val scaleAnimation = ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f)
-            scaleAnimation.duration = 500
-            val bounceInterpolator = BounceInterpolator()
-            scaleAnimation.interpolator = bounceInterpolator
-
-            view.button_favorite_news.setOnCheckedChangeListener(object:View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
-                    p0?.startAnimation(scaleAnimation)
-                }
-
-                override fun onClick(p0: View?) {
-                }
-            })
         }
+        tvNews.text = item.title
+        tvPubDate.text = item.date
+        tvNameSource.text = item.sourceName
+        if (item.isFavorite) {
+            button_favorite_news.isChecked = true
+        }
+        val scaleAnimation = ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f)
+        scaleAnimation.duration = 500
+        val bounceInterpolator = BounceInterpolator()
+        scaleAnimation.interpolator = bounceInterpolator
+        button_favorite_news.setOnCheckedChangeListener(object : View.OnClickListener,
+            CompoundButton.OnCheckedChangeListener {
+            override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+                p0?.startAnimation(scaleAnimation)
+                item = item.copy(isFavorite = p1)
+            }
+
+            override fun onClick(p0: View?) {
+            }
+        })
+        button_favorite_news.setOnDebouncedClickListener { onFavoriteClick(item) }
+        setOnDebouncedClickListener { onNewsClick(item) }
     }
 
+    class NewsViewHolder(override val containerView: View) : BaseAdapter.BaseViewHolder(containerView)
 }
+
