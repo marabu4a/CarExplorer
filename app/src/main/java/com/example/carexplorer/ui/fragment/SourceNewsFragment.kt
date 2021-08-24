@@ -1,41 +1,35 @@
 package com.example.carexplorer.ui.fragment
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carexplorer.R
-import com.example.carexplorer.data.model.CachedArticle
+import com.example.carexplorer.data.model.enities.News
 import com.example.carexplorer.data.model.enities.Source
 import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.helpers.navigation.parentRouter
+import com.example.carexplorer.helpers.util.ParcelableArgsBundler
 import com.example.carexplorer.presenter.SourceNewsPresenter
 import com.example.carexplorer.presenter.SourceNewsPresenterFactory
 import com.example.carexplorer.ui.adapter.NewsAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
-import com.example.carexplorer.ui.base.BaseListFragment
-import com.example.carexplorer.util.ParcelableArgsBundler
+import com.example.carexplorer.ui.base.BaseFragment
 import com.example.carexplorer.view.SourceNewsView
 import com.google.android.material.snackbar.Snackbar
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.haveno_items.*
-import kotlinx.android.synthetic.main.item_news.view.*
-import kotlinx.android.synthetic.main.nothing_search.*
 import moxy.ktx.moxyPresenter
-import java.util.*
+import timber.log.Timber
 import javax.inject.Inject
 
-
 @FragmentWithArgs
-class SourceNewsFragment : BaseListFragment(), SourceNewsView {
-    override val viewAdapter: BaseAdapter<*> = NewsAdapter()
-
+class SourceNewsFragment : BaseFragment(), SourceNewsView {
+    private var sourceNewsAdapter: BaseAdapter<*>? = null
     override val layoutRes: Int = R.layout.fragment_news
-    private val listNews: MutableList<CachedArticle> = mutableListOf()
-    private val displayList: MutableList<CachedArticle> = mutableListOf()
+    private val listNews: MutableList<News> = mutableListOf()
+    private val displayList: MutableList<News> = mutableListOf()
 
     @Arg(bundler = ParcelableArgsBundler::class)
     lateinit var source: Source
@@ -62,58 +56,70 @@ class SourceNewsFragment : BaseListFragment(), SourceNewsView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.fetchNews(source.url, source.name)
+        sourcesNewsToolbar.initSearchMenu {
+
+        }
+        sourceNewsAdapter = NewsAdapter(
+            onFavoriteClick = {
+                if (it.isFavorite) {
+                    if (it.isFavorite) {
+                        presenter.saveArticleToDb(it)
+                    } else {
+                        presenter.removeArticleFromDb(it)
+                    }
+                }
+            },
+            onNewsClick = {
+                parentRouter.navigateTo(Screens.WebPageScreen(it.title,it.link))
+            }
+        )
+        sourceNewsRV.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = sourceNewsAdapter
+        }
+        presenter.fetchNews(source.name)
         sourcesNewsToolbar.title = source.name
         sourcesNewsToolbar.setNavigationOnClickListener { onBackPressed() }
-        initClickListener()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_search,menu)
-        val searchItem = menu.findItem(R.id.search)
-
-        if (searchItem != null) {
-            val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
-            searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean { return true }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    if (newText!!.isNotEmpty()) {
-                        displayList.clear()
-                        val search = newText.toLowerCase(Locale.getDefault())
-                        listNews.forEach {
-                            if (it.title.toLowerCase(Locale.getDefault()).contains(search)) {
-                                displayList.add(it)
-                            }
-                        }
-                        if (displayList.isEmpty()) {
-                            layout_nothing_search.visibility = View.VISIBLE
-                        }
-                        else layout_nothing_search.visibility = View.GONE
-                        viewAdapter.refreshData(displayList)
-                    }
-                    else {
-                        layout_nothing_search.visibility = View.GONE
-                        displayList.clear()
-                        displayList.addAll(listNews)
-                        viewAdapter.refreshData(displayList)
-                    }
-                    return true
-                }
-            })
-
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.favorites -> {
-                parentRouter.navigateTo(Screens.Favorites())
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
+    //override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    //    super.onCreateOptionsMenu(menu, inflater)
+    //    inflater.inflate(R.menu.menu_search,menu)
+    //    val searchItem = menu.findItem(R.id.search)
+    //
+    //    if (searchItem != null) {
+    //        val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
+    //        searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+    //            override fun onQueryTextSubmit(query: String?): Boolean { return true }
+    //
+    //            override fun onQueryTextChange(newText: String?): Boolean {
+    //                if (newText!!.isNotEmpty()) {
+    //                    displayList.clear()
+    //                    val search = newText.toLowerCase(Locale.getDefault())
+    //                    listNews.forEach {
+    //                        if (it.title.toLowerCase(Locale.getDefault()).contains(search)) {
+    //                            displayList.add(it)
+    //                        }
+    //                    }
+    //                    if (displayList.isEmpty()) {
+    //                        layout_nothing_search.visibility = View.VISIBLE
+    //                    }
+    //                    else layout_nothing_search.visibility = View.GONE
+    //                    viewAdapter.refresh(displayList)
+    //                }
+    //                else {
+    //                    layout_nothing_search.visibility = View.GONE
+    //                    displayList.clear()
+    //                    displayList.addAll(listNews)
+    //                    viewAdapter.refresh(displayList)
+    //                }
+    //                return true
+    //            }
+    //        })
+    //
+    //    }
+    //}
 
     override fun onBackPressed() {
         parentRouter.exit()
@@ -121,16 +127,15 @@ class SourceNewsFragment : BaseListFragment(), SourceNewsView {
     }
 
 
-    override fun showNews(news: List<CachedArticle>) {
+    override fun showNews(news: List<News>) {
         listNews.addAll(news)
+        Timber.e(news.size.toString())
         if (news.isNullOrEmpty()) {
             layout_haveno_items.visibility = View.VISIBLE
         } else {
             layout_haveno_items.visibility = View.GONE
         }
-        viewAdapter.clear()
-        viewAdapter.add(news)
-        viewAdapter.notifyDataSetChanged()
+        sourceNewsAdapter?.add(news)
     }
 
 
@@ -146,33 +151,12 @@ class SourceNewsFragment : BaseListFragment(), SourceNewsView {
 
     override fun hideLoading() {
         cpvNews.visibility = View.GONE
-        recyclerView.visibility = View.VISIBLE
+        sourceNewsRV.visibility = View.VISIBLE
     }
 
     override fun showLoading() {
         layout_haveno_items.visibility = View.GONE
         cpvNews.visibility = View.VISIBLE
-        recyclerView.visibility = View.GONE
+        sourceNewsRV.visibility = View.GONE
     }
-
-    private fun initClickListener() {
-        viewAdapter.setOnClick(click = { item, v ->
-            (item as CachedArticle).let {
-                when (v.id) {
-                    R.id.button_favorite_news -> {
-                        if (v.button_favorite_news.isChecked) {
-                            presenter.saveArticleToDb(it)
-                        } else {
-                            presenter.removeArticleFromDb(it)
-                        }
-                    }
-                    else -> {
-                        parentRouter.navigateTo(Screens.WebPage(it.title, it.url!!))
-                    }
-                }
-            }
-        }, longClick = { item, v ->
-        })
-    }
-
 }

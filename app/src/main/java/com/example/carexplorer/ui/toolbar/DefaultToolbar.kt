@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.core.view.isVisible
 import com.example.carexplorer.R
-import com.example.carexplorer.util.inflate
+import com.example.carexplorer.helpers.util.inflate
 import kotlinx.android.synthetic.main.component_base_toolbar.view.*
 import kotlinx.android.synthetic.main.component_default_toolbar_title.view.*
 

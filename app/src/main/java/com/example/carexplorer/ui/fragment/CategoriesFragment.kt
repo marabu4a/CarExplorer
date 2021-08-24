@@ -2,7 +2,6 @@ package com.example.carexplorer.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.enities.Category
@@ -12,19 +11,18 @@ import com.example.carexplorer.presenter.CategoriesPresenter
 import com.example.carexplorer.presenter.CategoriesPresenterFactory
 import com.example.carexplorer.ui.adapter.CategoriesAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
-import com.example.carexplorer.ui.base.BaseListFragment
+import com.example.carexplorer.ui.base.BaseFragment
 import com.example.carexplorer.view.CategoriesView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_categories.*
 import moxy.ktx.moxyPresenter
+import timber.log.Timber
 import javax.inject.Inject
 
-
-class CategoriesFragment : BaseListFragment(), CategoriesView {
+class CategoriesFragment : BaseFragment(), CategoriesView {
 
     override val layoutRes: Int = R.layout.fragment_categories
-    override val viewAdapter: BaseAdapter<*> = CategoriesAdapter()
-
+    private var categoriesAdapter: BaseAdapter<*>? = null
 
     companion object {
         val tag = "categoriesFragment"
@@ -39,19 +37,14 @@ class CategoriesFragment : BaseListFragment(), CategoriesView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
-        rView = view.findViewById<RecyclerView>(R.id.recyclerView).apply {
-            layoutManager = lManager
-            adapter = viewAdapter
+        categoriesAdapter = CategoriesAdapter(onCategoryClick = {
+            Timber.e(it.toString())
+            parentRouter.navigateTo(Screens.ListArticlesScreen(it))
+        })
+        categoriesRV.apply {
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             setHasFixedSize(true)
-        }
-
-        presenter.loadCategories()
-
-        setOnItemClickListener { it,v ->
-            (it as Category).let {
-                parentRouter.navigateTo(Screens.ListArticles(it))
-            }
+            adapter = categoriesAdapter
         }
     }
 
@@ -64,18 +57,18 @@ class CategoriesFragment : BaseListFragment(), CategoriesView {
     }
 
     override fun getListCategories(listCategories: List<Category>) {
-        viewAdapter.clear()
-        viewAdapter.add(listCategories)
-        viewAdapter.notifyDataSetChanged()
+        categoriesAdapter?.apply {
+            add(listCategories)
+        }
     }
 
     override fun showLoading() {
-        recyclerView.visibility = View.GONE
+        categoriesRV.visibility = View.GONE
         cpvCategories.visibility = View.VISIBLE
     }
 
     override fun hideLoading() {
-        recyclerView.visibility = View.VISIBLE
+        categoriesRV.visibility = View.VISIBLE
         cpvCategories.visibility = View.GONE
     }
 

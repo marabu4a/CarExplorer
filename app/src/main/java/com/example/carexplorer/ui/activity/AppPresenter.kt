@@ -16,10 +16,19 @@ open class AppPresenter @Inject constructor(
 
     private var shallNavbarBeVisible: Boolean = true
 
+    private var isFirstAttach = true
+
 
     override fun onFirstViewAttach() {
         viewState.showStartScreen()
     }
+
+    //override fun attachView(view: AppView?) {
+    //    if (!isFirstAttach) {
+    //        isFirstAttach = false
+    //        viewState.showStartScreen()
+    //    }
+    //}
 
     fun setBottomNavbarVisibility(isVisible: Boolean) {
         shallNavbarBeVisible = isVisible

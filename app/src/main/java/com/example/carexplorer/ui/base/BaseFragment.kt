@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import com.example.carexplorer.R
+import com.example.carexplorer.helpers.util.hideKeyboard
 import com.example.carexplorer.ui.activity.AppActivity
-import com.example.carexplorer.util.hideKeyboard
 import com.hannesdorfmann.fragmentargs.FragmentArgs
 import dagger.android.support.AndroidSupportInjection
 import moxy.MvpAppCompatFragment

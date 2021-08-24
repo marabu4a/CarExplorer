@@ -6,6 +6,7 @@ import com.example.carexplorer.data.model.retrofit.response.NewsResponse
 import com.example.carexplorer.data.model.retrofit.response.SourcesResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -14,7 +15,8 @@ interface ApiService {
         const val SOURCES = "getSources.php"
         const val ARTICLES_BY_CATEGORY = "getArticlesByCategory.php"
         const val NEWS_BY_SOURCE = "getNewsBySource.php"
-        const val RECENT_NEWS = "getRecentNews.php"
+        const val RECENT_NEWS = "getRandomNews.php"
+        const val POPULAR_NEWS = "getPopularNews.php"
     }
 
     @GET(CATEGORIES)
@@ -24,12 +26,15 @@ interface ApiService {
     suspend fun getSources(): Response<SourcesResponse>
 
     @GET(ARTICLES_BY_CATEGORY)
-    suspend fun getArticlesByCategory(category: String): Response<ArticlesResponse>
+    suspend fun getArticlesByCategory(@Query("category_name") category: String): Response<ArticlesResponse>
 
     @GET(NEWS_BY_SOURCE)
-    suspend fun getNewsBySource(source: String): Response<NewsResponse>
+    suspend fun getNewsBySource(@Query("source_name") source: String): Response<NewsResponse>
 
     @GET(RECENT_NEWS)
     suspend fun getRecentNews(): Response<NewsResponse>
+
+    @GET(POPULAR_NEWS)
+    suspend fun getPopularNews() : Response<NewsResponse>
 
 }

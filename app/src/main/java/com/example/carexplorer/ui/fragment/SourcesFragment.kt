@@ -1,13 +1,11 @@
 package com.example.carexplorer.ui.fragment
 
 import android.os.Bundle
-import android.view.*
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.carexplorer.R
-import com.example.carexplorer.data.model.enities.Source
 import com.example.carexplorer.di.injectViewModel
 import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.helpers.navigation.parentRouter
@@ -15,7 +13,7 @@ import com.example.carexplorer.presenter.SourcesPresenter
 import com.example.carexplorer.presenter.SourcesPresenterFactory
 import com.example.carexplorer.ui.adapter.SourcesAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
-import com.example.carexplorer.ui.base.BaseListFragment
+import com.example.carexplorer.ui.base.BaseFragment
 import com.example.carexplorer.ui.base.mvi.MviBaseFragment
 import com.example.carexplorer.view.SourcesView
 import com.example.carexplorer.viewmodel.SourcesViewModel
@@ -26,12 +24,11 @@ import moxy.ktx.moxyPresenter
 import timber.log.Timber
 import javax.inject.Inject
 
-
-class SourcesFragment : BaseListFragment(), SourcesView,
+class SourcesFragment : BaseFragment(), SourcesView,
     MviBaseFragment<SourcesViewModel.SourcesViewModelState> {
     override val layoutRes: Int = R.layout.fragment_sources
 
-    override val viewAdapter: BaseAdapter<*> = SourcesAdapter()
+    private var sourcesAdapter: BaseAdapter<*>? = null
 
     @Inject
     lateinit var presenterFactory: SourcesPresenterFactory
@@ -55,70 +52,36 @@ class SourcesFragment : BaseListFragment(), SourcesView,
         sourcesViewModel = injectViewModel(viewModelFactory)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        lManager = GridLayoutManager(requireActivity(), 2)
-        (lManager as GridLayoutManager).spanSizeLookup =
-            object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return when (position % 3 == 0) {
-                        true -> 2
-                        false -> 1
+        sourcesAdapter = SourcesAdapter(
+            onSourceClick = {
+                parentRouter.navigateTo(Screens.SourceNewsScreen(it))
+            }
+        )
+        sourcesRV.apply {
+            layoutManager = GridLayoutManager(requireActivity(), 2).apply {
+                spanSizeLookup =
+                    object : GridLayoutManager.SpanSizeLookup() {
+                        override fun getSpanSize(position: Int): Int {
+                            return when (position % 3 == 0) {
+                                true -> 2
+                                false -> 1
+                            }
+                        }
                     }
-                }
-
             }
-
-        rView = view.findViewById<RecyclerView>(R.id.recyclerView).apply {
-            layoutManager = lManager
-            adapter = viewAdapter
             setHasFixedSize(true)
-        }
+            adapter = sourcesAdapter
 
-
-        lifecycleScope.launchWhenCreated {
-            sourcesViewModel.status.collectLatest(::render)
-        }
-
-        initClickListener()
-    }
-
-
-    private fun initClickListener() {
-        viewAdapter.setOnClick(click = { it, v ->
-            (it as Source).let {
-                parentRouter.navigateTo(Screens.SourceNews(it))
-            }
-        }, longClick = { it, v -> })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_favorites, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.favorites -> {
-                parentRouter.navigateTo(Screens.Favorites())
+            lifecycleScope.launchWhenCreated {
+                sourcesViewModel.status.collectLatest(::render)
             }
         }
-        return super.onOptionsItemSelected(item)
     }
-
 
     override fun showLoading() {
-        recyclerView.visibility = View.GONE
+        sourcesRV.visibility = View.GONE
         cpvSources.visibility = View.VISIBLE
     }
 
@@ -133,16 +96,14 @@ class SourcesFragment : BaseListFragment(), SourcesView,
             }
             is SourcesViewModel.SourcesViewModelState.Success -> {
                 presenter.stopLoading()
-                viewAdapter.clear()
-                viewAdapter.add(state.data)
-                viewAdapter.notifyDataSetChanged()
+                sourcesAdapter?.add(state.data)
             }
         }
     }
 
     override fun hideLoading() {
         cpvSources.visibility = View.GONE
-        recyclerView.visibility = View.VISIBLE
+        sourcesRV.visibility = View.VISIBLE
     }
 
     override fun showMessage(text: String) {

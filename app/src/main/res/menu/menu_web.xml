@@ -8,10 +8,10 @@
         android:title="Share"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/menuWebFavorites"
-        android:background="?android:attr/selectableItemBackground"
-        android:icon="@drawable/ic_favorite_border_black"
-        android:title="Favorites"
-        app:showAsAction="always" />
+<!--    <item-->
+<!--        android:id="@+id/menuWebFavorites"-->
+<!--        android:background="?android:attr/selectableItemBackground"-->
+<!--        android:icon="@drawable/ic_favorite_border_black"-->
+<!--        android:title="Favorites"-->
+<!--        app:showAsAction="always" />-->
 </menu>

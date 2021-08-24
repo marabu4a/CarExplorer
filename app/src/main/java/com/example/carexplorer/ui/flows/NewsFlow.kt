@@ -7,5 +7,5 @@ import ru.terrakok.cicerone.android.support.SupportAppScreen
 class NewsFlow : FlowFragment() {
     override val flowName: String = "News"
 
-    override fun getLaunchScreen(): SupportAppScreen = Screens.NewsFeed()
+    override fun getLaunchScreen(): SupportAppScreen = Screens.NewsFeedScreens()
 }

@@ -6,22 +6,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.example.carexplorer.ui.toolbar.DefaultToolbar
+    <com.example.carexplorer.ui.toolbar.SpinnerToolbar
         android:id="@+id/recentFeedToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        app:layout_constraintBottom_toTopOf="@id/categoriesRV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/recent_feed_title" />
+        app:spinnerTitle="Свежее"/>
 
     <androidx.recyclerview.widget.RecyclerView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recentFeedToolbar"
         android:layout_width="match_parent"
-        android:id="@+id/recyclerView"
+        android:id="@+id/recentNewsRV"
         android:layout_height="wrap_content">
 
     </androidx.recyclerview.widget.RecyclerView>

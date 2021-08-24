@@ -1,7 +1,7 @@
 package com.example.carexplorer.di
 
+import com.example.carexplorer.helpers.util.DefaultErrorHandler
 import com.example.carexplorer.ui.base.ErrorHandler
-import com.example.carexplorer.util.DefaultErrorHandler
 import dagger.Binds
 import dagger.Module
 

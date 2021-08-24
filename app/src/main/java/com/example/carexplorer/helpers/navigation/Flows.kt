@@ -9,19 +9,19 @@ import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 object Flows {
 
-    object Sources : SupportAppScreen() {
+    object SourcesScreenFlow : SupportAppScreen() {
         override fun getFragment(): Fragment = SourcesFlow()
     }
 
-    object Favorites : SupportAppScreen() {
+    object FavoritesScreenFlow : SupportAppScreen() {
         override fun getFragment(): Fragment = FavoritesFlow()
     }
 
-    object Categories : SupportAppScreen() {
+    object CategoriesScreenFlow : SupportAppScreen() {
         override fun getFragment(): Fragment = CategoriesFlow()
     }
 
-    object News : SupportAppScreen() {
+    object NewsScreenFlow : SupportAppScreen() {
         override fun getFragment(): Fragment = NewsFlow()
     }
 }
