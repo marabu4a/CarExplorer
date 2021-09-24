@@ -16,6 +16,7 @@ import com.example.carexplorer.presenter.FavoritesPresenter
 import com.example.carexplorer.presenter.FavoritesPresenterFactory
 import com.example.carexplorer.ui.adapter.FavoritesAdapter
 import com.example.carexplorer.ui.base.BaseFragment
+import com.example.carexplorer.ui.fragment.webpage.WebPageBundle
 import com.example.carexplorer.view.FavoritesView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_favorites.*
@@ -115,7 +116,15 @@ class FavoritesFragment : BaseFragment(), FavoritesView {
     private fun onItemClick(item: Favorite) {
         when (item) {
             is News -> {
-                parentRouter.navigateTo(Screens.WebPageScreen(item.title,item.link))
+                parentRouter.navigateTo(
+                    Screens.WebPageScreen(
+                        WebPageBundle(
+                            item.link,
+                            item.title,
+                            item.image
+                        )
+                    )
+                )
             }
             is Article -> {
                 parentRouter.navigateTo(Screens.ArticleScreen(item))

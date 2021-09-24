@@ -8,6 +8,7 @@ import com.example.carexplorer.ui.flows.FavoritesFlow
 import com.example.carexplorer.ui.flows.NewsFlow
 import com.example.carexplorer.ui.flows.SourcesFlow
 import com.example.carexplorer.ui.fragment.*
+import com.example.carexplorer.ui.fragment.webpage.WebPageFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule

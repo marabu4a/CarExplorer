@@ -10,10 +10,9 @@ import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.enities.News
+import com.example.carexplorer.helpers.setImageUrl
 import com.example.carexplorer.helpers.util.setOnDebouncedClickListener
 import com.example.carexplorer.ui.base.BaseAdapter
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_news.view.*
 
 class NewsAdapter(
@@ -35,21 +34,9 @@ class NewsAdapter(
     ) = with((holder as NewsViewHolder).containerView) {
         var item = data[position] as News
         if (item.image.isNotEmpty()) {
-            Picasso
-                .get()
-                .load(item.image)
-                .error(R.drawable.placeholder)
-                .into(ivNews, object : Callback {
-                    override fun onSuccess() {
-                        cpv.visibility = View.GONE
-                    }
-
-                    override fun onError(e: Exception?) {
-                        Picasso.get().load(R.drawable.placeholder).into(ivNews)
-                        cpv.visibility = View.GONE
-                    }
-
-                })
+            ivNews.setImageUrl(
+                item.image
+            )
         }
         tvNews.text = item.title
         tvPubDate.text = item.date

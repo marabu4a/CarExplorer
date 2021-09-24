@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:layout_margin="10dp"
     app:cardCornerRadius="10dp"
     app:cardElevation="10dp"
@@ -17,35 +15,17 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground">
 
-        <RelativeLayout
-            android:id="@+id/rl"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivNews"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            app:layout_constraintTop_toTopOf="@id/clNews">
+            android:layout_height="175dp"
+            android:foreground="@drawable/gradient"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/test_image" />
 
-            <ImageView
-                android:id="@+id/ivNews"
-                android:layout_width="match_parent"
-                android:layout_height="175dp"
-                android:foreground="@drawable/gradient"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/test_image" />
-
-            <com.github.rahatarmanahmed.cpv.CircularProgressView
-                android:id="@+id/cpv"
-                android:layout_width="@dimen/loaded_size"
-                android:layout_height="@dimen/loaded_size"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center_vertical"
-                android:visibility="visible"
-                app:cpv_animAutostart="true"
-                app:cpv_color="@color/violet"
-                app:cpv_indeterminate="true" />
-
-        </RelativeLayout>
-
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvNews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,7 +34,7 @@
             android:fontFamily="@font/futura_pt_heavy"
             android:textColor="@color/black"
             android:textSize="19sp"
-            app:layout_constraintTop_toBottomOf="@+id/rl"
+            app:layout_constraintTop_toBottomOf="@+id/ivNews"
             tools:text="Получается что это новость" />
 
         <View

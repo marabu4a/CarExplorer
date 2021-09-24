@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_sources.*
 import kotlinx.coroutines.flow.collectLatest
 import moxy.ktx.moxyPresenter
+import ru.terrakok.cicerone.navigateToScreen
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -56,7 +57,7 @@ class SourcesFragment : BaseFragment(), SourcesView,
         super.onViewCreated(view, savedInstanceState)
         sourcesAdapter = SourcesAdapter(
             onSourceClick = {
-                parentRouter.navigateTo(Screens.SourceNewsScreen(it))
+                parentRouter.navigateToScreen(Screens.SourceNewsScreen(it))
             }
         )
         sourcesRV.apply {

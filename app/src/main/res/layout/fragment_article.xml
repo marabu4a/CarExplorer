@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <com.example.carexplorer.ui.toolbar.DefaultToolbar
         android:id="@+id/articleToolbar"
         android:layout_width="match_parent"
@@ -25,15 +24,25 @@
     <!--        app:layout_constraintTop_toBottomOf="@id/articleToolbar"-->
     <!--        tools:src="@drawable/placeholder_picture" />-->
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/articlePreviewImage"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:transitionName="articlePreview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/articleToolbar" />
+
     <WebView
         android:id="@+id/articleWebText"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/articleToolbar" />
+        app:layout_constraintTop_toBottomOf="@id/articlePreviewImage" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
