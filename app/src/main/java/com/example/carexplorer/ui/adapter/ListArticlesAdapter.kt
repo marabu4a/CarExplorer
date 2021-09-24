@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_preview_article.view.*
 
 class ListArticlesAdapter(
-    private val onArticleClick: (Article) -> Unit,
+    private val onArticleClick: (Int, Article) -> Unit,
     private val onFavoriteClick: (Article) -> Unit
 ) : BaseAdapter<ListArticlesAdapter.ListArticlesViewHolder>() {
 
@@ -31,12 +31,13 @@ class ListArticlesAdapter(
         position: Int
     ) = with((holder as ListArticlesViewHolder).containerView) {
         var item = data[position] as Article
-        setOnDebouncedClickListener { onArticleClick(item) }
+        setOnDebouncedClickListener { onArticleClick(position, item) }
         tvNameArticle.text = item.title
         Picasso.get().load(item.image).into(ivImageArticle, object : Callback {
             override fun onSuccess() { cpvListArticles.visibility = View.GONE }
             override fun onError(e: Exception?) {}
         })
+        ivImageArticle.transitionName = "articlePreview${position}"
         val scaleAnimation = ScaleAnimation(0.7f, 1.0f, 0.7f, 1.0f, Animation.RELATIVE_TO_SELF, 0.7f, Animation.RELATIVE_TO_SELF, 0.7f)
         scaleAnimation.duration = 500
         val bounceInterpolator = BounceInterpolator()

@@ -44,12 +44,12 @@ class FavoritesAdapter(
                                 .error(R.drawable.placeholder)
                                 .into(ivNews, object : Callback {
                                     override fun onSuccess() {
-                                        cpv.visibility = View.GONE
+                                        //cpv.visibility = View.GONE
                                     }
 
                                     override fun onError(e: Exception?) {
                                         Picasso.get().load(R.drawable.placeholder).into(ivNews)
-                                        cpv.visibility = View.GONE
+                                        //cpv.visibility = View.GONE
                                     }
 
                                 })

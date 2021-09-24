@@ -8,6 +8,7 @@ import com.example.carexplorer.data.model.enities.Article
 import com.example.carexplorer.data.model.enities.Category
 import com.example.carexplorer.helpers.navigation.Screens
 import com.example.carexplorer.helpers.navigation.parentRouter
+import com.example.carexplorer.helpers.navigation.sharedtransition.AnimateArticlePreviewTanstionSet
 import com.example.carexplorer.helpers.util.ParcelableArgsBundler
 import com.example.carexplorer.presenter.ListArticlesPresenter
 import com.example.carexplorer.presenter.ListArticlesPresenterFactory
@@ -21,7 +22,10 @@ import com.google.gson.reflect.TypeToken
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_list_articles.*
+import kotlinx.android.synthetic.main.item_preview_article.view.*
 import moxy.ktx.moxyPresenter
+import ru.terrakok.cicerone.navigateToScreen
+import ru.terrakok.cicerone.sharedElementTransition
 import javax.inject.Inject
 
 @FragmentWithArgs
@@ -62,8 +66,25 @@ class ListArticlesFragment : BaseFragment(), ListArticlesView {
             }
         }
         listArticlesAdapter = ListArticlesAdapter(
-            onArticleClick = {
-                parentRouter.navigateTo(Screens.ArticleScreen(it))
+            onArticleClick = { pos, article ->
+                val viewHolder = listArticlesRV.findViewHolderForAdapterPosition(pos) as? ListArticlesAdapter.ListArticlesViewHolder
+                if (viewHolder == null) {
+                    parentRouter.navigateToScreen(Screens.ArticleScreen(article))
+                    return@ListArticlesAdapter
+                }
+                val imageView = viewHolder.containerView.ivImageArticle
+                parentRouter.sharedElementTransition(
+                    screen = Screens.ArticleScreen(article),
+                    views = listOf(imageView),
+                    sharedTransition = AnimateArticlePreviewTanstionSet(
+                        isBack = true
+                    ),
+                    reenterCurrentFragmentTransition = null,
+                    exitCurrentFragmentTransition = null,
+                    returnSharedTransition = AnimateArticlePreviewTanstionSet(
+                        isBack = false
+                    )
+                )
             },
             onFavoriteClick = { article ->
                 if (article.isFavorite) {

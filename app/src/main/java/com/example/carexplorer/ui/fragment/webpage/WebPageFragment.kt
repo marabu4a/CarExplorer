@@ -1,4 +1,4 @@
-package com.example.carexplorer.ui.fragment
+package com.example.carexplorer.ui.fragment.webpage
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -43,10 +43,7 @@ class WebPageFragment : BaseFragment(), WebPageView {
     override val isBottomBarVisible: Boolean = false
 
     @Arg
-    lateinit var page: String
-
-    @Arg
-    lateinit var title: String
+    lateinit var webPageBundle: WebPageBundle
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,7 +63,7 @@ class WebPageFragment : BaseFragment(), WebPageView {
             }, {})
         }
         setupWebView()
-        presenter.loadUrl(page)
+        presenter.loadUrl(webPageBundle.page)
     }
 
     override fun loadUrl(url: String) {
@@ -127,8 +124,8 @@ class WebPageFragment : BaseFragment(), WebPageView {
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             flags = Intent.FLAG_ACTIVITY_NEW_DOCUMENT
-            putExtra(Intent.EXTRA_SUBJECT, title)
-            putExtra(Intent.EXTRA_TEXT, page)
+            putExtra(Intent.EXTRA_SUBJECT, webPageBundle.title)
+            putExtra(Intent.EXTRA_TEXT, webPageBundle.page)
         }
         startActivity(Intent.createChooser(shareIntent, "News URL"))
     }

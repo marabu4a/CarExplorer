@@ -18,6 +18,7 @@ import com.example.carexplorer.presenter.RecentNewsFeedPresenterFactory
 import com.example.carexplorer.ui.adapter.NewsAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseFragment
+import com.example.carexplorer.ui.fragment.webpage.WebPageBundle
 import com.example.carexplorer.view.RecentFeedView
 import com.example.carexplorer.viewmodel.SourcesViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -77,7 +78,15 @@ class RecentNewsFeedFragment : BaseFragment(), RecentFeedView {
             bottomSheetFilter?.show(childFragmentManager,"BottomSheetFilter")
         }
         newsAdapter = NewsAdapter(onNewsClick = {
-            parentRouter.navigateTo(Screens.WebPageScreen(it.title, it.link))
+            parentRouter.navigateTo(
+                Screens.WebPageScreen(
+                    WebPageBundle(
+                        it.link,
+                        it.title,
+                        it.image
+                    )
+                )
+            )
         },
         onFavoriteClick = { news ->
             if (news.isFavorite) {

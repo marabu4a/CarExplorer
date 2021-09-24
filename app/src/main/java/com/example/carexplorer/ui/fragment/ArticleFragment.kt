@@ -6,6 +6,7 @@ import android.view.View
 import com.example.carexplorer.R
 import com.example.carexplorer.data.model.enities.Article
 import com.example.carexplorer.helpers.navigation.parentRouter
+import com.example.carexplorer.helpers.setImageUrl
 import com.example.carexplorer.helpers.util.HTMLUtil
 import com.example.carexplorer.helpers.util.ParcelableArgsBundler
 import com.example.carexplorer.presenter.ArticlePresenter
@@ -37,6 +38,16 @@ class ArticleFragment : BaseFragment(), ArticleView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+        articlePreviewImage.setImageUrl(
+            article.image,
+            onBitmapCallback = {
+                startPostponedEnterTransition()
+            },
+            onError = {
+                startPostponedEnterTransition()
+            }
+        )
         with(articleToolbar) {
             title = article.title
         }

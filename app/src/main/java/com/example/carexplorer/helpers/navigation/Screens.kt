@@ -5,6 +5,8 @@ import com.example.carexplorer.data.model.enities.Article
 import com.example.carexplorer.data.model.enities.Category
 import com.example.carexplorer.data.model.enities.Source
 import com.example.carexplorer.ui.fragment.*
+import com.example.carexplorer.ui.fragment.webpage.WebPageBundle
+import com.example.carexplorer.ui.fragment.webpage.WebPageFragmentBuilder
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 class Screens {
@@ -33,6 +35,6 @@ class Screens {
         override fun getFragment(): Fragment = SourcesFragment()
     }
 
-    class WebPageScreen(title: String, page: String) :
-        SupportScreen({ WebPageFragmentBuilder(page, title).build() })
+    class WebPageScreen(webPage: WebPageBundle) :
+        SupportScreen({ WebPageFragmentBuilder(webPage).build() })
 }

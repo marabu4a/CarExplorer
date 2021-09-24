@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1071472258369",
+    "project_id": "carexplorer-10678",
+    "storage_bucket": "carexplorer-10678.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071472258369:android:53d638915f44dc5e8c85c0",
+        "android_client_info": {
+          "package_name": "com.example.carexplorer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1071472258369-9hp1ugejebhusgcaks5h9cdo3e03jsgr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdHH4ec8OCK3ejGF7BIVPs7xWfnATF1O8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1071472258369-9hp1ugejebhusgcaks5h9cdo3e03jsgr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

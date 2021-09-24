@@ -14,6 +14,7 @@ import com.example.carexplorer.presenter.SourceNewsPresenterFactory
 import com.example.carexplorer.ui.adapter.NewsAdapter
 import com.example.carexplorer.ui.base.BaseAdapter
 import com.example.carexplorer.ui.base.BaseFragment
+import com.example.carexplorer.ui.fragment.webpage.WebPageBundle
 import com.example.carexplorer.view.SourceNewsView
 import com.google.android.material.snackbar.Snackbar
 import com.hannesdorfmann.fragmentargs.annotation.Arg
@@ -21,6 +22,7 @@ import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.haveno_items.*
 import moxy.ktx.moxyPresenter
+import ru.terrakok.cicerone.navigateToScreen
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -70,7 +72,15 @@ class SourceNewsFragment : BaseFragment(), SourceNewsView {
                 }
             },
             onNewsClick = {
-                parentRouter.navigateTo(Screens.WebPageScreen(it.title,it.link))
+                parentRouter.navigateToScreen(
+                    Screens.WebPageScreen(
+                        WebPageBundle(
+                            it.link,
+                            it.title,
+                            it.image
+                        )
+                    )
+                )
             }
         )
         sourceNewsRV.apply {
