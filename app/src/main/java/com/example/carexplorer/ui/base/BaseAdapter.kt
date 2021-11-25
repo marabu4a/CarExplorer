@@ -1,10 +1,8 @@
 package com.example.carexplorer.ui.base
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.extensions.LayoutContainer
 
-abstract class BaseAdapter<vh : BaseAdapter.BaseViewHolder> : RecyclerView.Adapter<vh>() {
+abstract class BaseAdapter<vh : BaseViewHolder> : RecyclerView.Adapter<vh>() {
 
     var items: ArrayList<Any> = ArrayList()
 
@@ -43,5 +41,4 @@ abstract class BaseAdapter<vh : BaseAdapter.BaseViewHolder> : RecyclerView.Adapt
     ) {
     }
 
-    abstract class BaseViewHolder(protected val view: View) : LayoutContainer, RecyclerView.ViewHolder(view)
 }

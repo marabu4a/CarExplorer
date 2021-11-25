@@ -40,7 +40,7 @@ abstract class BaseFragment : MvpAppCompatFragment() {
         savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(layoutRes, container, false).also {
-            Timber.v("onCreateView ${javaClass.simpleName}")
+            Timber.i("onCreateView ${javaClass.simpleName}")
         }
     }
 

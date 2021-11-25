@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlRecent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rlRecent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.example.carexplorer.ui.toolbar.SpinnerToolbar
+    <com.example.carexplorer.ui.toolbar.SimpleToolbar
         android:id="@+id/recentFeedToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/categoriesRV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:spinnerTitle="Свежее"/>
+        app:spinnerTitle="Свежее" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recentFeedToolbar"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:id="@+id/recentNewsRV"
-        android:layout_height="wrap_content">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <com.github.rahatarmanahmed.cpv.CircularProgressView
-        android:layout_centerInParent="true"
-        android:id="@+id/cpvRecentFeed"
-        android:layout_width="@dimen/loaded_size"
-        android:layout_height="@dimen/loaded_size"
-        android:layout_gravity="center"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:cpv_indeterminate="true"
-        app:cpv_animAutostart="true"
-        app:cpv_color="@color/violet" />
+        app:layout_constraintTop_toBottomOf="@id/recentFeedToolbar">
 
-    <include layout="@layout/nothing_search" />
+        <com.example.carexplorer.ui.adapter.news.NewsLoadingPlaceholderView
+            android:id="@+id/recentNewsShimmer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:shimmer_auto_start="false" />
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recentNewsRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recentFeedToolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

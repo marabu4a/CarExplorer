@@ -12,6 +12,7 @@ import com.example.carexplorer.R
 import com.example.carexplorer.data.model.enities.Article
 import com.example.carexplorer.helpers.util.setOnDebouncedClickListener
 import com.example.carexplorer.ui.base.BaseAdapter
+import com.example.carexplorer.ui.base.BaseViewHolder
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_preview_article.view.*
@@ -21,9 +22,12 @@ class ListArticlesAdapter(
     private val onFavoriteClick: (Article) -> Unit
 ) : BaseAdapter<ListArticlesAdapter.ListArticlesViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListArticlesViewHolder
-        = ListArticlesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_preview_article, parent, false))
-
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ListArticlesViewHolder = ListArticlesViewHolder(
+        LayoutInflater.from(parent.context).inflate(R.layout.item_preview_article, parent, false)
+    )
 
     override fun bind(
         holder: RecyclerView.ViewHolder,
@@ -60,6 +64,6 @@ class ListArticlesAdapter(
         }
     }
 
-    class ListArticlesViewHolder(override val containerView: View) : BaseAdapter.BaseViewHolder(containerView)
+    class ListArticlesViewHolder(override val containerView: View) : BaseViewHolder(containerView)
 }
 

@@ -13,6 +13,7 @@ import com.example.carexplorer.data.model.enities.News
 import com.example.carexplorer.helpers.setImageUrl
 import com.example.carexplorer.helpers.util.setOnDebouncedClickListener
 import com.example.carexplorer.ui.base.BaseAdapter
+import com.example.carexplorer.ui.base.BaseViewHolder
 import kotlinx.android.synthetic.main.item_news.view.*
 
 class NewsAdapter(
@@ -62,6 +63,6 @@ class NewsAdapter(
         setOnDebouncedClickListener { onNewsClick(item) }
     }
 
-    class NewsViewHolder(override val containerView: View) : BaseAdapter.BaseViewHolder(containerView)
+    class NewsViewHolder(override val containerView: View) : BaseViewHolder(containerView)
 }
 
