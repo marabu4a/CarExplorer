@@ -31,6 +31,11 @@ abstract class BasePresenter<V : MvpView>(
         }
     }
 
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        Timber.i("onFirstViewAttach ${this.javaClass.name}")
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         scope.cancel()

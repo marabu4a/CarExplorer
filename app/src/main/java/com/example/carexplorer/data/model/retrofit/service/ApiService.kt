@@ -1,12 +1,8 @@
 package com.example.carexplorer.data.model.retrofit.service
 
-import com.example.carexplorer.data.model.retrofit.response.ArticlesResponse
-import com.example.carexplorer.data.model.retrofit.response.CategoriesResponse
-import com.example.carexplorer.data.model.retrofit.response.NewsResponse
-import com.example.carexplorer.data.model.retrofit.response.SourcesResponse
+import com.example.carexplorer.data.model.retrofit.response.*
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -15,8 +11,9 @@ interface ApiService {
         const val SOURCES = "getSources.php"
         const val ARTICLES_BY_CATEGORY = "getArticlesByCategory.php"
         const val NEWS_BY_SOURCE = "getNewsBySource.php"
-        const val RECENT_NEWS = "getRandomNews.php"
+        const val RANDOM_NEWS = "getRandomNews.php"
         const val POPULAR_NEWS = "getPopularNews.php"
+        const val NEWS_PER_PAGE = "getNewsPerPage.php"
     }
 
     @GET(CATEGORIES)
@@ -31,10 +28,16 @@ interface ApiService {
     @GET(NEWS_BY_SOURCE)
     suspend fun getNewsBySource(@Query("source_name") source: String): Response<NewsResponse>
 
-    @GET(RECENT_NEWS)
-    suspend fun getRecentNews(): Response<NewsResponse>
+    @GET(RANDOM_NEWS)
+    suspend fun getRandomNews(): Response<NewsResponse>
 
     @GET(POPULAR_NEWS)
-    suspend fun getPopularNews() : Response<NewsResponse>
+    suspend fun getPopularNews(): Response<NewsResponse>
+
+    @FormUrlEncoded
+    @POST(NEWS_PER_PAGE)
+    suspend fun getNewsPerPage(
+        @FieldMap params: Map<String, Int>
+    ): Response<NewsPagingResponse>
 
 }

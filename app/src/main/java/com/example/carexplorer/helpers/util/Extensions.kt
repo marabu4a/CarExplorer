@@ -11,20 +11,21 @@ import androidx.core.content.ContextCompat
 fun View.showKeyboard() {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     this.requestFocus()
-    imm.showSoftInput(this,0)
+    imm.showSoftInput(this, 0)
 }
 
-fun View.hideKeyboard() : Boolean {
+fun View.hideKeyboard(): Boolean {
     try {
         val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        return inputMethodManager.hideSoftInputFromWindow(windowToken,0)
-    } catch (ignored: RuntimeException) {}
+        return inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+    } catch (ignored: RuntimeException) {
+    }
     return false
 }
 
-fun ViewGroup.inflate(@LayoutRes resId: Int, attachTORoot: Boolean) : View =
+fun ViewGroup.inflate(@LayoutRes resId: Int, attachToRoot: Boolean): View =
     LayoutInflater.from(context).inflate(
-        resId,this,attachTORoot
+        resId, this, attachToRoot
     )
 
 fun View.drawable(@DrawableRes id: Int) = ContextCompat.getDrawable(context, id)

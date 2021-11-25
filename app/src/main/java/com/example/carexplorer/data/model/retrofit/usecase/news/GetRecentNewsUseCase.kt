@@ -11,7 +11,7 @@ class GetRecentNewsUseCase @Inject constructor(
 ) : UseCase<Unit, List<News>> {
 
     override suspend fun execute(params: Unit): List<News> {
-        val result = apiService.getRecentNews()
+        val result = apiService.getRandomNews()
 
         if (result.isSuccessful) {
             return result.body()?.news.orEmpty().mapNotNull { it.toNews() }

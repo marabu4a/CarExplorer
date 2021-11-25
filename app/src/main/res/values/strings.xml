@@ -32,4 +32,5 @@
     <string name="categories_title">Материалы</string>
     <string name="recent_feed_title">Лента</string>
     <string name="webpage_error_loading">К сожалению, при загрузке данных произошла ошибка, попробуйте перезагрузить страницу</string>
+    <string name="news_error_refresh">Перезагрузить</string>
 </resources>

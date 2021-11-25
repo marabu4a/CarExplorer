@@ -43,11 +43,12 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        stethoInterceptor: StethoInterceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient =
         OkHttpClient.Builder()
-            .addNetworkInterceptor(stethoInterceptor)
+            .addNetworkInterceptor(httpLoggingInterceptor.apply {
+                level = HttpLoggingInterceptor.Level.BASIC
+            })
             .connectTimeout(120, TimeUnit.SECONDS)
             .readTimeout(120, TimeUnit.SECONDS)
             .build()
