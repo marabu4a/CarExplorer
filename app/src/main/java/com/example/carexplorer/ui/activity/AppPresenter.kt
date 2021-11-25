@@ -18,10 +18,9 @@ open class AppPresenter @Inject constructor(
 
     private var isFirstAttach = true
 
-
-    override fun onFirstViewAttach() {
-        viewState.showStartScreen()
-    }
+    //override fun onFirstViewAttach() {
+    //    viewState.showStartScreen()
+    //}
 
     //override fun attachView(view: AppView?) {
     //    if (!isFirstAttach) {

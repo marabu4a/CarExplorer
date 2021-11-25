@@ -87,6 +87,7 @@ class AppActivity : MvpAppCompatActivity(), RouterProvider, HasAndroidInjector, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
+        setContentView(R.layout.activity_main)
         setTheme(R.style.AppTheme)
         mainActivityProvider.acitvity = this
 
@@ -94,12 +95,6 @@ class AppActivity : MvpAppCompatActivity(), RouterProvider, HasAndroidInjector, 
         super.onCreate(savedInstanceState)
 
         sourcesViewModel = injectViewModel(viewModelFactory)
-
-        if (savedInstanceState == null) {
-            sourcesViewModel.fetchSources()
-        }
-
-        setContentView(R.layout.activity_main)
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -122,6 +117,11 @@ class AppActivity : MvpAppCompatActivity(), RouterProvider, HasAndroidInjector, 
                     (insets.systemWindowInsetBottom - bottomBar.height).coerceAtLeast(0)
                 )
             } else insets
+        }
+
+        if (savedInstanceState == null) {
+            showStartScreen()
+            sourcesViewModel.fetchSources()
         }
     }
 

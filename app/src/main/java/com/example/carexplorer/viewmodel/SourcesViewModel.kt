@@ -5,7 +5,6 @@ import com.example.carexplorer.data.model.enities.Source
 import com.example.carexplorer.data.model.retrofit.usecase.sources.SourcesRepository
 import com.example.carexplorer.ui.base.mvi.ViewState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -23,18 +22,13 @@ class SourcesViewModel @Inject constructor(
     private val _status = MutableStateFlow<SourcesViewModelState>(SourcesViewModelState.Loading)
     val status: StateFlow<SourcesViewModelState> = _status
 
-    private var sourcesLoadJob: Job? = null
-
     fun fetchSources() {
-        _status.value = SourcesViewModelState.Loading
         getSourcesFlow()
     }
 
-
     private fun getSourcesFlow() {
-        sourcesLoadJob?.cancel()
-        _status.value = SourcesViewModelState.Loading
-        sourcesLoadJob = viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _status.value = SourcesViewModelState.Loading
             sourcesRepo.getSources()
                 .catch { _status.value = SourcesViewModelState.Error(it.message) }
                 .collectLatest {
