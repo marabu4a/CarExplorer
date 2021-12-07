@@ -6,6 +6,7 @@
         <entry key="../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2509057971014493" />
         <entry key="app/src/main/res/layout/fragment_recent_feed.xml" value="0.24351851851851852" />
+        <entry key="app/src/main/res/layout/fragment_webpage.xml" value="0.21666666666666667" />
         <entry key="app/src/main/res/layout/item_news.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_news_error.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_news_loading.xml" value="0.309375" />

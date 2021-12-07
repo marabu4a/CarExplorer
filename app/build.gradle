@@ -5,8 +5,8 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 31
+    buildToolsVersion "31.0.3"
     compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId "com.example.carexplorer"
         minSdkVersion 26
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -36,7 +36,7 @@ kapt {
 }
 
 ext {
-    kotlinCoroutinesVersion = '1.4.2'
+    kotlinCoroutinesVersion = '1.5.0'
     okHttpVersion = '4.9.0'
     gsonVersion = '2.8.6'
     lifecycle = '2.2.0'
@@ -45,6 +45,7 @@ ext {
     daggerVersion = '2.35.1'
     roomVersion = '2.3.0'
     latestFastAdapterRelease = '5.0.0'
+    paging3Version = "3.1.0"
 }
 
 dependencies {
@@ -52,7 +53,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.3.1')
     implementation 'com.google.firebase:firebase-analytics:19.0.0'
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
-
     implementation 'com.github.andrefrsousa:SuperBottomSheet:1.5.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -79,7 +79,7 @@ dependencies {
     implementation 'com.github.magneticflux:kotlin-simplexml-rss:1.1.2', {
         exclude group: 'org.threeten', module: 'threetenbp'
     }
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.4'
 
     implementation "com.arthurivanets.bottomsheet:bottomsheets-core:1.2.0"
 
@@ -95,6 +95,10 @@ dependencies {
     implementation "com.github.kayvannj:PermissionUtils:$permissionUtilsVersion"
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    implementation 'org.adblockplus:adblock-android-webview:3.0'
+    implementation 'org.adblockplus:adblock-android:+'
+    implementation 'org.adblockplus:adblock-android-settings:+'
 
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
@@ -134,7 +138,7 @@ dependencies {
     implementation 'ru.terrakok.cicerone:cicerone:5.1.0'
 
     //Paging3
-    implementation "androidx.paging:paging-runtime-ktx:3.0.1"
+    implementation "androidx.paging:paging-runtime-ktx:$paging3Version"
     implementation "androidx.room:room-runtime:2.3.0"
     implementation "androidx.room:room-ktx:2.3.0"
     kapt "androidx.room:room-compiler:2.3.0"
