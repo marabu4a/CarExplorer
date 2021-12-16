@@ -6,6 +6,7 @@ import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
@@ -14,15 +15,17 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.widget.ImageViewCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.DrawableImageViewTarget
 import com.bumptech.glide.request.target.ImageViewTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.example.carexplorer.R
 import com.example.carexplorer.helpers.util.color
-import com.google.android.gms.common.util.zzc.isMainThread
 import timber.log.Timber
 import kotlin.math.max
 
@@ -41,7 +44,7 @@ fun ImageView.setImageUrl(
      * if we measure view with image it will run in background thread
      * we don't need images for it, so we turn off it
      */
-    if (!isMainThread()) return
+    //if (!isMainThread()) return
     if (url.isNullOrBlank()) {
         error?.let { setImageResource(it) }
         return
@@ -75,6 +78,38 @@ fun ImageView.setCircleImageUrl(
     setCircleImageUri(Uri.parse(url), placeholder, error)
 }
 
+fun View.loadImageUrl(
+    interceptedUrl: String
+): Bitmap =
+    Glide.with(this)
+        .addDefaultRequestListener(object : RequestListener<Any> {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Any>?,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
+
+            override fun onResourceReady(
+                resource: Any?,
+                model: Any?,
+                target: Target<Any>?,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
+        })
+        .asBitmap()
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .load(interceptedUrl)
+        .placeholder(R.drawable.placeholder)
+        .error(R.drawable.placeholder)
+        .submit()
+        .get()
+
 fun ImageView.setCircleImageUri(
     uri: Uri,
     @DrawableRes placeholder: Int? = null,
@@ -84,7 +119,7 @@ fun ImageView.setCircleImageUri(
      * if we measure view with image it will run in background thread
      * we don't need images for it, so we turn off it
      */
-    if (!isMainThread()) return
+    //if (!isMainThread()) return
 
     Glide.with(context)
         .load(uri).apply {
@@ -106,7 +141,7 @@ fun ImageView.setCircleImageBitmap(bitmap: Bitmap) {
      * if we measure view with image it will run in background thread
      * we don't need images for it, so we turn off it
      */
-    if (!isMainThread()) return
+    //if (!isMainThread()) return
 
     Glide.with(context)
         .load(bitmap)

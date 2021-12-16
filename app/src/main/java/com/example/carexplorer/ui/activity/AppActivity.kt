@@ -26,6 +26,7 @@ import dagger.android.HasAndroidInjector
 import kotlinx.android.synthetic.main.activity_main.*
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
+import org.adblockplus.libadblockplus.android.settings.AdblockHelper
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
@@ -129,6 +130,11 @@ class AppActivity : MvpAppCompatActivity(), RouterProvider, HasAndroidInjector, 
         super.onPause()
         Timber.e("onPause")
         navigatorHolder.get().removeNavigator()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        AdblockHelper.get().provider.release()
     }
 
     override fun onBackPressed() {

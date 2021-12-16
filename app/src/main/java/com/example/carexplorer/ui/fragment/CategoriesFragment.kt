@@ -16,6 +16,7 @@ import com.example.carexplorer.view.CategoriesView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_categories.*
 import moxy.ktx.moxyPresenter
+import ru.terrakok.cicerone.navigateToScreen
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -39,7 +40,7 @@ class CategoriesFragment : BaseFragment(), CategoriesView {
         super.onViewCreated(view, savedInstanceState)
         categoriesAdapter = CategoriesAdapter(onCategoryClick = {
             Timber.e(it.toString())
-            parentRouter.navigateTo(Screens.ListArticlesScreen(it))
+            parentRouter.navigateToScreen(Screens.ListArticlesScreen(it))
         })
         categoriesRV.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)

@@ -28,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_recent_feed.*
 import kotlinx.coroutines.launch
 import moxy.ktx.moxyPresenter
+import ru.terrakok.cicerone.navigateToScreen
 import javax.inject.Inject
 
 class RecentNewsFeedFragment : BaseFragment(), RecentFeedView {
@@ -65,7 +66,7 @@ class RecentNewsFeedFragment : BaseFragment(), RecentFeedView {
         super.onViewCreated(view, savedInstanceState)
         recentFeedToolbar.title = currentToolbarTitle
         newsAdapter = NewsPagingAdapter(onNewsClick = {
-            parentRouter.navigateTo(
+            parentRouter.navigateToScreen(
                 Screens.WebPageScreen(
                     WebPageBundle(
                         it.link,

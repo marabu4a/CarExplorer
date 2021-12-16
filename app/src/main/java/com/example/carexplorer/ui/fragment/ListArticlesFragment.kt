@@ -24,6 +24,7 @@ import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_list_articles.*
 import kotlinx.android.synthetic.main.item_preview_article.view.*
 import moxy.ktx.moxyPresenter
+import ru.terrakok.cicerone.exitDefault
 import ru.terrakok.cicerone.navigateToScreen
 import ru.terrakok.cicerone.sharedElementTransition
 import javax.inject.Inject
@@ -127,7 +128,7 @@ class ListArticlesFragment : BaseFragment(), ListArticlesView {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        parentRouter.exit()
+        parentRouter.exitDefault()
     }
 
     //override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

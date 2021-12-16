@@ -11,6 +11,7 @@ import com.google.auto.factory.Provided
 import kotlinx.coroutines.*
 import moxy.InjectViewState
 import ru.terrakok.cicerone.Router
+import ru.terrakok.cicerone.exitDefault
 import javax.inject.Inject
 
 @AutoFactory
@@ -24,7 +25,7 @@ class ListArticlesPresenter @Inject constructor(
     private val presenterJob = Job()
 
     override fun onBackPressed() {
-        router.exit()
+        router.exitDefault()
     }
 
     fun fetchArticles(category: String) {
