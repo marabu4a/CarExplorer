@@ -22,6 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import kotlinx.android.synthetic.main.nothing_items.*
 import moxy.ktx.moxyPresenter
+import ru.terrakok.cicerone.navigateToScreen
 import javax.inject.Inject
 
 class FavoritesFragment : BaseFragment(), FavoritesView {
@@ -116,7 +117,7 @@ class FavoritesFragment : BaseFragment(), FavoritesView {
     private fun onItemClick(item: Favorite) {
         when (item) {
             is News -> {
-                parentRouter.navigateTo(
+                parentRouter.navigateToScreen(
                     Screens.WebPageScreen(
                         WebPageBundle(
                             item.link,
@@ -127,7 +128,7 @@ class FavoritesFragment : BaseFragment(), FavoritesView {
                 )
             }
             is Article -> {
-                parentRouter.navigateTo(Screens.ArticleScreen(item))
+                parentRouter.navigateToScreen(Screens.ArticleScreen(item))
             }
             else -> throw IllegalArgumentException("invalid")
         }

@@ -10,6 +10,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import moxy.InjectViewState
 import ru.terrakok.cicerone.Router
+import ru.terrakok.cicerone.exitDefault
 
 @AutoFactory
 @InjectViewState
@@ -20,7 +21,7 @@ class ArticlePresenter(
     private val presenterJob = Job()
 
     override fun onBackPressed() {
-        router.exit()
+        router.exitDefault()
     }
 
     fun loadArticle(image: String, text: String) {

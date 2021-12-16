@@ -13,24 +13,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="Страница" />
 
-    <org.adblockplus.libadblockplus.android.webview.AdblockWebView
-        android:id="@+id/webView"
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/webViewSwipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/webPageToolbar" />
+        app:layout_constraintTop_toBottomOf="@id/webPageToolbar">
 
-    <ProgressBar
-        android:id="@+id/webPageLoadingIndicator"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/white"
-        android:indeterminateTintMode="src_atop"
-        android:paddingBottom="4dp"
-        app:layout_constraintBottom_toBottomOf="@id/webPageToolbar"
-        app:layout_constraintTop_toBottomOf="@id/webPageToolbar" />
+        <org.adblockplus.libadblockplus.android.webview.AdblockWebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/webPageToolbar" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/webPageErrorImage"
@@ -57,5 +55,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/webPageErrorImage" />
+
+    <com.example.carexplorer.ui.screen.LoadingScreen
+        android:id="@+id/webPageLoading"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/webPageToolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

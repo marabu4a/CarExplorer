@@ -22,6 +22,7 @@ import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.haveno_items.*
 import moxy.ktx.moxyPresenter
+import ru.terrakok.cicerone.exitDefault
 import ru.terrakok.cicerone.navigateToScreen
 import timber.log.Timber
 import javax.inject.Inject
@@ -132,7 +133,7 @@ class SourceNewsFragment : BaseFragment(), SourceNewsView {
     //}
 
     override fun onBackPressed() {
-        parentRouter.exit()
+        parentRouter.exitDefault()
         super.onBackPressed()
     }
 
