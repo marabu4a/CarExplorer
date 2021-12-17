@@ -8,7 +8,6 @@ import androidx.transition.ChangeBounds
 import androidx.transition.Transition
 import com.example.carexplorer.helpers.navigation.sharedtransition.AnimateArticlePreviewTanstionSet
 import com.example.carexplorer.ui.base.BaseFragment
-import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import ru.terrakok.cicerone.commands.Command
 import timber.log.Timber
 
@@ -16,21 +15,42 @@ class CustomSupportAppNavigator(
     activity: FragmentActivity,
     private val fragmentManager: FragmentManager,
     private val containerId: Int
-) : SupportAppNavigator(activity,fragmentManager,containerId) {
+) : TaggedFragmentsAppNavigator(activity, fragmentManager, containerId) {
 
     private var currentCommand: Command? = null
 
-    override fun applyCommand(command: Command) {
+    override fun applyCommand(command: Command?) {
         currentCommand = command
         Timber.d(command.toString())
         super.applyCommand(command)
     }
 
+    override fun onFragmentBack(newFragmentTag: String) {
+        super.onFragmentBack(newFragmentTag)
+        when (val command = currentCommand) {
+            is AnimatedCommand -> {
+                getCurrentFragment()?.apply {
+                    clearAllAnimations()
+                    trySetNextAnimation(command.oldScreenAnimation)
+                }
+                fragmentManager.findFragmentByTag(newFragmentTag)?.apply {
+                    clearAllAnimationsExceptSharedReturn()
+                    trySetNextAnimation(command.newScreenAnimation)
+                }
+
+            }
+            is BackToFirst -> {
+                getCurrentFragment()?.clearAllAnimations()
+                fragmentManager.findFragmentByTag(newFragmentTag)?.clearAllAnimations()
+            }
+        }
+    }
+
     override fun setupFragmentTransaction(
-        command: Command,
+        command: Command?,
         currentFragment: Fragment?,
         nextFragment: Fragment?,
-        fragmentTransaction: FragmentTransaction
+        fragmentTransaction: FragmentTransaction?
     ) {
         when (command) {
             is AnimatedCommand -> {
@@ -96,12 +116,11 @@ class CustomSupportAppNavigator(
                 }
                 command.views.forEach { view ->
                     if (!view.transitionName.isNullOrEmpty()) {
-                        fragmentTransaction.addSharedElement(view, view.transitionName)
+                        fragmentTransaction?.addSharedElement(view, view.transitionName)
                     }
                 }
             }
         }
-        fragmentTransaction.setReorderingAllowed(true)
         super.setupFragmentTransaction(command, currentFragment, nextFragment, fragmentTransaction)
     }
 
